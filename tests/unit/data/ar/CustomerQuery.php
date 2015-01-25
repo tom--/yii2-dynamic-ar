@@ -2,12 +2,10 @@
 
 namespace tests\unit\data\ar;
 
-use app\db\DynamicActiveQuery;
-
 /**
  * CustomerQuery
  */
-class CustomerQuery extends DynamicActiveQuery
+class CustomerQuery extends \app\db\DynamicActiveQuery
 {
     public function active()
     {

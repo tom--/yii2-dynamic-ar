@@ -14,6 +14,11 @@ namespace tests\unit\data\ar;
  */
 class Profile extends ActiveRecord
 {
+    public static function dynamicColumn()
+    {
+        return 'dynamic_columns';
+    }
+
     public static function tableName()
     {
         return 'profile';

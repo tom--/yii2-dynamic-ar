@@ -17,6 +17,11 @@ use tests\unit\ActiveRecordTest;
  */
 class Customer extends ActiveRecord
 {
+    public static function dynamicColumn()
+    {
+        return 'dynamic_columns';
+    }
+
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 2;
 
