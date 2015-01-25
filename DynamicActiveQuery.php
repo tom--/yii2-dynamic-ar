@@ -100,13 +100,14 @@ class DynamicActiveQuery extends \yii\db\ActiveQuery
      */
     public function createCommand($db = null)
     {
+        /** @var DynamicActiveRecord $modelClass */
+        $modelClass = $this->modelClass;
+
         if ($db === null) {
-            $db = Yii::$app->getDb();
+            $db = $modelClass::getDb();
         }
         list ($sql, $params) = $db->getQueryBuilder()->build($this);
 
-        /** @var DynamicActiveRecord $modelClass */
-        $modelClass = $this->modelClass;
         $dynCol = $modelClass::dynamicColumn();
 
         $callback = function ($matches) use (&$params, $dynCol, &$i) {

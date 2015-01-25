@@ -1,0 +1,9 @@
+{
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "require-dev": {
+        "yiisoft/yii2-dev": "~2.0.0",
+        "phpunit/phpunit": "~4.4"
+    }
+}
