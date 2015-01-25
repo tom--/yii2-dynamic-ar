@@ -130,7 +130,7 @@ class DynamicActiveQuery extends \yii\db\ActiveQuery
         $type
             = "binary$l|char$l|date|datetime$l|decimal$l|double$l|int(eger)?"
             . "|signed(?: inte(eger)?)?|time$l|unsigned(?: inte(eger)?)?";
-        $pattern = "{ < ($start $cont* (?: \\. $cont+)*) (?: \\| ($type))? > }ux";
+        $pattern = "{ \\{ ($start $cont* (?: \\. $cont+)*) (?: \\| ($type))? \\} }ux";
 
         $i = 0;
         $sql = preg_replace_callback($pattern, $callback, $sql);
