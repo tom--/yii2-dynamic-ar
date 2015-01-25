@@ -85,15 +85,14 @@ abstract class DynamicActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
-     * Decode DB-specific encoded dynamic attribute blob.
-     * @param string $encoded Serialization of aynamc attributes in DB-specific form
-     * @return array Dynamic attributes in name => value pairs (possibly nested)
+     * Decode a dynamic attribute blob.
      *
-     * @throws \yii\base\Exception
+     * @param string $encoded Serialized array of attributes in DB-specific form
+     * @return array Dynamic attributes in name => value pairs (possibly nested)
      */
     public static function dynColDecode($encoded)
     {
-        throw new \yii\base\Exception('Missing DB-specific method: ' . static::className() . '..' . __METHOD__);
+        return static::dynColDecodeMaria($encoded);
     }
 
     /**
@@ -182,9 +181,16 @@ abstract class DynamicActiveRecord extends \yii\db\ActiveRecord
         }
     }
 
+    public function fields()
+    {
+        die('dead!');
+        $fields = array_keys((array) $this->_dynamicAttributes);
+        return array_merge($fields, parent::fields());
+    }
+
     public static function dynamicColumn()
     {
-        return null;
+        throw new \yii\base\Exception('A DynamicActiveRecord class must implement the "dynamicColumn" method');
     }
 
     public function beforeSave($insert)
@@ -192,9 +198,8 @@ abstract class DynamicActiveRecord extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             $this->setAttribute(static::dynamicColumn(), self::dynColExpression($this->_dynamicAttributes));
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
