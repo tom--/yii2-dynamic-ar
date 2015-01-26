@@ -1,4 +1,6 @@
-# yii2-dynamic-ar extension – adding dynamic columns to Active Record and Active Query for SQL tables
+# yii2-dynamic-ar extension
+
+## Dynamic attributes in Active Record and Active Query for SQL tables
 
 **yii2-dynamic-ar** extend the Yii 2 Active Record abstraction with NoSQL-like features.  
 
