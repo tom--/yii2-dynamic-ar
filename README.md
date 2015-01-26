@@ -1,8 +1,7 @@
 # yii2-dynamic-ar extension
 
-## Dynamic attributes in Active Record and Active Query for SQL tables
+**Dynamic attributes in Active Record and Active Query for SQL tables**
 
-**yii2-dynamic-ar** extend the Yii 2 Active Record abstraction with NoSQL-like features.  
 
 NoSQL-like features have been appearing in some SQL relational databases, including [Dynamic Columns in Maria 10.0+](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
 and
