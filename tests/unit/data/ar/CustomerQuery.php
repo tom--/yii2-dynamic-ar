@@ -2,10 +2,12 @@
 
 namespace tests\unit\data\ar;
 
+use \spinitron\dynamicAr\DynamicActiveQuery;
+
 /**
  * CustomerQuery
  */
-class CustomerQuery extends \app\db\DynamicActiveQuery
+class CustomerQuery extends DynamicActiveQuery
 {
     public function active()
     {

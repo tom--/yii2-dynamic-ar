@@ -25,7 +25,7 @@ $config = [
             'dsn' => 'mysql:host=localhost;dbname=yii2basic',
             'username' => 'y8Y8mtFHAh',
             'password' => '',
-            'fixture' => __DIR__ . '/mysql.sql',
+            'fixture' => __DIR__ . '/../../../vendor/yiisoft/yii2-dev/tests/unit/data/mysql.sql',
         ],
 //        'sqlite' => [
 //            'dsn' => 'sqlite::memory:',
@@ -47,6 +47,7 @@ $config = [
 ];
 
 if (is_file(__DIR__ . '/config.local.php')) {
+    /** @noinspection PhpIncludeInspection */
     include(__DIR__ . '/config.local.php');
 }
 

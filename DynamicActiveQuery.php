@@ -1,20 +1,21 @@
 <?php
 
-namespace app\db;
+namespace spinitron\dynamicAr;
 
 use Yii;
-use yii\base\Component;
+use yii\db\ActiveQuery;
 
 /**
- * Dynamic columns can be used queries but DAQ requires a special syntax to identify
- * that you are refering to a dynamic column. Owing to SQL's static typing you must
- * also specify the type in the query. See createCommand() for specifics.
- *
  * Class DynamicActiveQuery
+ *
+ * DynamicActiveQuery adds an abstraction for writing queries that involve
+ * the dynamic attributes of a DynamicAccessRecord. This is only possible on
+ * a DBMS that supports querying elements in serialized data structures. At
+ * present this includes Maria 10+ and PostgreSQL 9.4+.
  *
  * @package app\db
  */
-class DynamicActiveQuery extends \yii\db\ActiveQuery
+class DynamicActiveQuery extends ActiveQuery
 {
     /**
      * Maria-specific preparation for building a query that includes a dynamic column.
@@ -42,57 +43,63 @@ class DynamicActiveQuery extends \yii\db\ActiveQuery
     /**
      * Generate DB command from ActiveQuery with Maria-specific SQL for dynamic columns.
      *
-     * This implementation is the best hack I could manage. A dynamic column name
-     * can appear anywhere that a normal column name could appear (select, join, where, ...).
-     * It needs to be converted to the Maria SQL for accessing a dynamic column.
-     * Because SQL is statically-typed and there is no schema to refer to for the dyn-cols,
-     * the accessor SQL must specify the the dyn-col's type, e.g.
+     * This implementation is the best hack I could manage. A dynamic attribute name
+     * can appear anywhere that a schema attribute name could appear (select, join, where, ...).
+     * It needs to be converted to the Maria SQL for accessing dynamic columns.
+     * Because SQL is statically-typed and there is no schema to refer to for dynamic
+     * attributes, the accessor SQL must specify the the dyn-col's type, e.g.
      *
-     *     WHERE COLUMN_GET(details, 'color' as char) = 'black'
+     * ```sql
+     * WHERE COLUMN_GET(details, 'color' as char) = 'black'
+     *```
      *
      * In which details is the blob column containing all the dynamic columns, 'color' is the
      * name of a dynamic column that may or may not appear in any given table record, and
-     * char means the value should be cast to char before it is compared with 'black'
+     * char means the value should be cast to char before it is compared with 'black'.
+     * `COLUMN_GET(details, 'color' as char)` is the "accessor SQL".
      *
      * So I faced two problems:
-     *    1. How to identify a dynamic column name in an ActiveQuery?
-     *    2. How to choose the type to which it should be cast?
+     *    1. How to identify a dynamic attribute name in an ActiveQuery?
+     *    2. How to choose the type to which it should be cast in the SQL?
      *
-     * The operating and design concept of DynamicAR is "a column that doesn't appear in the
-     * schema is assumed to be a dynamic column". So to infer from an AQ instance the column names
-     * that need to be converted to dyn-col accessor SQL I need to go through the AQ to identify
+     * The operating and design concept of DynamicAR is "an attribute that doesn't appear in the
+     * schema and doesn't have a magic get-/setter is assumed to be a dynamic attribute".
+     * So, in order to infer from the properties of an AQ instance the attribute names
+     * that need to be converted to dynamic column accessor SQL, I need to go through
+     * the AQ to identify
      * all the column names and remove those in the schema. But I don't know how to
      * identify column names in an AQ instance. Even if I did, there's problem 2.
      *
-     * The only way I can imagine to infer dynamic column type from an AQ instance is to look
-     * at the context. If the dyn-col is compared with a bound parameter, that's a possible
-     * approach. If it is being used in a function, e.g. CONCAT(), or being compared with a
+     * The only way I can imagine to infer datatype from an AQ instance is to look
+     * at the context. If the attribute is compared with a bound parameter, that's a clue.
+     * If it is being used in an SQL function, e.g. CONCAT(), or being compared with a
      * schema column, that suggests something. But if it is on its own in a SELECT then I am
-     * stuck. Also stuck if it is compared with another dyn-col. This seems fundamentally
-     * intractible to me.
+     * stuck. Also stuck if it is compared with another dynamic attribute. This seems
+     * fundamentally intractible to me.
      *
-     * So I decided that the user needs to help ActiveQuery by distinguishing names that
-     * are dyn-col names and by explicitly specifying the type. The format I chose is:
+     * So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
+     * of dynamic attributes and by explicitly specifying the type. The format I chose is:
      *
-     *     <column|type>
+     *     {name|type}
      *
-     * Omitting type implies the default type: char. Child dyn-col names are separated from
-     * parents with . (period), e.g. <address.country|char>. Spaces are not tolerated.
-     * So a user can do:
+     * Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
+     * array elements, are separated from parents with . (period), e.g. {address.country|CHAR}.
+     * Spaces are not tolerated. So a user can do:
      *
      *     $blackShirts = Product::find()
-     *         ->where(['category' => Product::SHIRT, '<color>' => 'black'])
+     *         ->where(['category' => Product::SHIRT, '{color}' => 'black'])
      *         ->all();
      *
      *     $cheapShirts = Product::find()
+     *         ->select('sale' => 'MAX({cost|decimal(6,2)}, 0.75 * {price.wholesale.12|decimal(6,2)})')
      *         ->where(['category' => Product::SHIRT])
-     *         ->andWhere('<price.retail.unit|decimal(6,2)> < 20.00')
+     *         ->andWhere('{price.retail.unit|decimal(6,2)} < 20.00')
      *         ->all();
      *
-     * The implementation follows db\Connection's quoting of [[string]] and {{string}}. Once
-     * the full SQL string is ready, preg_repalce it. The regex pattern here is a bit complex
+     * The implementation is like db\Connection's quoting of [[string]] and {{string}}. Once
+     * the full SQL string is ready, `preg_repalce()` it. The regex pattern is a bit complex
      * and the replacement callback isn't pretty either. Is there a better way to add to
-     * $params in the callback than this? And for the parameter placeholder counter $i?
+     * `$params` in the callback than this? And for the parameter placeholder counter `$i`?
      *
      * @param null|\yii\db\Connection $db
      *
@@ -110,6 +117,7 @@ class DynamicActiveQuery extends \yii\db\ActiveQuery
 
         $dynCol = $modelClass::dynamicColumn();
 
+        $i = 0;
         $callback = function ($matches) use (&$params, $dynCol, &$i) {
             $type = !empty($matches[2]) ? $matches[2] : 'char';
             $sql = $dynCol;
@@ -124,15 +132,18 @@ class DynamicActiveQuery extends \yii\db\ActiveQuery
             return $sql;
         };
 
-        $start = '[a-z_\x7f-\xff]';
-        $cont = '[a-z0-9_\x7f-\xff]';
-        $l = '(?:\(\d[\d,]*\))?';
-        $type
-            = "binary$l|char$l|date|datetime$l|decimal$l|double$l|int(eger)?"
-            . "|signed(?: inte(eger)?)?|time$l|unsigned(?: inte(eger)?)?";
-        $pattern = "{ \\{ ($start $cont* (?: \\. $cont+)*) (?: \\| ($type))? \\} }ux";
-
-        $i = 0;
+        // A legal php label for the dynamic attribute name
+        $ident = '[a-z_\x7f-\xff] [a-z0-9_\x7f-\xff]*';
+        // Width, size, scale, precision... part of the SQL datatype
+        $l1 = '(?: \( \d+ \) )?';
+        $l2 = '(?: \( \d\d? (?: , \d\d? )? \) )?';
+        // Allowed Maria datatypes
+        $type = "binary $l1 | char $l1 | date | datetime $l1 | time $l1
+            | decimal $l2  | double $l2 | int(eger)? | (?:un)? signed (?:\\ inte(eger)?)?";
+        // Capture two things:
+        //   1. from after a { to before its | or, of there is no |, its closing }
+        //   2. if there is a |, from after that to before the closing }
+        $pattern = "{ \\{ ( $ident (?: \\. [^.|\\s]+)* ) (?: \\| ($type) )? \\} }iux";
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
         return $db->createCommand($sql, $params);

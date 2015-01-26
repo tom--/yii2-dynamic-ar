@@ -7,13 +7,15 @@
 
 namespace tests\unit\data\ar;
 
+use \spinitron\dynamicAr\DynamicActiveRecord;
+
 /**
  * ActiveRecord is ...
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class ActiveRecord extends \app\db\DynamicActiveRecord
+class ActiveRecord extends DynamicActiveRecord
 {
     public static $db;
 

@@ -16,5 +16,4 @@ Yii::setAlias('@yiiunit', __DIR__ . '/../../vendor/yiisoft/yii2-dev/tests/unit')
 Yii::setAlias('@tests', dirname(__DIR__));
 
 // TODO change this to the real namespace of the extension!
-Yii::setAlias('@app/db', dirname(dirname(__DIR__)));
-
+Yii::setAlias('@spinitron/dynamicAr', dirname(dirname(__DIR__)));
