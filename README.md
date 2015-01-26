@@ -113,8 +113,8 @@ basic nature of NoSQL – the schema is implicit in the application business log
 
 The token is wrapped in curly braces containing the dynamic attribute name and optionally its type. Type may be omitted, in which case it defaults to `char`. Otherwise it is otherwise one of the datatypes allowed by the respective DBMS. Hierarchy in structured data is represenyed with dot separators: `grandparent.parent.child`.
 
-
----|---
+Description | Token
+--- | ---
 General form | `{label[.label[...]]|type}`
 `color` with default datatype char | `{color}`
 `price` with explcit datatype | `{price|DECIMAL(5,2)}`
