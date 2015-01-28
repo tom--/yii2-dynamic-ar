@@ -2,15 +2,22 @@
 
 namespace tests\unit;
 
+use tests\unit\data\dar\Supplier;
 use Yii;
 use spinitron\dynamicAr\DynamicActiveRecord;
 use spinitron\dynamicAr\DynamicActiveQuery;
 use yiiunit\TestCase;
 use tests\unit\data\dar\Product;
 use yii\db\Connection;
+use yii\db\Query;
+use yii\db\ActiveQuery;
 
 class DynamicActiveRecordTest extends TestCase
 {
+    /*
+     * link(,,$extraColumns)
+     *
+     */
     /** @var Connection */
     protected $db;
 
@@ -23,17 +30,21 @@ class DynamicActiveRecordTest extends TestCase
     protected function setUp()
     {
         /** @var Connection */
-        $db = Yii::createObject([
-            'class' => '\yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-            'username' => 'y8Y8mtFHAh',
-            'password' => '',
-        ]);
+        $db = Yii::createObject(
+            [
+                'class' => '\yii\db\Connection',
+                'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+                'username' => 'y8Y8mtFHAh',
+                'password' => '',
+            ]
+        );
         $this->db = $db;
         Product::$db = $db;
+        Supplier::$db = $db;
         $this->resetFixture();
         parent::setUp();
     }
+
 
     public function testRead()
     {
@@ -65,8 +76,7 @@ class DynamicActiveRecordTest extends TestCase
         /** @var Product */
         $product = Product::find()->one();
         $expect = [
-            'id' => 1,
-            'name' => 'name1',
+            'name' => 'product1',
             'int' => 123,
             'str' => 'value1',
             'bool' => 1,
@@ -78,6 +88,18 @@ class DynamicActiveRecordTest extends TestCase
                 'float' => 123.456,
             ],
         ];
-        $this->assertArraySubset($expect, $product, true);
+        $this->assertArraySubset($expect, $product->toArray(), true);
+    }
+
+    public function testRlations1()
+    {
+        $product = Product::find()->one();
+        $supplier = $product->supplier;
+        $this->assertTrue($supplier instanceof Supplier);
+        $this->assertEquals('One', $supplier->name);
+    }
+
+    public function testRlations2()
+    {
     }
 }

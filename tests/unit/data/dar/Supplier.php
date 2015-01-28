@@ -5,7 +5,7 @@ namespace tests\unit\data\dar;
 use \spinitron\dynamicAr\DynamicActiveRecord;
 use \spinitron\dynamicAr\DynamicActiveQuery;
 
-class Product extends DynamicActiveRecord
+class Supplier extends DynamicActiveRecord
 {
     public static $db;
 
@@ -16,7 +16,7 @@ class Product extends DynamicActiveRecord
 
     public static function tableName()
     {
-        return 'product';
+        return 'supplier';
     }
 
     public static function dynamicColumn()
@@ -27,8 +27,8 @@ class Product extends DynamicActiveRecord
     /**
      * @return DynamicActiveQuery
      */
-    public function getSupplier()
+    public function getProducts()
     {
-        return $this->hasOne(Supplier::className(), ['id' => 'supplier_id']);
+        return $this->hasMany(Product::className(), ['{supplier_id|INT}' => 'id']);
     }
 }
