@@ -26,6 +26,28 @@ class DynamicActiveQuery extends ActiveQuery
      */
     public function prepare($builder)
     {
+
+
+        /*
+         * $select, select(), addSelect()
+         * $groupBy, groupBy(), addGroupBy()
+         * $orderBy, orderBy(), addOrderBy()
+         * $indexBy, indexBy()
+         * $union, union()
+         *
+         * $on, onCondition(), and-/orOnCondition()
+         * $where, where(), and-/orWhere(), filterWhere(), and-/orFilterWhere()
+         * $having, having(), and-/orHaving()
+         *
+         * $link
+         * $join, join(), $joinWith, joinWith(), innerJoin(), innerJoinWith(), leftJoin(), rightJoin()
+         * $via, via()
+         *
+         * average(), max(), min(), sum(),
+         *
+         * $sql, AR::findBySql()
+         */
+
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
         $dynCol = $modelClass::dynamicColumn();
@@ -37,6 +59,7 @@ class DynamicActiveQuery extends ActiveQuery
             $this->select[$dynCol] = 'COLUMN_JSON(' . $dynCol . ')';
         }
 
+        \yii\helpers\VarDumper::dump($this, 10, false);
         return parent::prepare($builder);
     }
 
@@ -113,6 +136,7 @@ class DynamicActiveQuery extends ActiveQuery
         if ($db === null) {
             $db = $modelClass::getDb();
         }
+
         list ($sql, $params) = $db->getQueryBuilder()->build($this);
 
         $dynCol = $modelClass::dynamicColumn();
@@ -143,9 +167,10 @@ class DynamicActiveQuery extends ActiveQuery
         // Capture two things:
         //   1. from after a { to before its | or, of there is no |, its closing }
         //   2. if there is a |, from after that to before the closing }
-        $pattern = "{ \\{ ( $ident (?: \\. [^.|\\s]+)* ) (?: \\| ($type) )? \\} }iux";
+        $pattern = "{ `? \\{ ( $ident (?: \\. [^.|\\s]+)* ) (?: \\| ($type) )? \\} `? }iux";
+\yii\helpers\VarDumper::dump($sql, 10, false);echo "\n";
         $sql = preg_replace_callback($pattern, $callback, $sql);
-
+\yii\helpers\VarDumper::dump($sql, 10, false);echo "\n\n\n";
         return $db->createCommand($sql, $params);
     }
 }
