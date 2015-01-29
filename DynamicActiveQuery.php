@@ -152,20 +152,13 @@ class DynamicActiveQuery extends ActiveQuery
             return $sql;
         };
 
-        // Width, size, scale, precision, etc... parts of SQL datatypes
-        $l1 = '(?: \( \d+ \) )?';
-        $l2 = '(?: \( \d\d? (?: , \d\d? )? \) )?';
-        // Allowed Maria datatypes
-        $type = "binary $l1 | char $l1 | date | datetime $l1 | time $l1
-            | decimal $l2  | double $l2 | int(eger)? | (?:un)? signed (?:\\ inte(eger)?)?";
-        // Capture two things:
-        //   1. from after a { to before its | or, of there is no |, its closing }
-        //   2. if there is a |, from after that to before the closing }
-        $pattern = '{ (`?) \{
-            ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*
-            (?: \. [^.|\s]+)* ) (?: \| (' . $type . ') )?
-            \} \1 }ix';
-        $sql = preg_replace_callback($pattern, $callback, $sql);
+        $pattern = '(`?) \{
+                ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
+                (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
+                        | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?(?:,\d\d?)?\))?
+                        | int(eger)? | (?:un)? signed (?:\int(eger)?)?)  )?
+            \} \1';
+        $sql = preg_replace_callback('{' . $pattern . '}/ix', $callback, $sql);
 
         return $db->createCommand($sql, $params);
     }
