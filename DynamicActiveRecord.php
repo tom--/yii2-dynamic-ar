@@ -4,7 +4,6 @@ namespace spinitron\dynamicAr;
 
 use Yii;
 use yii\db\ActiveRecord;
-use yii\helpers\VarDumper;
 
 /**
  * Class DynamicActiveRecord
@@ -24,10 +23,23 @@ use yii\helpers\VarDumper;
  */
 abstract class DynamicActiveRecord extends ActiveRecord
 {
-    const PARAM_PREFIX_ATTRS = ':dca';
-    const PARAM_PREFIX_QUERY = ':dcq';
+    const PARAM_PREFIX = ':dqp';
 
     private $dynamicAttributes = [];
+    /**
+     * @var int
+     */
+    private static $placeholderCounter;
+
+    public static function placeholder()
+    {
+        if (self::$placeholderCounter === null) {
+            self::$placeholderCounter = 1;
+        } else {
+            self::$placeholderCounter += 1;
+        }
+        return self::PARAM_PREFIX . self::$placeholderCounter;
+    }
 
     public static function find()
     {
@@ -44,21 +56,19 @@ abstract class DynamicActiveRecord extends ActiveRecord
      * @return string SQL for a DB Expression
      * @throws \yii\base\Exception
      */
-    public static function dynColSqlMaria($attrs, &$params, $prefix)
+    private static function dynColSqlMaria($attrs, &$params)
     {
         $sql = [];
-        $i = 0;
         foreach ($attrs as $key => $value) {
-            $i += 1;
-            $ph = $prefix . $i;
-            $sql[] = $ph . 'k';
-            $params[$ph . 'k'] = $key;
+            $phKey = self::placeholder();
+            $phValue = self::placeholder();
+            $sql[] = $phKey;
+            $params[$phKey] = $key;
             if (is_scalar($value)) {
-                $sql[] = $ph . 'v';
-                $params[$ph . 'v'] = $value;
+                $sql[] = $phValue;
+                $params[$phValue] = $value;
             } else {
-                $ph .= '_';
-                $sql[] = self::dynColSqlMaria((array) $value, $params, $ph);
+                $sql[] = self::dynColSqlMaria((array) $value, $params);
             }
         }
         return 'COLUMN_CREATE(' . implode(',', $sql) . ')';
@@ -73,7 +83,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         $params = [];
 
         // todo For now we only have Maria. Add PgSQL and generic JSON.
-        $sql = static::dynColSqlMaria($attrs, $params, self::PARAM_PREFIX_ATTRS);
+        $sql = static::dynColSqlMaria((array) $attrs, $params);
 
         return new \yii\db\Expression($sql, $params);
     }
@@ -142,7 +152,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
      */
     public static function dynamicColumn()
     {
-        throw new \yii\base\Exception('A DynamicActiveRecord class must implement the "dynamicColumn" method');
+        throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
     }
 
     public function beforeSave($insert)

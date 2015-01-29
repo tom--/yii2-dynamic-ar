@@ -95,6 +95,7 @@ class DynamicActiveRecordTest extends TestCase
     {
         $product = Product::find()->one();
         $supplier = $product->supplier;
+        $this->assertNotInternalType('null', $supplier);
         $this->assertTrue($supplier instanceof Supplier);
         $this->assertEquals('One', $supplier->name);
     }

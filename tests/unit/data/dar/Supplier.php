@@ -29,6 +29,6 @@ class Supplier extends DynamicActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['{supplier_id|INT}' => 'id']);
+        return $this->hasMany(Product::className(), ['supplier_id' => 'id']);
     }
 }

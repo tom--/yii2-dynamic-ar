@@ -4,6 +4,7 @@ namespace spinitron\dynamicAr;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Connection;
 
 /**
  * Class DynamicActiveQuery
@@ -18,49 +19,42 @@ use yii\db\ActiveQuery;
 class DynamicActiveQuery extends ActiveQuery
 {
     /**
+     * @var Connection
+     */
+    private $db;
+    /**
+     * @var string
+     */
+    private $dynamicColumn;
+
+    /**
      * Maria-specific preparation for building a query that includes a dynamic column.
      *
      * @param \yii\db\QueryBuilder $builder
      *
      * @return \yii\db\Query
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function prepare($builder)
     {
-
-        /*
-         * $select, select(), addSelect()
-         * $groupBy, groupBy(), addGroupBy()
-         * $orderBy, orderBy(), addOrderBy()
-         * $indexBy, indexBy()
-         * $union, union()
-         *
-         * $on, onCondition(), and-/orOnCondition()
-         * $where, where(), and-/orWhere(), filterWhere(), and-/orFilterWhere()
-         * $having, having(), and-/orHaving()
-         *
-         * $link
-         * $join, join(), $joinWith, joinWith(), innerJoin(), innerJoinWith(), leftJoin(), rightJoin()
-         * $via, via()
-         *
-         * average(), max(), min(), sum(),
-         *
-         * $sql, AR::findBySql()
-         */
-
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
-        $dynamicColumn = $modelClass::dynamicColumn();
-        if (empty($dynamicColumn)) {
-            throw new \yii\base\Exception($modelClass . '::dynamicColumn() must return an attribute name');
+        $this->dynamicColumn = $modelClass::dynamicColumn();
+        if (empty($this->dynamicColumn)) {
+            throw new \yii\base\InvalidConfigException(
+                $modelClass . '::dynamicColumn() must return an attribute name'
+            );
         }
-
-        $db = $modelClass::getDb();
 
         if (empty($this->select)) {
             $attributes = array_keys($modelClass::getTableSchema()->columns);
-            $this->select = array_diff($attributes, [$dynamicColumn]);
+            $this->select = array_diff($attributes, [$this->dynamicColumn]);
         }
-        $this->select[$dynamicColumn] = 'COLUMN_JSON(' . $db->quoteColumnName($dynamicColumn) . ')';
+
+        $this->db = $modelClass::getDb();
+        $this->select[$this->dynamicColumn] =
+            'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
 
         return parent::prepare($builder);
     }
@@ -130,37 +124,35 @@ class DynamicActiveQuery extends ActiveQuery
      *
      * @return \yii\db\Command
      */
-    public function createCommand($db = null)
+    public function createCommand($db = null, $params)
     {
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
-
         if ($db === null) {
             $db = $modelClass::getDb();
         }
 
-        list ($sql, $params) = $db->getQueryBuilder()->build($this);
+        if ($this->sql === null) {
+            list ($sql, $params) = $db->getQueryBuilder()->build($this);
+        } else {
+            $sql = $this->sql;
+            $params = $this->params;
+        }
 
-        $dynCol = $modelClass::dynamicColumn();
+        $dynamicColumn = $modelClass::dynamicColumn();
 
-        $i = 0;
-        $callback = function ($matches) use (&$params, $dynCol, &$i) {
-            $type = !empty($matches[2]) ? $matches[2] : 'char';
-            $sql = $dynCol;
-            $parts = explode('.', $matches[1]);
-            $nParts = count($parts);
-            foreach ($parts as $col) {
-                $i += 1;
-                $placeholder = DynamicActiveRecord::PARAM_PREFIX_QUERY . $i;
-                $params[$placeholder] = $col;
-                $sql = "COLUMN_GET($sql, $placeholder AS " . ($i == $nParts ? $type : 'char') . ')';
+        $callback = function ($matches) use (&$params, $dynamicColumn) {
+            $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
+            $sql = $dynamicColumn;
+            foreach (explode('.', $matches[2]) as $column) {
+                $placeholder = DynamicActiveRecord::placeholder();
+                $params[$placeholder] = $column;
+                $sql = "COLUMN_GET($sql, $placeholder AS $type)";
             }
             return $sql;
         };
 
-        // A legal php label for the dynamic attribute name
-        $ident = '[a-z_\x7f-\xff] [a-z0-9_\x7f-\xff]*';
-        // Width, size, scale, precision... part of the SQL datatype
+        // Width, size, scale, precision, etc... parts of SQL datatypes
         $l1 = '(?: \( \d+ \) )?';
         $l2 = '(?: \( \d\d? (?: , \d\d? )? \) )?';
         // Allowed Maria datatypes
@@ -169,12 +161,12 @@ class DynamicActiveQuery extends ActiveQuery
         // Capture two things:
         //   1. from after a { to before its | or, of there is no |, its closing }
         //   2. if there is a |, from after that to before the closing }
-        $pattern = "{ `? \\{ ( $ident (?: \\. [^.|\\s]+)* ) (?: \\| ($type) )? \\} `? }iux";
-        \yii\helpers\VarDumper::dump($sql, 10, false);
-        echo "\n";
+        $pattern = '{ (`?) \{
+            ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*
+            (?: \. [^.|\s]+)* ) (?: \| (' . $type . ') )?
+            \} \1 }ix';
         $sql = preg_replace_callback($pattern, $callback, $sql);
-        \yii\helpers\VarDumper::dump($sql, 10, false);
-        echo "\n\n\n";
+
         return $db->createCommand($sql, $params);
     }
 }
