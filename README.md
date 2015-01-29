@@ -26,7 +26,7 @@ Such entities are easily represented in a NoSQL document store such as CouchDB o
 
 - Mapping one property to one column can lead to far too many columns that are very sparsely populated and columns must be frequently added and removed (the table description could be as dynamic as the data in it!).
 - Sub-classing the entities into a hierarchy of types (to the extent that the entities allow such categorization) can allow mapping the types to a schema of related tables. This can mitigate sparse column population and somewhat contain the impact of schema changes at the cost of table proliferation. You have just as many columns and records in total but fewer empty fields.
-- EAV tables make anything except the primitive search and querying very complex – well know problems.
+- EAV tables make anything except primitive search and querying very complex – well know problems.
 - Serializing the properties into a column containing all the dynamic properties means you cannot query individual properties.
 
 However, Maria 10 and PostgreSQL 9.4 have the ability to serialize an arbitrary set of (structured) properties while allowing them to be used in queries. This suggests the possibility of having the best of both worlds (RDBMS and document store) in one place.
