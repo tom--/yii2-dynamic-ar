@@ -124,7 +124,7 @@ class DynamicActiveQuery extends ActiveQuery
      *
      * @return \yii\db\Command
      */
-    public function createCommand($db = null, $params)
+    public function createCommand($db = null)
     {
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
@@ -152,13 +152,15 @@ class DynamicActiveQuery extends ActiveQuery
             return $sql;
         };
 
-        $pattern = '(`?) \{
+        $pattern = <<<'REGEXP'
+            % (`?) \{
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
                         | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?(?:,\d\d?)?\))?
                         | int(eger)? | (?:un)? signed (?:\int(eger)?)?)  )?
-            \} \1';
-        $sql = preg_replace_callback('{' . $pattern . '}/ix', $callback, $sql);
+            \} \1 %ix
+REGEXP;
+        $sql = preg_replace_callback($pattern, $callback, $sql);
 
         return $db->createCommand($sql, $params);
     }

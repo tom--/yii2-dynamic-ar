@@ -51,7 +51,6 @@ abstract class DynamicActiveRecord extends ActiveRecord
      *
      * @param array $attrs Name and value pairs of dynamic fields to be saved in DB
      * @param array $params Expression parameters for binding, passed by reference
-     * @param string $prefix Base parameter placeholder prefix.
      *
      * @return string SQL for a DB Expression
      * @throws \yii\base\Exception
