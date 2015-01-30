@@ -91,16 +91,52 @@ class DynamicActiveRecordTest extends TestCase
         $this->assertArraySubset($expect, $product->toArray(), true);
     }
 
-    public function testRlations1()
+    public function dataProviderTestWriteRead()
     {
-        $product = Product::find()->one();
-        $supplier = $product->supplier;
-        $this->assertNotInternalType('null', $supplier);
-        $this->assertTrue($supplier instanceof Supplier);
-        $this->assertEquals('One', $supplier->name);
+        $data = [
+            ['int', 1234],
+            ['neg', -4321],
+            ['octal', 076543],
+            ['hex', 0xbada55],
+            ['largeint', 2147483647],
+            ['largerin', 9223372036854775807],
+            ['neglargein', -2147483648],
+            ['neglargerin', -9223372036854775807],
+            ['float', 1.1234],
+            ['morefloat', 1.123456789012345],
+            ['bigfloat', 1.123456789012345e+300],
+            ['bignegfloat', -1.123456789012345e+300],
+            ['string', 'this is a simple string'],
+            ['newlines', 'You can also have embedded newlines in
+                strings this way as it is
+                okay to do'],
+        ];
+        $data += include(__DIR__ . '/unicodeStrings.php');
+        $binaryString = '';
+        for ($i = 0; $i <= 255; $i += 1) {
+            $binaryString .= chr($i);
+        }
+        $data['bonarystring'] = $binaryString;
+
+        return $data;
     }
 
-    public function testRlations2()
+    /**
+     * @dataProvider dataProviderTestWriteRead
+     *
+     * @param string $name
+     * @param mixed $value
+     */
+    public function testWriteRead($name, $value)
     {
+        $product = new Product();
+        $product->$name = $value;
+        $product->save(false);
+        $id = $product->primaryKey;
+
+        unset($product);
+
+        $product = Product::findOne($id);
+        $this->assertEquals($value, $product->$name, 'testWriteRead failed for data named: ' . $name);
     }
 }
