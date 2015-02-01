@@ -2,7 +2,9 @@
 
 namespace spinitron\dynamicAr;
 
+use tests\unit\DynamicActiveRecordTest;
 use Yii;
+use yii\base\InvalidCallException;
 use yii\db\ActiveRecord;
 
 /**
@@ -26,6 +28,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
     const PARAM_PREFIX = ':dqp';
 
     private $dynamicAttributes = [];
+    const DATA_URI_PREFIX = 'data:application/octet-stream;base64,';
     /**
      * @var int
      */
@@ -39,6 +42,56 @@ abstract class DynamicActiveRecord extends ActiveRecord
             self::$placeholderCounter += 1;
         }
         return self::PARAM_PREFIX . self::$placeholderCounter;
+    }
+
+    public static function encodeForMaria($value)
+    {
+        return is_string($value)
+        && (!mb_check_encoding($value, 'UTF-8') || strpos($value, self::DATA_URI_PREFIX) === 0)
+            ? self::DATA_URI_PREFIX . base64_encode($value)
+            : $value;
+    }
+
+    public static function decodeForMaria($value)
+    {
+        return is_string($value) && strpos($value, self::DATA_URI_PREFIX) === 0
+            ? file_get_contents($value)
+            : $value;
+    }
+
+    public static function walk(&$array, $method)
+    {
+        if (is_scalar($array)) {
+            $array = self::$method($array);
+            return;
+        }
+
+        $replacements = [];
+        foreach ($array as $key => &$value) {
+            if (is_scalar($value)) {
+                $value = self::$method($value);
+            } else {
+                self::walk($value, $method);
+            }
+            $newKey = self::$method($key);
+            if ($newKey !== $key) {
+                $replacements[$newKey] = $value;
+                unset($array[$key]);
+            }
+        }
+        foreach ($replacements as $key => $value2) {
+            $array[$key] = $value2;
+        }
+    }
+
+    public static function encodeArrayForMaria(&$array)
+    {
+        self::walk($array, 'encodeForMaria');
+    }
+
+    public static function decodeArrayForMaria(&$array)
+    {
+        self::walk($array, 'decodeForMaria');
     }
 
     public static function find()
@@ -82,7 +135,8 @@ abstract class DynamicActiveRecord extends ActiveRecord
         $params = [];
 
         // todo For now we only have Maria. Add PgSQL and generic JSON.
-        $sql = static::dynColSqlMaria((array) $attrs, $params);
+        self::encodeArrayForMaria($attrs);
+        $sql = static::dynColSqlMaria($attrs, $params);
 
         return new \yii\db\Expression($sql, $params);
     }
@@ -98,7 +152,20 @@ abstract class DynamicActiveRecord extends ActiveRecord
      */
     public static function dynColDecode($encoded)
     {
+        // Maria has a bug in its COLUMN_JSON funcion in which it fails to escape the
+        // control characters U+0000 through U+001F. This causes JSON decoders to fail.
+        // This workaround escapes those characters.
+        $encoded = preg_replace_callback(
+            '{[\x00-\x1f]}',
+            function ($matches) {
+                return sprintf('\u00%02x', ord($matches[0]));
+            },
+            $encoded
+        );
+
         $decoded = json_decode($encoded, true);
+        self::decodeArrayForMaria($decoded);
+
         return $decoded;
     }
 
@@ -121,6 +188,9 @@ abstract class DynamicActiveRecord extends ActiveRecord
         try {
             parent::__set($name, $value);
         } catch (\yii\base\UnknownPropertyException $e) {
+            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$}i', $name)) {
+                throw new InvalidCallException('Invalid attribute name "' . $name . '"');
+            }
             $this->dynamicAttributes[$name] = $value;
         }
     }
