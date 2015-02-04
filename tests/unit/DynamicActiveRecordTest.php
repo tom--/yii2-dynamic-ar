@@ -53,12 +53,11 @@ class DynamicActiveRecordTest extends TestCase
 
     public function testReadBinary()
     {
-        $vars = $this->db->createCommand('show variables like "char%"')->queryAll();
-        var_dump($vars);
-        $json = $this->db->createCommand('select column_json(dynamic_columns) from product where id=10')->queryScalar();
-        self::hexDump($json);
-        var_dump($json);
-        var_dump(json_decode($json));
+        $json = $this->db->createCommand(
+            'select column_json(dynamic_columns) from product where id=10'
+        )->queryScalar();
+
+        // todo need an assertion
     }
 
     public function testRead()
@@ -121,7 +120,7 @@ class DynamicActiveRecordTest extends TestCase
                 "asd\xC1\xC2\xC3asd" => "qwert\xD1\xD2\xD3",
                 "_x\xE1" => [1, "asd\xC1\xC2\xC3asd" => "qwert\xD1\xD2\xD3", 3, 'four' => true],
                 3,
-                'four' => true
+                'four' => true,
             ],
             [
                 1,
@@ -131,10 +130,10 @@ class DynamicActiveRecordTest extends TestCase
                     "asd\xC1\xC2\xC3asd" => "qwert\xD1\xD2\xD3",
                     "_x\xE1" => [1, "asd\xC1\xC2\xC3asd" => "qwert\xD1\xD2\xD3", 3, 'four' => true],
                     3,
-                    'four' => true
+                    'four' => true,
                 ],
                 3,
-                'four' => true
+                'four' => true,
             ],
             [
                 1,
@@ -150,16 +149,16 @@ class DynamicActiveRecordTest extends TestCase
                             "asd\xC1\xC2\xC3asd" => "qwert\xD1\xD2\xD3",
                             "_x\xE1" => [1, "asd\xC1\xC2\xC3asd" => "qwert\xD1\xD2\xD3", 3, 'four' => true],
                             3,
-                            'four' => true
+                            'four' => true,
                         ],
                         3,
-                        'four' => false
+                        "asd\xC1\xC2\xC3asd" => false,
                     ],
                     3,
-                    'four' => true
+                    "qwert\xD1\xD2\xD3" => self::BINARY_STRING,
                 ],
                 3,
-                'four' => false
+                "_x\xE1" => false,
             ],
         ];
         return array_merge($tests);
@@ -167,7 +166,6 @@ class DynamicActiveRecordTest extends TestCase
 
     public function dataProviderTestWriteRead()
     {
-        return [['bin', "\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f"]];
         $data = [
             ['int', 1234],
             ['neg', -4321],
@@ -203,7 +201,7 @@ class DynamicActiveRecordTest extends TestCase
             ['octet', DynamicActiveRecord::DATA_URI_PREFIX . base64_encode('This is my string')],
         ];
 
-//        $data = array_merge($data, include(__DIR__ . '/unicodeStrings.php'));
+        $data = array_merge($data, include(__DIR__ . '/unicodeStrings.php'));
 
         $data[] = ['binarystring', self::BINARY_STRING];
 
@@ -293,8 +291,6 @@ class DynamicActiveRecordTest extends TestCase
 
         $product = Product::findOne($id);
 
-        self::hexDump($product->dynamic_columns);
-
         $this->assertEquals(
             $value,
             $product->$name,
@@ -303,4 +299,9 @@ class DynamicActiveRecordTest extends TestCase
         );
         unset($product);
     }
+
+    // todo need to test all the active query uses and relations
+    // the way to do it, i think, is to follow yii2's ActiveRecordTest
+    // as a guide. everything in there should be adapted to dynamic-ar if it makes sense.
+    // https://github.com/yiisoft/yii2/blob/master/tests/unit/framework/db/ActiveRecordTest.php
 }
