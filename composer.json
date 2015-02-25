@@ -2,10 +2,9 @@
     "name": "spinitron/yii2-dynamic-ar",
     "description": "Extends Yii ActiveRecord for Maria Dynamic Columns",
     "version": "0.0.1-a",
-    "type": "yii2-expension",
+    "type": "yii2-extension",
     "license": "ISC",
-    "authors": "Tom Worster",
-
+    "authors": [{"name": "Tom Worster"}],
     "require": {
         "yiisoft/yii2": "~2.0.0"
     },
