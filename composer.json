@@ -11,5 +11,10 @@
     "require-dev": {
         "yiisoft/yii2-dev": "~2.0.0",
         "phpunit/phpunit": "~4.4"
-    }
+    },
+    "autoload": {
+   		"psr-4": {
+   			"spinitron\\dynamicAr\\": ""
+   		}
+   	}
 }
