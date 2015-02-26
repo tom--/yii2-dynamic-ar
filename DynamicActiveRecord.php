@@ -217,12 +217,12 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
     public function setAttribute($name, $value)
     {
-        if (strpos('.', $name)) {
+        if (strpos($name, '.') !== false) {
             $eval = '$this->dynamicAttributes';
             foreach (explode('.', $name) as $part) {
-                $eval .= "[$part]";
+                $eval .= '[' . var_export($part, true) . ']';
             }
-            $eval .= " = $value;";
+            $eval .= ' = ' . var_export($value, true) . ';';
             eval($eval);
         } else {
             $this->$name = $value;
