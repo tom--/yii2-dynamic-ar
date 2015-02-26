@@ -215,6 +215,20 @@ abstract class DynamicActiveRecord extends ActiveRecord
         return array_merge(parent::fields(), $fields);
     }
 
+    public function setAttribute($name, $value)
+    {
+        if (strpos('.', $name)) {
+            $eval = '$this->dynamicAttributes';
+            foreach (explode('.', $name) as $part) {
+                $eval .= "[$part]";
+            }
+            $eval .= " = $value;";
+            eval($eval);
+        } else {
+            $this->$name = $value;
+        }
+    }
+
     /**
      * @return string Name of the table column containing dynamic column data
      * @throws \yii\base\Exception
