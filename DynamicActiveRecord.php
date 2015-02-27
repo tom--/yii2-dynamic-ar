@@ -4,6 +4,7 @@ namespace spinitron\dynamicAr;
 
 use tests\unit\DynamicActiveRecordTest;
 use Yii;
+use yii\base\Exception;
 use yii\base\InvalidCallException;
 use yii\db\ActiveRecord;
 
@@ -215,6 +216,69 @@ abstract class DynamicActiveRecord extends ActiveRecord
         return array_merge(parent::fields(), $fields);
     }
 
+    public function issetAttribute($name)
+    {
+        if (strpos($name, '.') === false) {
+            return isset($this->$name);
+        }
+
+        $path = explode('.', $name);
+        $ref = & $this->dynamicAttributes;
+
+        foreach ($path as $key) {
+            if (!isset($ref[$key])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function unsetAttribute($name)
+    {
+        if (strpos($name, '.') === false) {
+            unset($this->name);
+            return;
+        }
+
+        $this->setAttribute($name, null);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAttribute($name)
+    {
+        if (strpos($name, '.') === false) {
+            return $this->$name;
+        }
+
+        $path = explode('.', $name);
+        $ref = & $this->dynamicAttributes;
+
+        foreach ($path as $key) {
+            if (!isset($ref[$key])) {
+                trigger_error('Undefined attribute ' . $name);
+                return null;
+            }
+        }
+
+        return $ref;
+    }
+
+    /**
+     * @param string $name Dot notation signifies position in an array in
+     * a dynamic attribute, for example
+     *
+     *     $model->setAttribute('car.owner.name.last', 'Smith')
+     *
+     * is like
+     *
+     *     $model->car['owner']['name']['last'] = 'Smith'
+     *
+     * if that were possible, if you know what I mean.
+     * @param mixed $value
+     */
     public function setAttribute($name, $value)
     {
         if (strpos($name, '.') === false) {
@@ -245,7 +309,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         // If there is remaining path then we have to set a new leaf
         // in dynamicAttributes. Its key will be the first part of the
         // remaining path. If there is any path beyond that then we need
-        // to set the leaf to an array.
+        // build an array to set it to.
         while (count($path) > 1) {
             $key = array_pop($path);
             $value = [$key => $value];
