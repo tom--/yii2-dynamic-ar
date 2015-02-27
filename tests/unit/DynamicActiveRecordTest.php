@@ -87,6 +87,10 @@ class DynamicActiveRecordTest extends TestCase
         $p->setAttribute('array.c.b.c', 6);
         $this->assertEquals($array, $p->array);
 
+        $array['c']['c']['b']['d'] = ['x' => 1, 'y' => ['z' => 2]];
+        $p->setAttribute('array.c.c.b.d', ['x' => 1, 'y' => ['z' => 2]]);
+        $this->assertEquals($array, $p->array);
+
         $array['c']['c']['c'] = 7;
         $p->setAttribute('array.c.c.c', 7);
         $this->assertEquals($array, $p->array);
