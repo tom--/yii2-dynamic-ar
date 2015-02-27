@@ -51,12 +51,56 @@ class DynamicActiveRecordTest extends TestCase
         parent::setUp();
     }
 
+    public function testSetAttribute()
+    {
+        self::$resetFixture = false;
+        $array = [
+            'a' => 1,
+            'b' => ['a' => 1, 'b' => 2],
+            'c' => [
+                'a' => 1,
+                'b' => ['a' => 1, 'b' => 2],
+                'c' => [
+                    'a' => 1,
+                    'b' => ['a' => 1, 'b' => 2],
+                    'c' => [
+                        'a' => 1,
+                        'b' => ['a' => 1, 'b' => 2],
+                        'c' => 3
+                    ]
+                ]
+            ]
+        ];
+
+        $p = new Product();
+        $p->array = $array;
+
+        $array['d'] = 4;
+        $p->setAttribute('array.d', 4);
+        $this->assertEquals($array, $p->array);
+
+        $array['e']['a']['b']['c'] = 5;
+        $p->setAttribute('array.e.a.b.c', 5);
+        $this->assertEquals($array, $p->array);
+
+        $array['c']['b']['c'] = 6;
+        $p->setAttribute('array.c.b.c', 6);
+        $this->assertEquals($array, $p->array);
+
+        $array['c']['c']['c'] = 7;
+        $p->setAttribute('array.c.c.c', 7);
+        $this->assertEquals($array, $p->array);
+
+        $array['c']['c'] = [9,8,7,6];
+        $p->setAttribute('array.c.c', [9,8,7,6]);
+        $this->assertEquals($array, $p->array);
+    }
+
     public function testReadBinary()
     {
         $json = $this->db->createCommand(
             'select column_json(dynamic_columns) from product where id=10'
         )->queryScalar();
-
         // todo need an assertion
     }
 
@@ -299,7 +343,6 @@ class DynamicActiveRecordTest extends TestCase
         );
         unset($product);
     }
-
     // todo need to test all the active query uses and relations
     // the way to do it, i think, is to follow yii2's ActiveRecordTest
     // as a guide. everything in there should be adapted to dynamic-ar if it makes sense.

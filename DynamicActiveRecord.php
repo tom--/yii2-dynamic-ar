@@ -218,6 +218,30 @@ abstract class DynamicActiveRecord extends ActiveRecord
     public function setAttribute($name, $value)
     {
         if (strpos($name, '.') !== false) {
+            $path = explode('.', $name);
+            $ref = &$this->dynamicAttributes;
+            do {
+                $key = $path[0];
+                if (isset($ref[$key])) {
+                    $ref = &$ref[$key];
+                    array_shift($path);
+                } else {
+                    break;
+                }
+            } while ($path);
+            while (count($path) > 1) {
+                $key = array_pop($path);
+                $value = [$key => $value];
+            }
+            if ($path) {
+                $ref[$path[0]] = $value;
+            } else {
+                $ref = $value;
+            }
+
+            return;
+
+            // Old version with eval()
             $eval = '$this->dynamicAttributes';
             foreach (explode('.', $name) as $part) {
                 $eval .= '[' . var_export($part, true) . ']';
