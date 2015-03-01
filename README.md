@@ -1,4 +1,4 @@
-> NOTE: Owing to a [showstopper bug](https://mariadb.atlassian.net/browse/MDEV-7650) in Maria Server I have stopped working on this. I don't know if it will resume.
+> <span style="color:red">NOTE: Owing to a [showstopper bug](https://mariadb.atlassian.net/browse/MDEV-7650) in Maria Server I have stopped working on this. I don't know if it will resume.</span>
 
 # yii2-dynamic-ar extension
 
