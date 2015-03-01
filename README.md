@@ -1,5 +1,3 @@
-> <span style="color:red">NOTE: Owing to a [showstopper bug](https://mariadb.atlassian.net/browse/MDEV-7650) in Maria Server I have stopped working on this. I don't know if it will resume.</span>
-
 # yii2-dynamic-ar extension
 
 **Dynamic, structured attributes in [Active Record](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) and [Active Query](http://www.yiiframework.com/doc-2.0/yii-db-activequery.html) for SQL tables**
