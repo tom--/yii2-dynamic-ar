@@ -41,20 +41,19 @@ class DynamicActiveQuery extends ActiveQuery
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
         $this->dynamicColumn = $modelClass::dynamicColumn();
+
         if (empty($this->dynamicColumn)) {
             throw new \yii\base\InvalidConfigException(
                 $modelClass . '::dynamicColumn() must return an attribute name'
             );
         }
 
-        if (empty($this->select)) {
-            $attributes = array_keys($modelClass::getTableSchema()->columns);
-            $this->select = array_diff($attributes, [$this->dynamicColumn]);
+        if (empty($this->select) || $this->select === '*') {
+            $this->select = array_diff(array_keys($modelClass::getTableSchema()->columns), [$this->dynamicColumn]);
+            $this->db = $modelClass::getDb();
+            $this->select[$this->dynamicColumn] =
+                'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
         }
-
-        $this->db = $modelClass::getDb();
-        $this->select[$this->dynamicColumn] =
-            'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
 
         return parent::prepare($builder);
     }
