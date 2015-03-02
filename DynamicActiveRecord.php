@@ -198,7 +198,11 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
     public function __isset($name)
     {
-        return isset($this->dynamicAttributes[$name]) || parent::__isset($name);
+        $set = parent::__isset($name);
+        if (!$set) {
+            $set = isset($this->dynamicAttributes[$name]);
+        }
+        return  $set;
     }
 
     public function __unset($name)
