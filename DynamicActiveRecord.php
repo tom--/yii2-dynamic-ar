@@ -121,7 +121,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
                 $sql[] = $phValue;
                 $params[$phValue] = $value;
             } else {
-                $sql[] = self::dynColSqlMaria((array) $value, $params);
+                $sql[] = empty($value) ? 'NULL' : self::dynColSqlMaria((array) $value, $params);
             }
         }
         return 'COLUMN_CREATE(' . implode(',', $sql) . ')';
@@ -198,10 +198,16 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
     public function __isset($name)
     {
-        $set = parent::__isset($name);
+        try {
+            $set = parent::__get($name) !== null;
+        } catch (Exception $e) {
+            $set = false;
+        }
+
         if (!$set) {
             $set = isset($this->dynamicAttributes[$name]);
         }
+
         return  $set;
     }
 
@@ -233,6 +239,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
             if (!isset($ref[$key])) {
                 return false;
             }
+            $ref = & $ref[$key];
         }
 
         return true;

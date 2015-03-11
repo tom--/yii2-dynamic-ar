@@ -47,7 +47,6 @@ class DynamicActiveQuery extends ActiveQuery
                 $modelClass . '::dynamicColumn() must return an attribute name'
             );
         }
-
         if (empty($this->select) || $this->select === '*') {
             $this->select = array_diff(array_keys($modelClass::getTableSchema()->columns), [$this->dynamicColumn]);
             $this->db = $modelClass::getDb();
