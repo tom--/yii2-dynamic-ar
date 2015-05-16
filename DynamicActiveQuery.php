@@ -54,6 +54,8 @@ class DynamicActiveQuery extends ActiveQuery
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
         }
 
+        $this->preProcessDynamicAttributes();
+
         return parent::prepare($builder);
     }
 
@@ -137,8 +139,9 @@ class DynamicActiveQuery extends ActiveQuery
             $params = $this->params;
         }
 
-        $dynamicColumn = $modelClass::dynamicColumn();
+        $this->postProcessDynamicAttributes();
 
+        $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
             $sql = $dynamicColumn;
@@ -162,5 +165,53 @@ REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
         return $db->createCommand($sql, $params);
+    }
+
+    /**
+     * Wrap all dynamic attributes like {attr.child} to brackets () to prevent escaping
+     * E.g. without this fix attribute {attr.child} will be escaped to `{attr`.`child}`
+     * @return array
+     */
+    private function preProcessDynamicAttributes()
+    {
+        $this->wrap('select');
+        $this->wrap('where');
+        $this->wrap('groupBy');
+        $this->wrap('having');
+        $this->wrap('orderBy');
+    }
+
+    private function wrap($attribute)
+    {
+        if (is_array($this->$attribute)) {
+            foreach ($this->$attribute as $key => $value) {
+                if (!strpos($value, '(')) {
+                    $this->{$attribute}[$key] = preg_replace('%({[^{}]+?})%', '($1)', $value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Unwrap dynamic attributes
+     */
+    private function postProcessDynamicAttributes()
+    {
+        $this->unwrap('select');
+        $this->unwrap('where');
+        $this->unwrap('groupBy');
+        $this->unwrap('having');
+        $this->unwrap('orderBy');
+    }
+
+    private function unwrap($attribute)
+    {
+        if (is_array($this->$attribute)) {
+            foreach ($this->$attribute as $key => $value) {
+                if (strpos($value, '(')) {
+                    $this->{$attribute}[$key] = preg_replace('%\(({[^{}]+?})\)%', '$1', $value);
+                }
+            }
+        }
     }
 }

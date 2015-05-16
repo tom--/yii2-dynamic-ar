@@ -347,9 +347,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testDynamicStatisticalFind()
     {
         $this->assertEquals(2, Product::find()->where('{int} = 123 OR {int} = 456')->count());
-        $this->assertEquals(684, Product::find()->average('{int}'));
         $this->assertEquals(123, Product::find()->min('{int}'));
         $this->assertEquals(789, Product::find()->max('{int}'));
+        $this->assertEquals(684, Product::find()->average('{int}'));
     }
 
     public function testDynamicFindScalar()
