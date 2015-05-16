@@ -235,13 +235,13 @@ INSERT INTO `product` (name, dynamic_columns) VALUES (
 INSERT INTO `product` (name, dynamic_columns) VALUES (
     'product2',
     COLUMN_CREATE(
-        'int', 456,
+        'int', 456
     ));
 
 INSERT INTO `product` (name, dynamic_columns) VALUES (
     'product3',
     COLUMN_CREATE(
-        'int', 789,
+        'int', 789
     ));
 
 INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
