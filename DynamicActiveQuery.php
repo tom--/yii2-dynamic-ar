@@ -48,8 +48,7 @@ class DynamicActiveQuery extends ActiveQuery
             );
         }
 
-        if (empty($this->select) || $this->select === '*') {
-            $this->select = array_diff(array_keys($modelClass::getTableSchema()->columns), [$this->dynamicColumn]);
+        if (empty($this->select) || (is_array($this->select) && in_array('*', $this->select))) {
             $this->db = $modelClass::getDb();
             $this->select[$this->dynamicColumn] =
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
@@ -148,6 +147,7 @@ class DynamicActiveQuery extends ActiveQuery
                 $params[$placeholder] = $column;
                 $sql = "COLUMN_GET($sql, $placeholder AS $type)";
             }
+
             return $sql;
         };
 

@@ -26,7 +26,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
         $query = new DynamicActiveQuery(Product::className());
         $query->select('*');
         $command = $query->createCommand();
-        $this->assertEquals('SELECT * FROM `product`', $command->getRawSql());
+        $this->assertEquals('SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product`', $command->getRawSql());
 
         // one dynamic attribute
         $query = new DynamicActiveQuery(Product::className());
