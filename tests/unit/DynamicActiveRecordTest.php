@@ -2,6 +2,7 @@
 
 namespace tests\unit;
 
+use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\Supplier;
 use Yii;
@@ -330,123 +331,49 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         unset($product);
     }
 
-//    public function testFindAsArray()
-//    {
-//        /* @var $customerClass \yii\db\ActiveRecordInterface */
-//        $customerClass = $this->getCustomerClass();
-//
-//        // asArray
-//        $customer = $customerClass::find()->where(['id' => 2])->asArray()->one();
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertEquals([
-//            'id' => 2,
-//            'email' => 'user2@example.com',
-//            'name' => 'user2',
-//            'status' => 1,
-//            'profile_id' => null,
-//            'dynamic_columns' => '{"address":"address2"}',
-//        ], $customer);
-//
-//        // find all asArray
-//        $customers = $customerClass::find()->asArray()->all();
-//        $this->assertEquals(3, count($customers));
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers[0]);
-//        $this->assertArrayNotHasKey('address', $customers[0]);
-//
-//        $this->assertArrayHasKey('id', $customers[0]);
-//        $this->assertArrayHasKey('name', $customers[0]);
-//        $this->assertArrayHasKey('email', $customers[0]);
-//        $this->assertArrayHasKey('status', $customers[0]);
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers[1]);
-//        $this->assertArrayNotHasKey('address', $customers[1]);
-//
-//        $this->assertArrayHasKey('id', $customers[1]);
-//        $this->assertArrayHasKey('name', $customers[1]);
-//        $this->assertArrayHasKey('email', $customers[1]);
-//        $this->assertArrayHasKey('status', $customers[1]);
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers[2]);
-//        $this->assertArrayNotHasKey('address', $customers[2]);
-//
-//        $this->assertArrayHasKey('id', $customers[2]);
-//        $this->assertArrayHasKey('name', $customers[2]);
-//        $this->assertArrayHasKey('email', $customers[2]);
-//        $this->assertArrayHasKey('status', $customers[2]);
-//    }
-//
-//    public function testFindIndexByAsArray()
-//    {
-//        /* @var $customerClass \yii\db\ActiveRecordInterface */
-//        $customerClass = $this->getCustomerClass();
-//
-//        /* @var $this TestCase */
-//        // indexBy + asArray
-//        $customers = $customerClass::find()->asArray()->indexBy('name')->all();
-//        $this->assertEquals(3, count($customers));
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers['user1']);
-//        $this->assertArrayNotHasKey('address', $customers['user1']);
-//
-//        $this->assertArrayHasKey('id', $customers['user1']);
-//        $this->assertArrayHasKey('name', $customers['user1']);
-//        $this->assertArrayHasKey('email', $customers['user1']);
-//        $this->assertArrayHasKey('status', $customers['user1']);
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers['user2']);
-//        $this->assertArrayNotHasKey('address', $customers['user2']);
-//
-//        $this->assertArrayHasKey('id', $customers['user2']);
-//        $this->assertArrayHasKey('name', $customers['user2']);
-//        $this->assertArrayHasKey('email', $customers['user2']);
-//        $this->assertArrayHasKey('status', $customers['user2']);
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers['user3']);
-//        $this->assertArrayNotHasKey('address', $customers['user3']);
-//
-//        $this->assertArrayHasKey('id', $customers['user3']);
-//        $this->assertArrayHasKey('name', $customers['user3']);
-//        $this->assertArrayHasKey('email', $customers['user3']);
-//        $this->assertArrayHasKey('status', $customers['user3']);
-//
-//        // indexBy callable + asArray
-//        $customers = $customerClass::find()->indexBy(function ($customer) {
-//            return $customer['id'] . '-' . $customer['name'];
-//        })->asArray()->all();
-//        $this->assertEquals(3, count($customers));
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers['1-user1']);
-//        $this->assertArrayNotHasKey('address', $customers['1-user1']);
-//
-//        $this->assertArrayHasKey('id', $customers['1-user1']);
-//        $this->assertArrayHasKey('name', $customers['1-user1']);
-//        $this->assertArrayHasKey('email', $customers['1-user1']);
-//        $this->assertArrayHasKey('status', $customers['1-user1']);
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers['1-user1']);
-//        $this->assertArrayNotHasKey('address', $customers['1-user1']);
-//
-//        $this->assertArrayHasKey('id', $customers['2-user2']);
-//        $this->assertArrayHasKey('name', $customers['2-user2']);
-//        $this->assertArrayHasKey('email', $customers['2-user2']);
-//        $this->assertArrayHasKey('status', $customers['2-user2']);
-//
-//        // since address is commented in the schema - it should be saved as a dynamic column
-//        $this->assertArrayHasKey('dynamic_columns', $customers['1-user1']);
-//        $this->assertArrayNotHasKey('address', $customers['1-user1']);
-//
-//        $this->assertArrayHasKey('id', $customers['3-user3']);
-//        $this->assertArrayHasKey('name', $customers['3-user3']);
-//        $this->assertArrayHasKey('email', $customers['3-user3']);
-//        $this->assertArrayHasKey('status', $customers['3-user3']);
-//    }
+    public function testDynamicFind()
+    {
+    }
+
+    public function testDynamicCustomColumns()
+    {
+        // find custom column
+        $customer = Product::find()->select(['*', '({children.int}*2) AS customColumn'])
+            ->where(['name' => 'product1'])->one();
+        $this->assertEquals(1, $customer->id);
+        $this->assertEquals(246, $customer->customColumn);
+    }
+
+    public function testDynamicStatisticalFind()
+    {
+        $this->assertEquals(2, Product::find()->where('{int} = 123 OR {int} = 456')->count());
+        $this->assertEquals(684, Product::find()->average('{int}'));
+        $this->assertEquals(123, Product::find()->min('{int}'));
+        $this->assertEquals(789, Product::find()->max('{int}'));
+    }
+
+    public function testDynamicFindScalar()
+    {
+        // query scalar
+        $val = Product::find()->where(['id' => 1])->select(['{children.str}'])->scalar();
+        $this->assertEquals('value1', $val);
+    }
+
+    public function testDynamicFindColumn()
+    {
+        $this->assertEquals([123, 456, 789], Product::find()->select(['{int}'])->column());
+        $this->assertEquals([789, 456, 123], Product::find()->orderBy(['{int}' => SORT_DESC])->select(['{int}'])
+            ->column());
+    }
+
+    public function testFindBySql()
+    {
+        // find with parameter binding
+        $product = Product::findBySql('SELECT * FROM customer WHERE {children.str}=:v', [':v' => 'value1'])->one();
+        $this->assertTrue($product instanceof Product);
+        $this->assertEquals('product1', $product->name);
+        $this->assertEquals('value1', $product->children['str']);
+    }
 
     // todo need to test all the active query uses and relations
     // the way to do it, i think, is to follow yii2's ActiveRecordTest
@@ -454,4 +381,6 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     // https://github.com/yiisoft/yii2/blob/master/tests/unit/framework/db/ActiveRecordTest.php
 
     // todo test creating and that there is 'CREATE COLUMN' fragment in sql
+
+
 }
