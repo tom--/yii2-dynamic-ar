@@ -6,13 +6,14 @@ use tests\unit\data\dar\Supplier;
 use Yii;
 use spinitron\dynamicAr\DynamicActiveRecord;
 use spinitron\dynamicAr\DynamicActiveQuery;
+use yiiunit\framework\db\DatabaseTestCase;
 use yiiunit\TestCase;
 use tests\unit\data\dar\Product;
 use yii\db\Connection;
 use yii\db\Query;
 use yii\db\ActiveQuery;
 
-class DynamicActiveRecordTest extends TestCase
+class DynamicActiveRecordTest extends DatabaseTestCase
 {
     /*
      * link(,,$extraColumns)
@@ -33,22 +34,15 @@ class DynamicActiveRecordTest extends TestCase
 
     protected function setUp()
     {
-        /** @var Connection */
-        $db = Yii::createObject(
-            [
-                'class' => '\yii\db\Connection',
-                'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-                'username' => 'y8Y8mtFHAh',
-                'password' => '',
-            ]
-        );
-        $this->db = $db;
-        Product::$db = $db;
-        Supplier::$db = $db;
+		static::$params = require(__DIR__ . '/data/config.php');
+		parent::setUp();
+		$this->db = $this->getConnection();
+
+        Product::$db = $this->db;
+        Supplier::$db = $this->db;
         if (self::$resetFixture) {
             $this->resetFixture();
         }
-        parent::setUp();
     }
 
     public function testSetAttribute()
