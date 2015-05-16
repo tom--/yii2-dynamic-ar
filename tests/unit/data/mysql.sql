@@ -44,6 +44,7 @@ CREATE TABLE `customer` (
 CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -51,6 +52,7 @@ CREATE TABLE `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (`id`),
   KEY `FK_item_category_id` (`category_id`),
   CONSTRAINT `FK_item_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE
@@ -61,6 +63,7 @@ CREATE TABLE `order` (
   `customer_id` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
   `total` decimal(10,0) NOT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_order_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -70,6 +73,7 @@ CREATE TABLE `order_with_null_fk` (
   `customer_id` int(11),
   `created_at` int(11) NOT NULL,
   `total` decimal(10,0) NOT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -78,6 +82,7 @@ CREATE TABLE `order_item` (
   `item_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `subtotal` decimal(10,0) NOT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (`order_id`,`item_id`),
   KEY `FK_order_item_item_id` (`item_id`),
   CONSTRAINT `FK_order_item_order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE,
@@ -89,13 +94,15 @@ CREATE TABLE `order_item_with_null_fk` (
   `order_id` int(11),
   `item_id` int(11),
   `quantity` int(11) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL
+  `subtotal` decimal(10,0) NOT NULL,
+  `dynamic_columns` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `composite_fk` (
   `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_composite_fk_order_item` FOREIGN KEY (`order_id`,`item_id`) REFERENCES `order_item` (`order_id`,`item_id`) ON DELETE CASCADE
 );
@@ -106,6 +113,7 @@ CREATE TABLE null_values (
   `var2` INT NULL,
   `var3` INT DEFAULT NULL,
   `stringcol` VARCHAR (32) DEFAULT NULL,
+  `dynamic_columns` blob,
   PRIMARY KEY (id)
 );
 
@@ -125,7 +133,8 @@ CREATE TABLE `type` (
   `bool_col` tinyint(1) NOT NULL,
   `bool_col2` tinyint(1) DEFAULT '1',
   `ts_default` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bit_col` BIT(8) NOT NULL DEFAULT b'10000010'
+  `bit_col` BIT(8) NOT NULL DEFAULT b'10000010',
+  `dynamic_columns` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # INSERT INTO `profile` (description) VALUES ('profile customer 1');

@@ -22,10 +22,10 @@ $config = [
 //            'fixture' => __DIR__ . '/cubrid.sql',
 //        ],
         'mysql' => [
-            'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-            'username' => 'y8Y8mtFHAh',
-            'password' => '',
-            'fixture' => __DIR__ . '/../../../vendor/yiisoft/yii2-dev/tests/unit/data/mysql.sql',
+            'dsn' => 'mysql:host=localhost;dbname=test',
+            'username' => 'root',
+            'password' => 'root',
+            'fixture' => __DIR__ . '/mysql.sql',
         ],
 //        'sqlite' => [
 //            'dsn' => 'sqlite::memory:',

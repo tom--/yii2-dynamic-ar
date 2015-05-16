@@ -23,4 +23,9 @@ class ActiveRecord extends DynamicActiveRecord
     {
         return self::$db;
     }
+
+	public static function dynamicColumn()
+	{
+		return 'dynamic_columns';
+	}
 }
