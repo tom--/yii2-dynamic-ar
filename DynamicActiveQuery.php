@@ -185,8 +185,15 @@ REGEXP;
     {
         if (is_array($this->$attribute)) {
             foreach ($this->$attribute as $key => $value) {
-                if (!strpos($value, '(')) {
+                if (strpos($value, '{') !== false && strpos($value, '(') === false) {
                     $this->{$attribute}[$key] = preg_replace('%({[^{}]+?})%', '($1)', $value);
+                    $value = $this->{$attribute}[$key];
+                }
+
+                if (strpos($key, '{') !== false && strpos($key, '(') === false) {
+                    unset($this->{$attribute}[$key]);
+                    $key = preg_replace('%({[^{}]+?})%', '($1)', $key);
+                    $this->{$attribute}[$key] = $value;
                 }
             }
         }
@@ -208,8 +215,15 @@ REGEXP;
     {
         if (is_array($this->$attribute)) {
             foreach ($this->$attribute as $key => $value) {
-                if (strpos($value, '(')) {
+                if (strpos('{', $value) !== false && strpos($value, '(') !== false) {
                     $this->{$attribute}[$key] = preg_replace('%\(({[^{}]+?})\)%', '$1', $value);
+                    $value = $this->{$attribute}[$key];
+                }
+
+                if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
+                    unset($this->{$attribute}[$key]);
+                    $key = preg_replace('%\(({[^{}]+?})\)%', '$1', $key);
+                    $this->{$attribute}[$key] = $value;
                 }
             }
         }

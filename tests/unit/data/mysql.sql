@@ -265,10 +265,9 @@ INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
         )
     ));
 
-INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
     10,
     'binary',
     COLUMN_CREATE(
         'name', unhex('c1c2c3c4c5c6')
     ));
-

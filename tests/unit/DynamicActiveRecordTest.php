@@ -347,9 +347,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testDynamicStatisticalFind()
     {
         $this->assertEquals(2, Product::find()->where('{int} = 123 OR {int} = 456')->count());
-        $this->assertEquals(123, Product::find()->min('{int}'));
-        $this->assertEquals(789, Product::find()->max('{int}'));
-        $this->assertEquals(684, Product::find()->average('{int}'));
+        $this->assertEquals(123, Product::find()->min('{int|int}'));
+        $this->assertEquals(789, Product::find()->max('{int|int}'));
+        $this->assertEquals(684, Product::find()->average('{int|int}'));
     }
 
     public function testDynamicFindScalar()
@@ -361,8 +361,8 @@ class DynamicActiveRecordTest extends ActiveRecordTest
 
     public function testDynamicFindColumn()
     {
-        $this->assertEquals([123, 456, 789], Product::find()->select(['{int}'])->column());
-        $this->assertEquals([789, 456, 123], Product::find()->orderBy(['{int}' => SORT_DESC])->select(['{int}'])
+        $this->assertEquals([123, 456, 789], Product::find()->select(['{int|int}'])->column());
+        $this->assertEquals([789, 456, 123], Product::find()->orderBy(['{int|int}' => SORT_DESC])->select(['{int|int}'])
             ->column());
     }
 
