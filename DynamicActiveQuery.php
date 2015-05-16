@@ -109,7 +109,7 @@ class DynamicActiveQuery extends ActiveQuery
      *         ->all();
      *
      *     $cheapShirts = Product::find()
-     *         ->select('sale' => 'MAX({cost|decimal(6,2)}, 0.75 * {price.wholesale.12|decimal(6,2)})')
+     *         ->select(['sale' => 'MAX({cost|decimal(6,2)}, 0.75 * {price.wholesale.12|decimal(6,2)})'])
      *         ->where(['category' => Product::SHIRT])
      *         ->andWhere('{price.retail.unit|decimal(6,2)} < 20.00')
      *         ->all();

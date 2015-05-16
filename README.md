@@ -135,7 +135,7 @@ $blackShirts = Product::find()
 $cheapShirts = Product::find()
     ->where(['category' => Product::SHIRT])
     ->andWhere('{price.wholesale.12|DECIMAL(6,2)} < 20.00')
-    ->select('sale' => 'CONCAT("On sale at $", {price.discount})')
+    ->select(['sale' => 'CONCAT("On sale at $", {price.discount})'])
     ->all();
 ```
 
