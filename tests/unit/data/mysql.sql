@@ -25,8 +25,7 @@ CREATE TABLE `constraints`
 
 CREATE TABLE `profile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-#   `description` varchar(128) NOT NULL,
-  `dynamic_columns` blob,
+  `description` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -34,17 +33,15 @@ CREATE TABLE `customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(128) NOT NULL,
   `name` varchar(128),
-#   `address` text,
+  `address` text,
   `status` int (11) DEFAULT 0,
   `profile_id` int(11),
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -52,7 +49,6 @@ CREATE TABLE `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`),
   KEY `FK_item_category_id` (`category_id`),
   CONSTRAINT `FK_item_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE
@@ -63,7 +59,6 @@ CREATE TABLE `order` (
   `customer_id` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
   `total` decimal(10,0) NOT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_order_customer_id` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -73,7 +68,6 @@ CREATE TABLE `order_with_null_fk` (
   `customer_id` int(11),
   `created_at` int(11) NOT NULL,
   `total` decimal(10,0) NOT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -82,7 +76,6 @@ CREATE TABLE `order_item` (
   `item_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `subtotal` decimal(10,0) NOT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (`order_id`,`item_id`),
   KEY `FK_order_item_item_id` (`item_id`),
   CONSTRAINT `FK_order_item_order_id` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE,
@@ -94,15 +87,13 @@ CREATE TABLE `order_item_with_null_fk` (
   `order_id` int(11),
   `item_id` int(11),
   `quantity` int(11) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL,
-  `dynamic_columns` blob
+  `subtotal` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `composite_fk` (
   `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_composite_fk_order_item` FOREIGN KEY (`order_id`,`item_id`) REFERENCES `order_item` (`order_id`,`item_id`) ON DELETE CASCADE
 );
@@ -113,7 +104,6 @@ CREATE TABLE null_values (
   `var2` INT NULL,
   `var3` INT DEFAULT NULL,
   `stringcol` VARCHAR (32) DEFAULT NULL,
-  `dynamic_columns` blob,
   PRIMARY KEY (id)
 );
 
@@ -133,24 +123,15 @@ CREATE TABLE `type` (
   `bool_col` tinyint(1) NOT NULL,
   `bool_col2` tinyint(1) DEFAULT '1',
   `ts_default` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `bit_col` BIT(8) NOT NULL DEFAULT b'10000010',
-  `dynamic_columns` blob
+  `bit_col` BIT(8) NOT NULL DEFAULT b'10000010'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# INSERT INTO `profile` (description) VALUES ('profile customer 1');
-# INSERT INTO `profile` (description) VALUES ('profile customer 3');
-INSERT INTO `profile` (dynamic_columns) VALUES (COLUMN_CREATE('description', 'profile customer 1'));
-INSERT INTO `profile` (dynamic_columns) VALUES (COLUMN_CREATE('description', 'profile customer 3'));
+INSERT INTO `profile` (description) VALUES ('profile customer 1');
+INSERT INTO `profile` (description) VALUES ('profile customer 3');
 
-# INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user1@example.com', 'user1', 'address1', 1, 1);
-# INSERT INTO `customer` (email, name, address, status) VALUES ('user2@example.com', 'user2', 'address2', 1);
-# INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user3@example.com', 'user3', 'address3', 2, 2);
-INSERT INTO `customer` (email, name, dynamic_columns, status, profile_id)
-    VALUES ('user1@example.com', 'user1', COLUMN_CREATE('address', 'address1'), 1, 1);
-INSERT INTO `customer` (email, name, dynamic_columns, status)
-    VALUES ('user2@example.com', 'user2', COLUMN_CREATE('address', 'address2'), 1);
-INSERT INTO `customer` (email, name, dynamic_columns, status, profile_id)
-    VALUES ('user3@example.com', 'user3', COLUMN_CREATE('address', 'address3'), 2, 2);
+INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user1@example.com', 'user1', 'address1', 1, 1);
+INSERT INTO `customer` (email, name, address, status) VALUES ('user2@example.com', 'user2', 'address2', 1);
+INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user3@example.com', 'user3', 'address3', 2, 2);
 
 INSERT INTO `category` (name) VALUES ('Books');
 INSERT INTO `category` (name) VALUES ('Movies');
@@ -214,3 +195,68 @@ INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_3', 3);
 INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_4', 4);
 INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_4', 4);
 INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_5', 5);
+
+-- new rows for dynamic columns testing
+DROP TABLE IF EXISTS `product` CASCADE;
+DROP TABLE IF EXISTS `supplier` CASCADE;
+
+CREATE TABLE `product` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128),
+    `dynamic_columns` BLOB,
+    PRIMARY KEY (`id`)
+) ENGINE =InnoDB DEFAULT CHARSET =utf8;
+
+CREATE TABLE `supplier` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128),
+    `dynamic_columns` BLOB,
+    PRIMARY KEY (`id`)
+) ENGINE =InnoDB DEFAULT CHARSET =utf8;
+
+INSERT INTO `product` (name, dynamic_columns) VALUES (
+    'product1',
+    COLUMN_CREATE(
+        'supplier_id', 1,
+        'str', 'value1',
+        'int', 123,
+        'float', 123.456,
+        'bool', TRUE,
+        'null', null,
+        'children', COLUMN_CREATE(
+            'str', 'value1',
+            'int', 123,
+            'float', 123.456,
+            'bool', TRUE,
+            'null', null
+        )
+    ));
+
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
+    1,
+    'One',
+    COLUMN_CREATE(
+        'address', COLUMN_CREATE(
+            'line1', 'Hoffmannstr. 51',
+            'line2', 'D81379 München',
+            'country', 'de'
+        )
+    )), (
+    2,
+    'Two',
+    COLUMN_CREATE(
+        'address', COLUMN_CREATE(
+            'line1', '100 Foo St.',
+            'city', 'Barton',
+            'state', 'VT',
+            'country', 'us'
+        )
+    ));
+
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    10,
+    'binary',
+    COLUMN_CREATE(
+        'name', unhex('c1c2c3c4c5c6')
+    ));
+

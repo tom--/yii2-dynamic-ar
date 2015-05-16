@@ -7,8 +7,6 @@ namespace tests\unit;
 
 use spinitron\dynamicAr\DynamicActiveQuery;
 use yii\db\Query;
-
-
 use yiiunit\framework\db\DatabaseTestCase;
 use tests\unit\data\dar\Product;
 
@@ -64,6 +62,9 @@ class DynamicActiveQueryTest extends DatabaseTestCase
             $command->getRawSql());
     }
 
+    /**
+     * Every type listed in $this->types() should be recognised as dynamic field type
+     */
     public function testTypesProcessing()
     {
         // it's enough to just check select - logic is similar for the whole sql query

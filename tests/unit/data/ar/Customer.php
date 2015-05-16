@@ -1,8 +1,10 @@
 <?php
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+use tests\unit\data\CustomerQuery;
+use tests\unit\DynamicActiveRecordTest;
 use yii\db\ActiveQuery;
-use tests\unit\ActiveRecordTest;
 
 /**
  * Class Customer
@@ -13,15 +15,10 @@ use tests\unit\ActiveRecordTest;
  * @property string $address
  * @property integer $status
  *
- * @method CustomerQuery findBySql($sql, $params = []) static
+ * @method CustomQuery findBySql($sql, $params = []) static
  */
-class Customer extends ActiveRecord
+class Customer extends BaseRecord
 {
-    public static function dynamicColumn()
-    {
-        return 'dynamic_columns';
-    }
-
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 2;
 
@@ -76,8 +73,8 @@ class Customer extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        ActiveRecordTest::$afterSaveInsert = $insert;
-        ActiveRecordTest::$afterSaveNewRecord = $this->isNewRecord;
+        DynamicActiveRecordTest::$afterSaveInsert = $insert;
+        DynamicActiveRecordTest::$afterSaveNewRecord = $this->isNewRecord;
         parent::afterSave($insert, $changedAttributes);
     }
 

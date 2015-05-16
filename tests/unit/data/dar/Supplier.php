@@ -2,22 +2,11 @@
 
 namespace tests\unit\data\dar;
 
-use \spinitron\dynamicAr\DynamicActiveRecord;
 use \spinitron\dynamicAr\DynamicActiveQuery;
+use tests\unit\data\BaseRecord;
 
-class Supplier extends DynamicActiveRecord
+class Supplier extends BaseRecord
 {
-    public static $db;
-
-    public static function getDb()
-    {
-        return self::$db;
-    }
-
-    public static function tableName()
-    {
-        return 'supplier';
-    }
 
     public static function dynamicColumn()
     {

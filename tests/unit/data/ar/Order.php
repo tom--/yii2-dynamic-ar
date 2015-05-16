@@ -2,6 +2,8 @@
 
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+
 /**
  * Class Order
  *
@@ -10,7 +12,7 @@ namespace tests\unit\data\ar;
  * @property integer $created_at
  * @property string $total
  */
-class Order extends ActiveRecord
+class Order extends BaseRecord
 {
     public static function tableName()
     {

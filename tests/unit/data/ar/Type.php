@@ -2,6 +2,8 @@
 
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+
 /**
  * Model representing type table
  *
@@ -19,7 +21,7 @@ namespace tests\unit\data\ar;
  * @property boolean $bool_col
  * @property boolean $bool_col2 DEFAULT 1
  */
-class Type extends ActiveRecord
+class Type extends BaseRecord
 {
     /**
      * @inheritdoc
@@ -29,4 +31,3 @@ class Type extends ActiveRecord
         return 'type';
     }
 }
- 

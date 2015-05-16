@@ -2,6 +2,8 @@
 
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+
 /**
  * Class Item
  *
@@ -9,7 +11,7 @@ namespace tests\unit\data\ar;
  * @property string $name
  * @property integer $category_id
  */
-class Item extends ActiveRecord
+class Item extends BaseRecord
 {
     public static function tableName()
     {

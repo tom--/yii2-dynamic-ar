@@ -2,6 +2,8 @@
 
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+
 /**
  * Class OrderItem
  *
@@ -10,7 +12,7 @@ namespace tests\unit\data\ar;
  * @property integer $quantity
  * @property string $subtotal
  */
-class OrderItemWithNullFK extends ActiveRecord
+class OrderItemWithNullFK extends BaseRecord
 {
     public static function tableName()
     {
