@@ -71,7 +71,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
         $replacements = [];
         foreach ($array as $key => &$value) {
-            if (is_scalar($value)) {
+            if (is_scalar($value) || is_null($value)) {
                 $value = self::$method($value);
             } else {
                 self::walk($value, $method);
@@ -119,7 +119,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
             $phValue = self::placeholder();
             $sql[] = $phKey;
             $params[$phKey] = $key;
-            if (is_scalar($value)) {
+            if (is_scalar($value) || is_null($value)) {
                 $sql[] = $phValue;
                 $params[$phValue] = $value;
             } else {
