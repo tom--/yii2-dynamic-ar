@@ -442,7 +442,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindIndexBy();
 
         // indexBy
-        $products = Product::find()->indexBy('{int}')->orderBy('id')->all();
+        $products = Product::find()->indexBy('int')->orderBy('id')->all();
         $this->assertEquals(3, count($products));
         $this->assertTrue($products['123'] instanceof Product);
         $this->assertTrue($products['456'] instanceof Product);
@@ -463,7 +463,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindIndexByAsArray();
 
         // indexBy + asArray
-        $products = Product::find()->asArray()->indexBy('{int}')->all();
+        $products = Product::find()->asArray()->indexBy('int')->all();
         $this->assertEquals(3, count($products));
         $this->assertArrayHasKey('id', $products['123']);
         $this->assertArrayHasKey('name', $products['123']);
@@ -477,22 +477,21 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertArrayHasKey('name', $products['792']);
         $this->assertArrayHasKey('dynamic_columns', $products['792']);
 
-        // indexBy callable + asArray
-        $products = Product::find()->indexBy(function ($product) {
-            return $product->id . '-' . $product->int;
-        })->asArray()->all();
+        // indexBy + asArray + not existed nested column
+        $products = Product::find()->asArray()->indexBy('children.str')->all();
         $this->assertEquals(3, count($products));
-        $this->assertArrayHasKey('id', $products['1-123']);
-        $this->assertArrayHasKey('name', $products['1-123']);
-        $this->assertArrayHasKey('dynamic_columns', $products['1-123']);
+        $this->assertArrayHasKey('id', $products['value1']);
+        $this->assertArrayHasKey('name', $products['value1']);
+        $this->assertArrayHasKey('dynamic_columns', $products['value1']);
 
-        $this->assertArrayHasKey('id', $products['2-456']);
-        $this->assertArrayHasKey('name', $products['2-456']);
-        $this->assertArrayHasKey('dynamic_columns', $products['2-456']);
+        // column missing - pk should be used
+        $this->assertArrayHasKey('id', $products[2]);
+        $this->assertArrayHasKey('name', $products[2]);
+        $this->assertArrayHasKey('dynamic_columns', $products[2]);
 
-        $this->assertArrayHasKey('id', $products['3-792']);
-        $this->assertArrayHasKey('name', $products['3-792']);
-        $this->assertArrayHasKey('dynamic_columns', $products['3-792']);
+        $this->assertArrayHasKey('id', $products['value3']);
+        $this->assertArrayHasKey('name', $products['value3']);
+        $this->assertArrayHasKey('dynamic_columns', $products['value3']);
     }
 
     public function testRefresh()

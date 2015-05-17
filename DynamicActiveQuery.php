@@ -3,6 +3,7 @@
 namespace spinitron\dynamicAr;
 
 use Yii;
+use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
 
@@ -28,6 +29,42 @@ class DynamicActiveQuery extends ActiveQuery
     private $dynamicColumn;
 
     private $wrapped = false;
+
+    /**
+     * Convert index value to closurem that will get decoded dynamic attribute, in case if indexing attribute is dynamic
+     * @param callable|string $column
+     * @return $this
+     */
+    public function indexBy($column)
+    {
+        if ($this->asArray) {
+            /** @var \yii\db\ActiveRecord $modelClass */
+            $modelClass = $this->modelClass;
+            $this->indexBy = function ($row) use ($column, $modelClass) {
+                if (isset($row[$column])) {
+                    return $row[$column];
+                } elseif (method_exists($modelClass, 'dynamicColumn')) {
+                    $dynamicColumn = $modelClass::dynamicColumn();
+                    if (isset($row[$dynamicColumn])) {
+                        $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
+
+                        if ($value = $this->getDotNotatedValue($dynamicAttributes, $column)) {
+                            return $value;
+                        } else {
+                            // dynamic column does not exist for this row
+                            return $row[$modelClass::primaryKey()[0]];
+                        }
+                    }
+                }
+
+                throw new Exception("Indexable column {$column} does not exist");
+            };
+
+            return $this;
+        } else {
+            return parent::indexBy($column);
+        }
+    }
 
     /**
      * Maria-specific preparation for building a query that includes a dynamic column.
@@ -243,5 +280,16 @@ REGEXP;
                 }
             }
         }
+    }
+
+    private function getDotNotatedValue($array, $attribute) {
+        $pieces = explode('.', $attribute);
+        foreach ($pieces as $piece) {
+            if (!is_array($array) || !array_key_exists($piece, $array)) {
+                return null;
+            }
+            $array = $array[$piece];
+        }
+        return $array;
     }
 }
