@@ -363,4 +363,18 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
         parent::populateRecord($record, $row);
     }
+
+    public function refresh()
+    {
+        if (parent::refresh()) {
+            $dynCol = static::dynamicColumn();
+            if (isset($this->attributes[$dynCol])) {
+                $this->dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
