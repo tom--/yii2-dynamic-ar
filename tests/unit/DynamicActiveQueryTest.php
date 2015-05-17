@@ -83,6 +83,24 @@ class DynamicActiveQueryTest extends DatabaseTestCase
         }
     }
 
+    public function testNestedTypesProcessing()
+    {
+        // it's enough to just check select - logic is similar for the whole sql query
+        $query = new DynamicActiveQuery(Product::className());
+
+        foreach ($this->types() as $k => $possibleTypes) {
+            foreach ($possibleTypes as $type) {
+                $query->select(["{test.child|$type}"]);
+                $command = $query->createCommand();
+
+                $sql = $command->getRawSql();
+                $this->assertNotContains("{test|$type}", $sql,
+                    "Type $type should be processed, there shouldn't be any user's dynamic queries");
+                $this->assertContains("as $type", $sql, "Type $type should be processed", true);
+            }
+        }
+    }
+
     private function types()
     {
         return [
