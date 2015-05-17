@@ -331,12 +331,10 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         unset($product);
     }
 
-    public function testDynamicFind()
+    public function testCustomColumns()
     {
-    }
+        parent::testCustomColumns();
 
-    public function testDynamicCustomColumns()
-    {
         // find custom column
         $customer = Product::find()->select(['*', '({children.int}*2) AS customColumn'])
             ->where(['name' => 'product1'])->one();
@@ -344,41 +342,50 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertEquals(246, $customer->customColumn);
     }
 
-    public function testDynamicStatisticalFind()
+    public function testStatisticalFind()
     {
+        parent::testStatisticalFind();
+
         $this->assertEquals(2, Product::find()->where('{int} = 123 OR {int} = 456')->count());
         $this->assertEquals(123, Product::find()->min('{int|int}'));
         $this->assertEquals(792, Product::find()->max('{int|int}'));
         $this->assertEquals(457, Product::find()->average('{int|int}'));
     }
 
-    public function testDynamicFindScalar()
+    public function testFindScalar()
     {
+        parent::testFindScalar();
+
         // query scalar
         $val = Product::find()->where(['id' => 1])->select(['{children.str}'])->scalar();
         $this->assertEquals('value1', $val);
+
+        $val = Product::find()->where(['id' => 1])->select(['{children.bool}'])->scalar();
+        $this->assertTrue($val);
+
+        $val = Product::find()->where(['id' => 1])->select(['{children.null}'])->scalar();
+        $this->assertNull($val);
     }
 
-    public function testDynamicFindColumn()
+    public function testFindColumn()
     {
+        parent::testFindColumn();
+
         $this->assertEquals([123, 456, 792], Product::find()->select(['{int|int}'])->column());
         $this->assertEquals([792, 456, 123], Product::find()->orderBy(['{int|int}' => SORT_DESC])->select(['{int|int}'])
             ->column());
     }
 
-    public function testDynamicFindBySql()
+    public function testFindBySql()
     {
+        parent::testFindBySql();
+
         // find with parameter binding
         $product = Product::findBySql('SELECT *, COLUMN_JSON(dynamic_columns) as dynamic_columns FROM product WHERE {children.str}=:v', [':v' => 'value1'])->one();
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('product1', $product->name);
         $this->assertEquals('value1', $product->children['str']);
     }
-
-    // todo need to test all the active query uses and relations
-    // the way to do it, i think, is to follow yii2's ActiveRecordTest
-    // as a guide. everything in there should be adapted to dynamic-ar if it makes sense.
-    // https://github.com/yiisoft/yii2/blob/master/tests/unit/framework/db/ActiveRecordTest.php
 
     // todo test creating and that there is 'CREATE COLUMN' fragment in sql
 }
