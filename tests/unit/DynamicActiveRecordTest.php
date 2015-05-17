@@ -594,12 +594,12 @@ class DynamicActiveRecordTest extends ActiveRecordTest
 
         $product = Product::findOne(1);
         $this->assertFalse($product->isRelationPopulated('supplier'));
-        $suppliers = $product->getSupplier()->where(['id' => 3])->all();
+        $suppliers = $product->getSupplier()->all();
         $this->assertFalse($product->isRelationPopulated('supplier'));
         $this->assertEquals(0, count($product->relatedRecords));
 
         $this->assertEquals(1, count($suppliers));
-        $this->assertEquals(3, $suppliers[0]->id);
+        $this->assertEquals(1, $suppliers[0]->id);
     }
 
     public function testFindEager()
