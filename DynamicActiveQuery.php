@@ -48,7 +48,11 @@ class DynamicActiveQuery extends ActiveQuery
             );
         }
 
-        if (empty($this->select) || (is_array($this->select) && in_array('*', $this->select))) {
+        if (empty($this->select)) {
+            $this->select[] = '*';
+        }
+
+        if (is_array($this->select) && in_array('*', $this->select)) {
             $this->db = $modelClass::getDb();
             $this->select[$this->dynamicColumn] =
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
@@ -139,7 +143,7 @@ class DynamicActiveQuery extends ActiveQuery
             $params = $this->params;
         }
 
-        $this->postProcessDynamicAttributes();
+        $this->postProcessDynamicAttributes($sql);
 
         $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn) {
@@ -201,14 +205,17 @@ REGEXP;
 
     /**
      * Unwrap dynamic attributes
+     * @param $sql
      */
-    private function postProcessDynamicAttributes()
+    private function postProcessDynamicAttributes(&$sql)
     {
         $this->unwrap('select');
         $this->unwrap('where');
         $this->unwrap('groupBy');
         $this->unwrap('having');
         $this->unwrap('orderBy');
+
+        $sql = preg_replace('%\(({[^{}]+?})\)%', '$1', $sql);
     }
 
     private function unwrap($attribute)

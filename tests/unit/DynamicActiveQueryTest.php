@@ -53,12 +53,12 @@ class DynamicActiveQueryTest extends DatabaseTestCase
         $query->select('*')
             ->where('{one.two|char} = t');
         $command = $query->createCommand();
-        $this->assertEquals("SELECT * FROM `product` WHERE COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS char), 'two' AS char) = t",
+        $this->assertEquals("SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS char), 'two' AS char) = t",
             $command->getRawSql());
 
         $query->andWhere('{one.three|int} = 5');
         $command = $query->createCommand();
-        $this->assertEquals("SELECT * FROM `product` WHERE (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS char), 'two' AS char) = t) AND (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS int), 'three' AS int) = 5)",
+        $this->assertEquals("SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS char), 'two' AS char) = t) AND (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS int), 'three' AS int) = 5)",
             $command->getRawSql());
     }
 
@@ -99,6 +99,15 @@ class DynamicActiveQueryTest extends DatabaseTestCase
                 $this->assertContains("as $type", $sql, "Type $type should be processed", true);
             }
         }
+    }
+
+    public function testAttributeWithoutTypeProcessing()
+    {
+        $query = new DynamicActiveQuery(Product::className());
+        $query->select('{one.two}');
+        $command = $query->createCommand();
+        $this->assertEquals("SELECT COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS CHAR), 'two' AS CHAR) FROM `product`",
+            $command->getRawSql());
     }
 
     private function types()
