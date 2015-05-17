@@ -366,10 +366,10 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             ->column());
     }
 
-    public function testFindBySql()
+    public function testDynamicFindBySql()
     {
         // find with parameter binding
-        $product = Product::findBySql('SELECT * FROM customer WHERE {children.str}=:v', [':v' => 'value1'])->one();
+        $product = Product::findBySql('SELECT * FROM product WHERE {children.str}=:v', [':v' => 'value1'])->one();
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('product1', $product->name);
         $this->assertEquals('value1', $product->children['str']);

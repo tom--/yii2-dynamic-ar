@@ -172,7 +172,7 @@ REGEXP;
     }
 
     /**
-     * Wrap all dynamic attributes like {attr.child} to brackets () to prevent escaping
+     * Wrap all dynamic attributes like {attr.child} to brackets (! !) to prevent escaping
      * E.g. without this fix attribute {attr.child} will be escaped to `{attr`.`child}`
      * @return array
      */
@@ -187,16 +187,17 @@ REGEXP;
 
     private function wrap($attribute)
     {
+        $pattern = '%({[^{}]+?})%';
         if (is_array($this->$attribute)) {
             foreach ($this->$attribute as $key => $value) {
                 if (strpos($value, '{') !== false && strpos($value, '(') === false) {
-                    $this->{$attribute}[$key] = preg_replace('%({[^{}]+?})%', '($1)', $value);
+                    $this->{$attribute}[$key] = preg_replace($pattern, '(!$1!)', $value);
                     $value = $this->{$attribute}[$key];
                 }
 
                 if (strpos($key, '{') !== false && strpos($key, '(') === false) {
                     unset($this->{$attribute}[$key]);
-                    $key = preg_replace('%({[^{}]+?})%', '($1)', $key);
+                    $key = preg_replace($pattern, '(!$1!)', $key);
                     $this->{$attribute}[$key] = $value;
                 }
             }
@@ -215,21 +216,22 @@ REGEXP;
         $this->unwrap('having');
         $this->unwrap('orderBy');
 
-        $sql = preg_replace('%\(({[^{}]+?})\)%', '$1', $sql);
+        $sql = preg_replace('%\(!({[^{}]+?})!\)%', '$1', $sql);
     }
 
     private function unwrap($attribute)
     {
+        $pattern = '%\(!({[^{}]+?})!\)%';
         if (is_array($this->$attribute)) {
             foreach ($this->$attribute as $key => $value) {
                 if (strpos('{', $value) !== false && strpos($value, '(') !== false) {
-                    $this->{$attribute}[$key] = preg_replace('%\(({[^{}]+?})\)%', '$1', $value);
+                    $this->{$attribute}[$key] = preg_replace($pattern, '$1', $value);
                     $value = $this->{$attribute}[$key];
                 }
 
                 if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
                     unset($this->{$attribute}[$key]);
-                    $key = preg_replace('%\(({[^{}]+?})\)%', '$1', $key);
+                    $key = preg_replace($pattern, '$1', $key);
                     $this->{$attribute}[$key] = $value;
                 }
             }
