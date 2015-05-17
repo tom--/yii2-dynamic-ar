@@ -27,6 +27,8 @@ class DynamicActiveQuery extends ActiveQuery
      */
     private $dynamicColumn;
 
+    private $wrapped = false;
+
     /**
      * Maria-specific preparation for building a query that includes a dynamic column.
      *
@@ -183,6 +185,8 @@ REGEXP;
         $this->wrap('groupBy');
         $this->wrap('having');
         $this->wrap('orderBy');
+
+        $this->wrapped = true;
     }
 
     private function wrap($attribute)
@@ -210,13 +214,16 @@ REGEXP;
      */
     private function postProcessDynamicAttributes(&$sql)
     {
-        $this->unwrap('select');
-        $this->unwrap('where');
-        $this->unwrap('groupBy');
-        $this->unwrap('having');
-        $this->unwrap('orderBy');
+        if ($this->wrapped) {
+            $this->unwrap('select');
+            $this->unwrap('where');
+            $this->unwrap('groupBy');
+            $this->unwrap('having');
+            $this->unwrap('orderBy');
 
-        $sql = preg_replace('%\(!({[^{}]+?})!\)%', '$1', $sql);
+            $sql = preg_replace('%\(!({[^{}]+?})!\)%', '$1', $sql);
+            $this->wrapped = false;
+        }
     }
 
     private function unwrap($attribute)

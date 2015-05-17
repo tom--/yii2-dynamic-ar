@@ -241,11 +241,13 @@ INSERT INTO `product` (name, dynamic_columns) VALUES (
 INSERT INTO `product` (name, dynamic_columns) VALUES (
     'product3',
     COLUMN_CREATE(
-        'int', 792
+        'int', 792,
+        'children', COLUMN_CREATE(
+            'str', 'value3'
+        )
     ));
 
-INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
-    1,
+INSERT INTO `supplier` (name, dynamic_columns) VALUES (
     'One',
     COLUMN_CREATE(
         'address', COLUMN_CREATE(
@@ -254,7 +256,6 @@ INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
             'country', 'de'
         )
     )), (
-    2,
     'Two',
     COLUMN_CREATE(
         'address', COLUMN_CREATE(
@@ -262,6 +263,14 @@ INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
             'city', 'Barton',
             'state', 'VT',
             'country', 'us'
+        )
+    ));
+
+INSERT INTO `supplier` (name, dynamic_columns) VALUES (
+    'three',
+    COLUMN_CREATE(
+        'address', COLUMN_CREATE(
+            'country', 'england'
         )
     ));
 

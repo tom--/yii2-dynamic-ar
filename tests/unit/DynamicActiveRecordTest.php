@@ -361,7 +361,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertEquals('value1', $val);
 
         $val = Product::find()->where(['id' => 1])->select(['{children.bool}'])->scalar();
-        $this->assertTrue($val);
+        $this->assertEquals(1, $val);
 
         $val = Product::find()->where(['id' => 1])->select(['{children.null}'])->scalar();
         $this->assertNull($val);
@@ -381,11 +381,396 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindBySql();
 
         // find with parameter binding
-        $product = Product::findBySql('SELECT *, COLUMN_JSON(dynamic_columns) as dynamic_columns FROM product WHERE {children.str}=:v', [':v' => 'value1'])->one();
+        $product = Product::findBySql('SELECT *, COLUMN_JSON(dynamic_columns) as dynamic_columns FROM product WHERE {children.str}=:v', [':v' => 'value1'])
+            ->one();
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('product1', $product->name);
         $this->assertEquals('value1', $product->children['str']);
     }
 
-    // todo test creating and that there is 'CREATE COLUMN' fragment in sql
+    public function testFind()
+    {
+        parent::testFind();
+
+        // find by column values
+        $product = Product::findOne(['id' => 1, '{str}' => 'value1']);
+        $this->assertTrue($product instanceof Product);
+        $this->assertEquals('value1', $product->str);
+        $product = Product::findOne(['id' => 1, '{str}' => 'value2']);
+        $this->assertNull($product);
+        $product = Product::findOne(['{children.str}' => 'value5']);
+        $this->assertNull($product);
+
+        // find by attributes
+        $product = Product::find()->where(['{children.str}' => 'value1'])->one();
+        $this->assertTrue($product instanceof Product);
+        $this->assertEquals('value1', $product->children['str']);
+        $this->assertEquals(1, $product->id);
+    }
+
+    public function testFindAsArray()
+    {
+        parent::testFindAsArray();
+
+        // asArray
+        $product = Product::find()->where(['id' => 2])->asArray()->one();
+        $this->assertEquals([
+            'id' => 2,
+            'name' => 'product2',
+            Product::dynamicColumn() => json_encode(['int' => 456]),
+        ], $product);
+
+        // find all asArray
+        $products = Product::find()->asArray()->all();
+        $this->assertEquals(3, count($products));
+
+        $this->assertArrayHasKey('id', $products[0]);
+        $this->assertArrayHasKey('name', $products[0]);
+        $this->assertArrayHasKey('dynamic_columns', $products[2]);
+
+        $this->assertArrayHasKey('id', $products[1]);
+        $this->assertArrayHasKey('name', $products[1]);
+        $this->assertArrayHasKey('dynamic_columns', $products[2]);
+
+        $this->assertArrayHasKey('id', $products[2]);
+        $this->assertArrayHasKey('name', $products[2]);
+        $this->assertArrayHasKey('dynamic_columns', $products[2]);
+    }
+
+    public function testFindIndexBy()
+    {
+        parent::testFindIndexBy();
+
+        // indexBy
+        $products = Product::find()->indexBy('{int}')->orderBy('id')->all();
+        $this->assertEquals(3, count($products));
+        $this->assertTrue($products['123'] instanceof Product);
+        $this->assertTrue($products['456'] instanceof Product);
+        $this->assertTrue($products['792'] instanceof Product);
+
+        // indexBy callable
+        $products = Product::find()->indexBy(function ($product) {
+            return $product->id . '-' . $product->int;
+        })->orderBy('id')->all();
+        $this->assertEquals(3, count($products));
+        $this->assertTrue($products['1-123'] instanceof Product);
+        $this->assertTrue($products['2-456'] instanceof Product);
+        $this->assertTrue($products['3-792'] instanceof Product);
+    }
+
+    public function testFindIndexByAsArray()
+    {
+        parent::testFindIndexByAsArray();
+
+        // indexBy + asArray
+        $products = Product::find()->asArray()->indexBy('{int}')->all();
+        $this->assertEquals(3, count($products));
+        $this->assertArrayHasKey('id', $products['123']);
+        $this->assertArrayHasKey('name', $products['123']);
+        $this->assertArrayHasKey('dynamic_columns', $products['123']);
+
+        $this->assertArrayHasKey('id', $products['456']);
+        $this->assertArrayHasKey('name', $products['456']);
+        $this->assertArrayHasKey('dynamic_columns', $products['456']);
+
+        $this->assertArrayHasKey('id', $products['792']);
+        $this->assertArrayHasKey('name', $products['792']);
+        $this->assertArrayHasKey('dynamic_columns', $products['792']);
+
+        // indexBy callable + asArray
+        $products = Product::find()->indexBy(function ($product) {
+            return $product->id . '-' . $product->int;
+        })->asArray()->all();
+        $this->assertEquals(3, count($products));
+        $this->assertArrayHasKey('id', $products['1-123']);
+        $this->assertArrayHasKey('name', $products['1-123']);
+        $this->assertArrayHasKey('dynamic_columns', $products['1-123']);
+
+        $this->assertArrayHasKey('id', $products['2-456']);
+        $this->assertArrayHasKey('name', $products['2-456']);
+        $this->assertArrayHasKey('dynamic_columns', $products['2-456']);
+
+        $this->assertArrayHasKey('id', $products['3-792']);
+        $this->assertArrayHasKey('name', $products['3-792']);
+        $this->assertArrayHasKey('dynamic_columns', $products['3-792']);
+    }
+
+    public function testRefresh()
+    {
+        parent::testRefresh();
+
+        $product = Product::findOne(1);
+        $product->str = 'to be refreshed';
+        $this->assertTrue($product->refresh());
+        $this->assertEquals('value1', $product->str);
+
+        $product = Product::findOne(1);
+        $product->children['str'] = 'to be refreshed';
+        $this->assertTrue($product->refresh());
+        $this->assertEquals('value1', $product->children['str']);
+    }
+
+    public function testEquals()
+    {
+        parent::testEquals();
+
+        $productA = new Product();
+        $productB = new Product();
+        $this->assertFalse($productA->equals($productB));
+
+        $productA = Product::findOne(1);
+        $productB = Product::findOne(2);
+        $this->assertFalse($productA->equals($productB));
+
+        $productB = Product::findOne(1);
+        $this->assertTrue($productA->equals($productB));
+    }
+
+    public function testFindCount()
+    {
+        parent::testFindCount();
+
+        $this->assertEquals(3, Product::find()->count());
+
+        $this->assertEquals(1, Product::find()->where(['{int}' => 123])->count());
+        $this->assertEquals(2, Product::find()->where(['{int}' => [123, 456]])->count());
+        $this->assertEquals(2, Product::find()->where(['{int}' => [123, 456]])->offset(1)->count());
+        $this->assertEquals(2, Product::find()->where(['{int}' => [123, 456]])->offset(2)->count());
+    }
+
+    public function testFindComplexCondition()
+    {
+        parent::testFindComplexCondition();
+
+        $this->assertEquals(2, Product::find()->where(['OR', ['{int}' => '123'], ['{int}' => '456']])->count());
+        $this->assertEquals(2, count(Product::find()->where(['OR', ['{int}' => '123'], ['{int}' => '456']])->all()));
+
+        $this->assertEquals(2, Product::find()->where(['{children.str}' => ['value1', 'value3']])->count());
+        $this->assertEquals(2, count(Product::find()->where(['{children.str}' => ['value1', 'value3']])->all()));
+
+        $this->assertEquals(1, Product::find()->where([
+            'AND',
+            ['{children.str}' => ['value1', 'value3']],
+            ['BETWEEN', '{int}', 122, 124]
+        ])->count());
+        $this->assertEquals(1, count(Product::find()->where([
+            'AND',
+            ['{children.str}' => ['value1', 'value3']],
+            ['BETWEEN', '{int}', 122, 124]
+        ])->all()));
+    }
+
+    public function testFindNullValues()
+    {
+        parent::testFindNullValues();
+
+        $product = Product::findOne(2);
+        $product->int = null;
+        $product->save(false);
+
+        $result = Product::find()->where(['{int}' => null])->all();
+        $this->assertEquals(1, count($result));
+        $this->assertEquals(2, reset($result)->primaryKey);
+    }
+
+    public function testExists()
+    {
+        parent::testExists();
+
+        $this->assertTrue(Product::find()->where(['{childrent.int}' => 123])->exists());
+        $this->assertFalse(Product::find()->where(['{int}' => 555])->exists());
+        $this->assertTrue(Product::find()->where(['{childrent.str}' => 'value3'])->exists());
+        $this->assertFalse(Product::find()->where(['{childrent.str}' => 123])->exists());
+    }
+
+    public function testFindLazy()
+    {
+        parent::testFindLazy();
+
+        $product = Product::findOne(1);
+        $this->assertFalse($product->isRelationPopulated('supplier'));
+        $supplier = $product->supplier;
+        $this->assertTrue($product->isRelationPopulated('supplier'));
+        $this->assertEquals(1, $supplier->primaryKey);
+
+        $product = Product::findOne(1);
+        $this->assertFalse($product->isRelationPopulated('supplier'));
+        $suppliers = $product->getSupplier()->where(['id' => 3])->all();
+        $this->assertFalse($product->isRelationPopulated('supplier'));
+        $this->assertEquals(0, count($product->relatedRecords));
+
+        $this->assertEquals(1, count($suppliers));
+        $this->assertEquals(3, $suppliers[0]->id);
+    }
+
+    public function testFindEager()
+    {
+        parent::testFindEager();
+
+        $products = Product::find()->with('supplier')->all();
+        $this->assertEquals(3, count($products));
+        $this->assertTrue($products[0]->isRelationPopulated('supplier'));
+        $this->assertTrue($products[1]->isRelationPopulated('supplier'));
+        $this->assertTrue($products[2]->isRelationPopulated('supplier'));
+        $this->assertEquals(1, count($products[0]->supplier));
+        $this->assertEquals(0, count($products[1]->supplier));
+        $this->assertEquals(0, count($products[2]->supplier));
+    }
+
+    public function testRelationsWhereDynamicColumnMissing()
+    {
+        $product = Product::findOne(1);
+        $this->assertNotNull($product->getSupplier());
+
+        // product without supplier_id dynamic column
+        $product = Product::findOne(2);
+        $this->assertNull($product->getSupplier());
+    }
+
+    public function testInsert()
+    {
+        parent::testInsert();
+
+        $product = new Product();
+        $product->name = 'test';
+        $product->str = 'value test';
+        $product->children = [
+            'string1' => 'children string',
+            'integer' => 1234,
+        ];
+
+        $this->assertNull($product->id);
+        $this->assertTrue($product->isNewRecord);
+
+        $product->save();
+
+        $this->assertNotNull($product->id);
+        $this->assertFalse($product->isNewRecord);
+
+        $this->assertEquals('test', $product->name);
+        $this->assertEquals('value test', $product->str);
+        $this->assertEquals([
+            'string1' => 'children string',
+            'integer' => 1234,
+        ], $product->children);
+        $this->assertEquals(json_encode([
+            'str' => 'value test',
+            [
+                'string1' => 'children string',
+                'integer' => 1234,
+            ]
+        ]), $product->dynamic_columns);
+    }
+
+    public function testUpdate()
+    {
+        parent::testUpdate();
+
+        $product = Product::findOne(1);
+        $this->assertTrue($product instanceof Product);
+        $this->assertEquals('123', $product->int);
+        $this->assertFalse($product->isNewRecord);
+        $this->assertEmpty($product->dirtyAttributes);
+
+        $product->int = 567;
+        $product->save();
+        $this->assertEquals('567', $product->int);
+        $product2 = Product::findOne(1);
+        $this->assertEquals('567', $product2->int);
+
+        // updateAll
+        $product = Product::findOne(3);
+        $this->assertEquals('value3', $product->children['str']);
+        $ret = Product::updateAll(['{children.str}' => 'temp'], ['id' => 3]);
+        $this->assertEquals(1, $ret);
+        $product = Product::findOne(3);
+        $this->assertEquals('temp', $product->children['str']);
+
+        $ret = Product::updateAll(['{children.str}' => 'tempX']);
+        $this->assertEquals(3, $ret);
+
+        $ret = Product::updateAll(['{children.str}' => 'tempp'], ['name' => 'product6']);
+        $this->assertEquals(0, $ret);
+    }
+
+    public function testUpdateAttributes()
+    {
+        parent::testUpdateAttributes();
+
+        $product = Product::findOne(2);
+        $this->assertTrue($product instanceof Product);
+        $this->assertEquals(456, $product->int);
+        $this->assertFalse($product->isNewRecord);
+
+        $product->updateAttributes(['{int}' => 777]);
+        $this->assertEquals(777, $product->int);
+        $this->assertFalse($product->isNewRecord);
+        $product2 = Product::findOne(2);
+        $this->assertEquals(777, $product2->int);
+        $this->assertInternalType('integer', $product2->int);
+
+        // update not eisting dynamic attribute
+        $product = Product::findOne(3);
+        $product->updateAttributes(['{custom}' => 'value']);
+        $this->assertEquals('value', $product->custom);
+        $this->assertFalse($product->isNewRecord);
+        $product2 = Product::findOne(3);
+        $this->assertEquals('value', $product2->custom);
+    }
+
+    /**
+     * Some PDO implementations(e.g. cubrid) do not support boolean values.
+     * Make sure this does not affect AR layer.
+     */
+    public function testBooleanAttribute()
+    {
+        parent::testBooleanAttribute();
+
+        $product = new Product();
+        $product->name = 'boolean customer';
+        $product->boolean_dynamic = true;
+        $product->save(false);
+
+        $product->refresh();
+        $this->assertEquals(1, $product->boolean_dynamic);
+
+        $product->status = false;
+        $product->save(false);
+
+        $product->refresh();
+        $this->assertEquals(0, $product->boolean_dynamic);
+
+        $products = Product::find()->where(['{boolean_dynamic}' => false])->all();
+        $this->assertEquals(1, count($products));
+    }
+
+    public function testFindEmptyInCondition()
+    {
+        parent::testFindEmptyInCondition();
+
+        $products = Product::find()->where(['{int}' => [123]])->all();
+        $this->assertEquals(1, count($products));
+
+        $products = Product::find()->where(['{int}' => []])->all();
+        $this->assertEquals(0, count($products));
+
+        $products = Product::find()->where(['IN', '{int}', [123]])->all();
+        $this->assertEquals(1, count($products));
+
+        $products = Product::find()->where(['IN', '{int}', []])->all();
+        $this->assertEquals(0, count($products));
+    }
+
+    public function testCreateColumnInBeforeSave()
+    {
+        $product = new Product;
+        $product->dynamic_column = 123;
+        $product->child = [
+            'column' => 'value',
+        ];
+
+        $product->beforeSave(true);
+
+        $this->assertEquals($product->dynamic_columns, '');
+    }
 }
