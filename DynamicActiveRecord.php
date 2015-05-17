@@ -42,6 +42,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         } else {
             self::$placeholderCounter += 1;
         }
+
         return self::PARAM_PREFIX . self::$placeholderCounter;
     }
 
@@ -64,6 +65,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
     {
         if (is_scalar($array)) {
             $array = self::$method($array);
+
             return;
         }
 
@@ -121,9 +123,10 @@ abstract class DynamicActiveRecord extends ActiveRecord
                 $sql[] = $phValue;
                 $params[$phValue] = $value;
             } else {
-                $sql[] = self::dynColSqlMaria((array) $value, $params);
+                $sql[] = self::dynColSqlMaria((array)$value, $params);
             }
         }
+
         return 'COLUMN_CREATE(' . implode(',', $sql) . ')';
     }
 
@@ -164,8 +167,9 @@ abstract class DynamicActiveRecord extends ActiveRecord
             $encoded
         );
 
-        $decoded = json_decode($encoded, true);
-        self::decodeArrayForMaria($decoded);
+        if ($decoded = json_decode($encoded, true)) {
+            self::decodeArrayForMaria($decoded);
+        }
 
         return $decoded;
     }
@@ -202,7 +206,8 @@ abstract class DynamicActiveRecord extends ActiveRecord
         if (!$set) {
             $set = isset($this->dynamicAttributes[$name]);
         }
-        return  $set;
+
+        return $set;
     }
 
     public function __unset($name)
@@ -216,7 +221,8 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
     public function fields()
     {
-        $fields = array_keys((array) $this->dynamicAttributes);
+        $fields = array_keys((array)$this->dynamicAttributes);
+
         return array_merge(parent::fields(), $fields);
     }
 
@@ -227,7 +233,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
+        $ref = &$this->dynamicAttributes;
 
         foreach ($path as $key) {
             if (!isset($ref[$key])) {
@@ -242,6 +248,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
     {
         if (strpos($name, '.') === false) {
             unset($this->name);
+
             return;
         }
 
@@ -258,11 +265,12 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
+        $ref = &$this->dynamicAttributes;
 
         foreach ($path as $key) {
             if (!isset($ref[$key])) {
                 trigger_error('Undefined attribute ' . $name);
+
                 return null;
             }
         }
@@ -287,17 +295,18 @@ abstract class DynamicActiveRecord extends ActiveRecord
     {
         if (strpos($name, '.') === false) {
             $this->$name = $value;
+
             return;
         }
 
         $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
+        $ref = &$this->dynamicAttributes;
 
         // Walk forwards through $path to find the deepends key already set.
         do {
             $key = $path[0];
             if (isset($ref[$key])) {
-                $ref = & $ref[$key];
+                $ref = &$ref[$key];
                 array_shift($path);
             } else {
                 break;
@@ -307,6 +316,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         // If the whole path already existed then we can just set it.
         if (!$path) {
             $ref = $value;
+
             return;
         }
 
@@ -334,8 +344,10 @@ abstract class DynamicActiveRecord extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             $this->setAttribute(static::dynamicColumn(), self::dynColExpression($this->dynamicAttributes));
+
             return true;
         }
+
         return false;
     }
 
