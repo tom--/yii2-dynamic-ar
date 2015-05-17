@@ -230,7 +230,7 @@ REGEXP;
     {
         $pattern = '%({[^{}]+?})%';
         if (is_array($array)) {
-            foreach ($array as $key => $value) {
+            foreach ($array as $key => &$value) {
                 $this->wrap($value);
 
                 if (strpos($key, '{') !== false && strpos($key, '(') === false) {
@@ -266,7 +266,7 @@ REGEXP;
     {
         $pattern = '%\(!({[^{}]+?})!\)%';
         if (is_array($array)) {
-            foreach ($array as $key => $value) {
+            foreach ($array as $key => &$value) {
                $this->unwrap($value);
 
                 if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
