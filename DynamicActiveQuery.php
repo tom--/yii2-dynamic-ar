@@ -217,31 +217,30 @@ REGEXP;
      */
     private function preProcessDynamicAttributes()
     {
-        $this->wrap('select');
-        $this->wrap('where');
-        $this->wrap('groupBy');
-        $this->wrap('having');
-        $this->wrap('orderBy');
+        $this->wrap($this->select);
+        $this->wrap($this->where);
+        $this->wrap($this->groupBy);
+        $this->wrap($this->having);
+        $this->wrap($this->orderBy);
 
         $this->wrapped = true;
     }
 
-    private function wrap($attribute)
+    private function wrap(&$array)
     {
         $pattern = '%({[^{}]+?})%';
-        if (is_array($this->$attribute)) {
-            foreach ($this->$attribute as $key => $value) {
-                if (strpos($value, '{') !== false && strpos($value, '(') === false) {
-                    $this->{$attribute}[$key] = preg_replace($pattern, '(!$1!)', $value);
-                    $value = $this->{$attribute}[$key];
-                }
+        if (is_array($array)) {
+            foreach ($array as $key => $value) {
+                $this->wrap($value);
 
                 if (strpos($key, '{') !== false && strpos($key, '(') === false) {
-                    unset($this->{$attribute}[$key]);
+                    unset($array[$key]);
                     $key = preg_replace($pattern, '(!$1!)', $key);
-                    $this->{$attribute}[$key] = $value;
+                    $array[$key] = $value;
                 }
             }
+        } elseif (strpos($array, '{') !== false && strpos($array, '(') === false) {
+            $array = preg_replace($pattern, '(!$1!)', $array);
         }
     }
 
@@ -252,37 +251,37 @@ REGEXP;
     private function postProcessDynamicAttributes(&$sql)
     {
         if ($this->wrapped) {
-            $this->unwrap('select');
-            $this->unwrap('where');
-            $this->unwrap('groupBy');
-            $this->unwrap('having');
-            $this->unwrap('orderBy');
+            $this->unwrap($this->select);
+            $this->unwrap($this->where);
+            $this->unwrap($this->groupBy);
+            $this->unwrap($this->having);
+            $this->unwrap($this->orderBy);
 
-            $sql = preg_replace('%\(!({[^{}]+?})!\)%', '$1', $sql);
+            $this->unwrap($sql);
             $this->wrapped = false;
         }
     }
 
-    private function unwrap($attribute)
+    private function unwrap(&$array)
     {
         $pattern = '%\(!({[^{}]+?})!\)%';
-        if (is_array($this->$attribute)) {
-            foreach ($this->$attribute as $key => $value) {
-                if (strpos('{', $value) !== false && strpos($value, '(') !== false) {
-                    $this->{$attribute}[$key] = preg_replace($pattern, '$1', $value);
-                    $value = $this->{$attribute}[$key];
-                }
+        if (is_array($array)) {
+            foreach ($array as $key => $value) {
+               $this->unwrap($value);
 
                 if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
-                    unset($this->{$attribute}[$key]);
+                    unset($array[$key]);
                     $key = preg_replace($pattern, '$1', $key);
-                    $this->{$attribute}[$key] = $value;
+                    $array[$key] = $value;
                 }
             }
+        } elseif (strpos($array, '{') !== false && strpos($array, '(') !== false) {
+            $array = preg_replace($pattern, '$1', $array);
         }
     }
 
-    private function getDotNotatedValue($array, $attribute) {
+    private function getDotNotatedValue($array, $attribute)
+    {
         $pieces = explode('.', $attribute);
         foreach ($pieces as $piece) {
             if (!is_array($array) || !array_key_exists($piece, $array)) {
@@ -290,6 +289,7 @@ REGEXP;
             }
             $array = $array[$piece];
         }
+
         return $array;
     }
 }
