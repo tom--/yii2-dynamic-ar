@@ -28,8 +28,6 @@ class DynamicActiveQuery extends ActiveQuery
      */
     private $dynamicColumn;
 
-    private $wrapped = false;
-
     /**
      * Convert index value to closure, that will get decoded dynamic attribute, in case if indexing attribute is dynamic
      * @param callable|string $column
