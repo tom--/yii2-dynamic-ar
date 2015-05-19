@@ -160,7 +160,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         // control characters U+0000 through U+001F. This causes JSON decoders to fail.
         // This workaround escapes those characters.
         $encoded = preg_replace_callback(
-            '{[\x00-\x1f]}',
+            '(![\x00-\x1f]!)',
             function ($matches) {
                 return sprintf('\u00%02x', ord($matches[0]));
             },
@@ -194,7 +194,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         try {
             parent::__set($name, $value);
         } catch (\yii\base\UnknownPropertyException $e) {
-            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$}i', $name)) {
+            if (!preg_match('/^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$/i', $name)) {
                 throw new InvalidCallException('Invalid attribute name "' . $name . '"');
             }
             $this->dynamicAttributes[$name] = $value;

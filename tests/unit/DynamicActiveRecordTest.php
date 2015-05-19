@@ -336,7 +336,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testCustomColumns();
 
         // find custom column
-        $customer = Product::find()->select(['*', '({children.int}*2) AS customColumn'])
+        $customer = Product::find()->select(['*', '((!children.int!)*2) AS customColumn'])
             ->where(['name' => 'product1'])->one();
         $this->assertEquals(1, $customer->id);
         $this->assertEquals(246, $customer->customColumn);
@@ -346,10 +346,10 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         parent::testStatisticalFind();
 
-        $this->assertEquals(2, Product::find()->where('{int} = 123 OR {int} = 456')->count());
-        $this->assertEquals(123, Product::find()->min('{int|int}'));
-        $this->assertEquals(792, Product::find()->max('{int|int}'));
-        $this->assertEquals(457, Product::find()->average('{int|int}'));
+        $this->assertEquals(2, Product::find()->where('(!int!) = 123 OR (!int!) = 456')->count());
+        $this->assertEquals(123, Product::find()->min('(!int|int!)'));
+        $this->assertEquals(792, Product::find()->max('(!int|int!)'));
+        $this->assertEquals(457, Product::find()->average('(!int|int!)'));
     }
 
     public function testFindScalar()
@@ -357,13 +357,13 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindScalar();
 
         // query scalar
-        $val = Product::find()->where(['id' => 1])->select(['{children.str}'])->scalar();
+        $val = Product::find()->where(['id' => 1])->select(['(!children.str!)'])->scalar();
         $this->assertEquals('value1', $val);
 
-        $val = Product::find()->where(['id' => 1])->select(['{children.bool}'])->scalar();
+        $val = Product::find()->where(['id' => 1])->select(['(!children.bool!)'])->scalar();
         $this->assertEquals(1, $val);
 
-        $val = Product::find()->where(['id' => 1])->select(['{children.null}'])->scalar();
+        $val = Product::find()->where(['id' => 1])->select(['(!children.null!)'])->scalar();
         $this->assertNull($val);
     }
 
@@ -371,8 +371,8 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         parent::testFindColumn();
 
-        $this->assertEquals([123, 456, 792], Product::find()->select(['{int|int}'])->column());
-        $this->assertEquals([792, 456, 123], Product::find()->orderBy(['{int|int}' => SORT_DESC])->select(['{int|int}'])
+        $this->assertEquals([123, 456, 792], Product::find()->select(['(!int|int!)'])->column());
+        $this->assertEquals([792, 456, 123], Product::find()->orderBy(['(!int|int!)' => SORT_DESC])->select(['(!int|int!)'])
             ->column());
     }
 
@@ -381,7 +381,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindBySql();
 
         // find with parameter binding
-        $product = Product::findBySql('SELECT *, COLUMN_JSON(dynamic_columns) as dynamic_columns FROM product WHERE {children.str}=:v', [':v' => 'value1'])
+        $product = Product::findBySql('SELECT *, COLUMN_JSON(dynamic_columns) as dynamic_columns FROM product WHERE (!children.str!)=:v', [':v' => 'value1'])
             ->one();
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('product1', $product->name);
@@ -393,16 +393,16 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFind();
 
         // find by column values
-        $product = Product::findOne(['id' => 1, '{str}' => 'value1']);
+        $product = Product::findOne(['id' => 1, '(!str!)' => 'value1']);
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('value1', $product->str);
-        $product = Product::findOne(['id' => 1, '{str}' => 'value2']);
+        $product = Product::findOne(['id' => 1, '(!str!)' => 'value2']);
         $this->assertNull($product);
-        $product = Product::findOne(['{children.str}' => 'value5']);
+        $product = Product::findOne(['(!children.str!)' => 'value5']);
         $this->assertNull($product);
 
         // find by attributes
-        $product = Product::find()->where(['{children.str}' => 'value1'])->one();
+        $product = Product::find()->where(['(!children.str!)' => 'value1'])->one();
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('value1', $product->children['str']);
         $this->assertEquals(1, $product->id);
@@ -531,31 +531,31 @@ class DynamicActiveRecordTest extends ActiveRecordTest
 
         $this->assertEquals(3, Product::find()->count());
 
-        $this->assertEquals(1, Product::find()->where(['{int}' => 123])->count());
-        $this->assertEquals(2, Product::find()->where(['{int}' => [123, 456]])->count());
-        $this->assertEquals(2, Product::find()->where(['{int}' => [123, 456]])->offset(1)->count());
-        $this->assertEquals(2, Product::find()->where(['{int}' => [123, 456]])->offset(2)->count());
+        $this->assertEquals(1, Product::find()->where(['(!int!)' => 123])->count());
+        $this->assertEquals(2, Product::find()->where(['(!int!)' => [123, 456]])->count());
+        $this->assertEquals(2, Product::find()->where(['(!int!)' => [123, 456]])->offset(1)->count());
+        $this->assertEquals(2, Product::find()->where(['(!int!)' => [123, 456]])->offset(2)->count());
     }
 
     public function testFindComplexCondition()
     {
         parent::testFindComplexCondition();
 
-        $this->assertEquals(2, Product::find()->where(['OR', ['{int}' => '123'], ['{int}' => '456']])->count());
-        $this->assertEquals(2, count(Product::find()->where(['OR', ['{int}' => '123'], ['{int}' => '456']])->all()));
+        $this->assertEquals(2, Product::find()->where(['OR', ['(!int!)' => '123'], ['(!int!)' => '456']])->count());
+        $this->assertEquals(2, count(Product::find()->where(['OR', ['(!int!)' => '123'], ['(!int!)' => '456']])->all()));
 
-        $this->assertEquals(2, Product::find()->where(['{children.str}' => ['value1', 'value3']])->count());
-        $this->assertEquals(2, count(Product::find()->where(['{children.str}' => ['value1', 'value3']])->all()));
+        $this->assertEquals(2, Product::find()->where(['(!children.str!)' => ['value1', 'value3']])->count());
+        $this->assertEquals(2, count(Product::find()->where(['(!children.str!)' => ['value1', 'value3']])->all()));
 
         $this->assertEquals(1, Product::find()->where([
             'AND',
-            ['{children.str}' => ['value1', 'value3']],
-            ['BETWEEN', '{int}', 122, 124]
+            ['(!children.str!)' => ['value1', 'value3']],
+            ['BETWEEN', '(!int!)', 122, 124]
         ])->count());
         $this->assertEquals(1, count(Product::find()->where([
             'AND',
-            ['{children.str}' => ['value1', 'value3']],
-            ['BETWEEN', '{int}', 122, 124]
+            ['(!children.str!)' => ['value1', 'value3']],
+            ['BETWEEN', '(!int!)', 122, 124]
         ])->all()));
     }
 
@@ -567,7 +567,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $product->int = null;
         $product->save(false);
 
-        $result = Product::find()->where(['{int}' => null])->all();
+        $result = Product::find()->where(['(!int!)' => null])->all();
         $this->assertEquals(1, count($result));
         $this->assertEquals(2, reset($result)->primaryKey);
     }
@@ -576,10 +576,10 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         parent::testExists();
 
-        $this->assertTrue(Product::find()->where(['{children.int}' => 123])->exists());
-        $this->assertFalse(Product::find()->where(['{int}' => 555])->exists());
-        $this->assertTrue(Product::find()->where(['{children.str}' => 'value3'])->exists());
-        $this->assertFalse(Product::find()->where(['{children.str}' => 123])->exists());
+        $this->assertTrue(Product::find()->where(['(!children.int!)' => 123])->exists());
+        $this->assertFalse(Product::find()->where(['(!int!)' => 555])->exists());
+        $this->assertTrue(Product::find()->where(['(!children.str!)' => 'value3'])->exists());
+        $this->assertFalse(Product::find()->where(['(!children.str!)' => 123])->exists());
     }
 
     public function testFindLazy()
@@ -674,15 +674,15 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         // todo need to create new DynamicQueryBuilder to override update()
 //        $product = Product::findOne(3);
 //        $this->assertEquals('value3', $product->children['str']);
-//        $ret = Product::updateAll(['{children.str}' => 'temp'], ['id' => 3]);
+//        $ret = Product::updateAll(['(!children.str!)' => 'temp'], ['id' => 3]);
 //        $this->assertEquals(1, $ret);
 //        $product = Product::findOne(3);
 //        $this->assertEquals('temp', $product->children['str']);
 //
-//        $ret = Product::updateAll(['{children.str}' => 'tempX']);
+//        $ret = Product::updateAll(['(!children.str!)' => 'tempX']);
 //        $this->assertEquals(3, $ret);
 //
-//        $ret = Product::updateAll(['{children.str}' => 'tempp'], ['name' => 'product6']);
+//        $ret = Product::updateAll(['(!children.str!)' => 'tempp'], ['name' => 'product6']);
 //        $this->assertEquals(0, $ret);
     }
 
@@ -695,7 +695,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertEquals(456, $product->int);
         $this->assertFalse($product->isNewRecord);
 
-//        $product->updateAttributes(['{int}' => 777]);
+//        $product->updateAttributes(['(!int!)' => 777]);
 //        $this->assertEquals(777, $product->int);
 //        $this->assertFalse($product->isNewRecord);
 //        $product2 = Product::findOne(2);
@@ -704,7 +704,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
 //
 //        // update not eisting dynamic attribute
 //        $product = Product::findOne(3);
-//        $product->updateAttributes(['{custom}' => 'value']);
+//        $product->updateAttributes(['(!custom!)' => 'value']);
 //        $this->assertEquals('value', $product->custom);
 //        $this->assertFalse($product->isNewRecord);
 //        $product2 = Product::findOne(3);
@@ -733,7 +733,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $product->refresh();
         $this->assertEquals(0, $product->boolean_dynamic);
 
-        $products = Product::find()->where(['{boolean_dynamic}' => false])->all();
+        $products = Product::find()->where(['(!boolean_dynamic!)' => false])->all();
         $this->assertEquals(1, count($products));
     }
 
@@ -741,16 +741,16 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         parent::testFindEmptyInCondition();
 
-        $products = Product::find()->where(['{int}' => [123]])->all();
+        $products = Product::find()->where(['(!int!)' => [123]])->all();
         $this->assertEquals(1, count($products));
 
-        $products = Product::find()->where(['{int}' => []])->all();
+        $products = Product::find()->where(['(!int!)' => []])->all();
         $this->assertEquals(0, count($products));
 
-        $products = Product::find()->where(['IN', '{int}', [123]])->all();
+        $products = Product::find()->where(['IN', '(!int!)', [123]])->all();
         $this->assertEquals(1, count($products));
 
-        $products = Product::find()->where(['IN', '{int}', []])->all();
+        $products = Product::find()->where(['IN', '(!int!)', []])->all();
         $this->assertEquals(0, count($products));
     }
 

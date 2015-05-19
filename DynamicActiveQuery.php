@@ -98,7 +98,7 @@ class DynamicActiveQuery extends ActiveQuery
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
         }
 
-        $this->preProcessDynamicAttributes();
+//        $this->preProcessDynamicAttributes();
 
         return parent::prepare($builder);
     }
@@ -146,17 +146,17 @@ class DynamicActiveQuery extends ActiveQuery
      *     {name|type}
      *
      * Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
-     * array elements, are separated from parents with . (period), e.g. {address.country|CHAR}.
+     * array elements, are separated from parents with . (period), e.g. (!address.country|CHAR!).
      * Spaces are not tolerated. So a user can do:
      *
      *     $blackShirts = Product::find()
-     *         ->where(['category' => Product::SHIRT, '{color}' => 'black'])
+     *         ->where(['category' => Product::SHIRT, '(!color!)' => 'black'])
      *         ->all();
      *
      *     $cheapShirts = Product::find()
-     *         ->select(['sale' => 'MAX({cost|decimal(6,2)}, 0.75 * {price.wholesale.12|decimal(6,2)})'])
+     *         ->select(['sale' => 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))'])
      *         ->where(['category' => Product::SHIRT])
-     *         ->andWhere('{price.retail.unit|decimal(6,2)} < 20.00')
+     *         ->andWhere('(!price.retail.unit|decimal(6,2)!) < 20.00')
      *         ->all();
      *
      * The implementation is like db\Connection's quoting of [[string]] and {{string}}. Once
@@ -183,7 +183,7 @@ class DynamicActiveQuery extends ActiveQuery
             $params = $this->params;
         }
 
-        $this->postProcessDynamicAttributes($sql);
+//        $this->postProcessDynamicAttributes($sql);
 
         $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn) {
@@ -199,12 +199,12 @@ class DynamicActiveQuery extends ActiveQuery
         };
 
         $pattern = <<<'REGEXP'
-            % (`?) \{
+            % (`?) \(!
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
                         | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?,\d\d?\))?
                         | int(eger)? | (?:un)? signed (?:\s+int(eger)?)?)  )?
-            \} \1 %ix
+            !\) \1 %ix
 REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
