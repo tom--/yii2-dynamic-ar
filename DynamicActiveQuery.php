@@ -216,7 +216,7 @@ REGEXP;
      * E.g. without this fix attribute {attr.child} will be escaped to `{attr`.`child}`
      * @return array
      */
-    private function preProcessDynamicAttributes()
+    protected function preProcessDynamicAttributes()
     {
         $this->wrap($this->select);
         $this->wrap($this->where);
@@ -227,7 +227,7 @@ REGEXP;
         $this->wrapped = true;
     }
 
-    private function wrap(&$array)
+    protected function wrap(&$array)
     {
         $pattern = '%({[^{}]+?})%';
         if (is_array($array)) {
@@ -249,7 +249,7 @@ REGEXP;
      * Unwrap dynamic attributes
      * @param $sql
      */
-    private function postProcessDynamicAttributes(&$sql)
+    protected function postProcessDynamicAttributes(&$sql)
     {
         if ($this->wrapped) {
             $this->unwrap($this->select);
@@ -263,7 +263,7 @@ REGEXP;
         }
     }
 
-    private function unwrap(&$array)
+    protected function unwrap(&$array)
     {
         $pattern = '%\(!({[^{}]+?})!\)%';
         if (is_array($array)) {
@@ -281,7 +281,7 @@ REGEXP;
         }
     }
 
-    private function getDotNotatedValue($array, $attribute)
+    protected function getDotNotatedValue($array, $attribute)
     {
         $pieces = explode('.', $attribute);
         foreach ($pieces as $piece) {
