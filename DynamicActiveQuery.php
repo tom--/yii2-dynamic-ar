@@ -37,34 +37,34 @@ class DynamicActiveQuery extends ActiveQuery
      */
     public function indexBy($column)
     {
-        if ($this->asArray) {
-            /** @var \yii\db\ActiveRecord $modelClass */
-            $modelClass = $this->modelClass;
-            $this->indexBy = function ($row) use ($column, $modelClass) {
-                if (isset($row[$column])) {
-                    return $row[$column];
-                }
-
-                if (!method_exists($modelClass, 'dynamicColumn')) {
-                    throw new Exception("Indexable column {$column} does not exist");
-                }
-
-                $dynamicColumn = $modelClass::dynamicColumn();
-                if (!isset($row[$dynamicColumn])) {
-                    throw new Exception("Dynamic column {$dynamicColumn} does not exist");
-                }
-
-                $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
-                $value = $this->getDotNotatedValue($dynamicAttributes, $column);
-
-                // in case if dynamic column does not exist for this row - use PK
-                return $value ?: $row[$modelClass::primaryKey()[0]];
-            };
-
-            return $this;
-        } else {
+        if (!$this->asArray) {
             return parent::indexBy($column);
         }
+
+        /** @var \yii\db\ActiveRecord $modelClass */
+        $modelClass = $this->modelClass;
+        $this->indexBy = function ($row) use ($column, $modelClass) {
+            if (isset($row[$column])) {
+                return $row[$column];
+            }
+
+            if (!method_exists($modelClass, 'dynamicColumn')) {
+                throw new Exception("Indexable column {$column} does not exist");
+            }
+
+            $dynamicColumn = $modelClass::dynamicColumn();
+            if (!isset($row[$dynamicColumn])) {
+                throw new Exception("Dynamic column {$dynamicColumn} does not exist");
+            }
+
+            $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
+            $value = $this->getDotNotatedValue($dynamicAttributes, $column);
+
+            // in case if dynamic column does not exist for this row - use PK
+            return $value ?: $row[$modelClass::primaryKey()[0]];
+        };
+
+        return $this;
     }
 
     /**
