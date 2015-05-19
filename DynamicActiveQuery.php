@@ -3,7 +3,8 @@
 namespace spinitron\dynamicAr;
 
 use Yii;
-use yii\base\Exception;
+use yii\base\UnknownMethodException;
+use yii\base\UnknownPropertyException;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
 
@@ -47,12 +48,12 @@ class DynamicActiveQuery extends ActiveQuery
             }
 
             if (!method_exists($modelClass, 'dynamicColumn')) {
-                throw new Exception("Indexable column {$column} does not exist");
+                throw new UnknownMethodException("{$modelClass}::dynamicColumn() does not exist");
             }
 
             $dynamicColumn = $modelClass::dynamicColumn();
             if (!isset($row[$dynamicColumn])) {
-                throw new Exception("Dynamic column {$dynamicColumn} does not exist");
+                throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist");
             }
 
             $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
