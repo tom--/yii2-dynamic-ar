@@ -98,8 +98,6 @@ class DynamicActiveQuery extends ActiveQuery
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
         }
 
-//        $this->preProcessDynamicAttributes();
-
         return parent::prepare($builder);
     }
 
@@ -183,8 +181,6 @@ class DynamicActiveQuery extends ActiveQuery
             $params = $this->params;
         }
 
-//        $this->postProcessDynamicAttributes($sql);
-
         $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
@@ -209,76 +205,6 @@ REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
         return $db->createCommand($sql, $params);
-    }
-
-    /**
-     * Wrap all dynamic attributes like {attr.child} to brackets (! !) to prevent escaping
-     * E.g. without this fix attribute {attr.child} will be escaped to `{attr`.`child}`
-     * @return array
-     */
-    protected function preProcessDynamicAttributes()
-    {
-        $this->wrap($this->select);
-        $this->wrap($this->where);
-        $this->wrap($this->groupBy);
-        $this->wrap($this->having);
-        $this->wrap($this->orderBy);
-
-        $this->wrapped = true;
-    }
-
-    protected function wrap(&$array)
-    {
-        $pattern = '%({[^{}]+?})%';
-        if (is_array($array)) {
-            foreach ($array as $key => &$value) {
-                $this->wrap($value);
-
-                if (strpos($key, '{') !== false && strpos($key, '(') === false) {
-                    unset($array[$key]);
-                    $key = preg_replace($pattern, '(!$1!)', $key);
-                    $array[$key] = $value;
-                }
-            }
-        } elseif (strpos($array, '{') !== false && strpos($array, '(') === false) {
-            $array = preg_replace($pattern, '(!$1!)', $array);
-        }
-    }
-
-    /**
-     * Unwrap dynamic attributes
-     * @param $sql
-     */
-    protected function postProcessDynamicAttributes(&$sql)
-    {
-        if ($this->wrapped) {
-            $this->unwrap($this->select);
-            $this->unwrap($this->where);
-            $this->unwrap($this->groupBy);
-            $this->unwrap($this->having);
-            $this->unwrap($this->orderBy);
-
-            $this->unwrap($sql);
-            $this->wrapped = false;
-        }
-    }
-
-    protected function unwrap(&$array)
-    {
-        $pattern = '%\(!({[^{}]+?})!\)%';
-        if (is_array($array)) {
-            foreach ($array as $key => &$value) {
-                $this->unwrap($value);
-
-                if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
-                    unset($array[$key]);
-                    $key = preg_replace($pattern, '$1', $key);
-                    $array[$key] = $value;
-                }
-            }
-        } elseif (strpos($array, '{') !== false && strpos($array, '(') !== false) {
-            $array = preg_replace($pattern, '$1', $array);
-        }
     }
 
     protected function getDotNotatedValue($array, $attribute)
