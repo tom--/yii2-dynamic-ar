@@ -48,7 +48,7 @@ class DynamicActiveQuery extends ActiveQuery
             }
 
             if (!method_exists($modelClass, 'dynamicColumn')) {
-                throw new UnknownMethodException("{$modelClass}::dynamicColumn() does not exist");
+                throw new UnknownMethodException("Method {$modelClass}::dynamicColumn() does not exist");
             }
 
             $dynamicColumn = $modelClass::dynamicColumn();
