@@ -43,21 +43,22 @@ class DynamicActiveQuery extends ActiveQuery
             $this->indexBy = function ($row) use ($column, $modelClass) {
                 if (isset($row[$column])) {
                     return $row[$column];
-                } elseif (method_exists($modelClass, 'dynamicColumn')) {
-                    $dynamicColumn = $modelClass::dynamicColumn();
-                    if (isset($row[$dynamicColumn])) {
-                        $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
-
-                        if ($value = $this->getDotNotatedValue($dynamicAttributes, $column)) {
-                            return $value;
-                        } else {
-                            // dynamic column does not exist for this row
-                            return $row[$modelClass::primaryKey()[0]];
-                        }
-                    }
                 }
 
-                throw new Exception("Indexable column {$column} does not exist");
+                if (!method_exists($modelClass, 'dynamicColumn')) {
+                    throw new Exception("Indexable column {$column} does not exist");
+                }
+
+                $dynamicColumn = $modelClass::dynamicColumn();
+                if (!isset($row[$dynamicColumn])) {
+                    throw new Exception("Dynamic column {$dynamicColumn} does not exist");
+                }
+
+                $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
+                $value = $this->getDotNotatedValue($dynamicAttributes, $column);
+
+                // in case if dynamic column does not exist for this row - use PK
+                return $value ?: $row[$modelClass::primaryKey()[0]];
             };
 
             return $this;
@@ -267,7 +268,7 @@ REGEXP;
         $pattern = '%\(!({[^{}]+?})!\)%';
         if (is_array($array)) {
             foreach ($array as $key => &$value) {
-               $this->unwrap($value);
+                $this->unwrap($value);
 
                 if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
                     unset($array[$key]);
