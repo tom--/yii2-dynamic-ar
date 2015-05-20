@@ -199,6 +199,7 @@ INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_5', 5);
 -- new rows for dynamic columns testing
 DROP TABLE IF EXISTS `product` CASCADE;
 DROP TABLE IF EXISTS `supplier` CASCADE;
+DROP TABLE IF EXISTS `missing_dyn_column` CASCADE;
 
 CREATE TABLE `product` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -211,6 +212,12 @@ CREATE TABLE `supplier` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(128),
     `dynamic_columns` BLOB,
+    PRIMARY KEY (`id`)
+) ENGINE =InnoDB DEFAULT CHARSET =utf8;
+
+CREATE TABLE `missing_dyn_column` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128),
     PRIMARY KEY (`id`)
 ) ENGINE =InnoDB DEFAULT CHARSET =utf8;
 
@@ -286,3 +293,7 @@ INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
     COLUMN_CREATE(
         'name', unhex('c1c2c3c4c5c6')
     ));
+
+INSERT INTO `missing_dyn_column` (name) VALUES (
+    'one'
+   );

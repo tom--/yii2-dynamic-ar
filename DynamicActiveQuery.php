@@ -3,7 +3,8 @@
 namespace spinitron\dynamicAr;
 
 use Yii;
-use yii\base\Exception;
+use yii\base\UnknownMethodException;
+use yii\base\UnknownPropertyException;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
 
@@ -28,8 +29,6 @@ class DynamicActiveQuery extends ActiveQuery
      */
     private $dynamicColumn;
 
-    private $wrapped = false;
-
     /**
      * Convert index value to closure, that will get decoded dynamic attribute, in case if indexing attribute is dynamic
      * @param callable|string $column
@@ -48,20 +47,15 @@ class DynamicActiveQuery extends ActiveQuery
                 return $row[$column];
             }
 
-            if (!method_exists($modelClass, 'dynamicColumn')) {
-                throw new Exception("Indexable column {$column} does not exist");
-            }
-
             $dynamicColumn = $modelClass::dynamicColumn();
             if (!isset($row[$dynamicColumn])) {
-                throw new Exception("Dynamic column {$dynamicColumn} does not exist");
+                throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist - wasn't set in select");
             }
 
             $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
             $value = $this->getDotNotatedValue($dynamicAttributes, $column);
 
-            // in case if dynamic column does not exist for this row - use PK
-            return $value ?: $row[$modelClass::primaryKey()[0]];
+            return $value;
         };
 
         return $this;
@@ -97,8 +91,6 @@ class DynamicActiveQuery extends ActiveQuery
             $this->select[$this->dynamicColumn] =
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
         }
-
-        $this->preProcessDynamicAttributes();
 
         return parent::prepare($builder);
     }
@@ -146,17 +138,17 @@ class DynamicActiveQuery extends ActiveQuery
      *     {name|type}
      *
      * Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
-     * array elements, are separated from parents with . (period), e.g. {address.country|CHAR}.
+     * array elements, are separated from parents with . (period), e.g. (!address.country|CHAR!).
      * Spaces are not tolerated. So a user can do:
      *
      *     $blackShirts = Product::find()
-     *         ->where(['category' => Product::SHIRT, '{color}' => 'black'])
+     *         ->where(['category' => Product::SHIRT, '(!color!)' => 'black'])
      *         ->all();
      *
      *     $cheapShirts = Product::find()
-     *         ->select(['sale' => 'MAX({cost|decimal(6,2)}, 0.75 * {price.wholesale.12|decimal(6,2)})'])
+     *         ->select(['sale' => 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))'])
      *         ->where(['category' => Product::SHIRT])
-     *         ->andWhere('{price.retail.unit|decimal(6,2)} < 20.00')
+     *         ->andWhere('(!price.retail.unit|decimal(6,2)!) < 20.00')
      *         ->all();
      *
      * The implementation is like db\Connection's quoting of [[string]] and {{string}}. Once
@@ -183,8 +175,6 @@ class DynamicActiveQuery extends ActiveQuery
             $params = $this->params;
         }
 
-        $this->postProcessDynamicAttributes($sql);
-
         $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
@@ -199,86 +189,16 @@ class DynamicActiveQuery extends ActiveQuery
         };
 
         $pattern = <<<'REGEXP'
-            % (`?) \{
+            { (`?) \(!
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
                         | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?,\d\d?\))?
-                        | int(eger)? | (?:un)? signed(?:\s\int(eger)?)?)  )?
-            \} \1 %ix
+                        | int(eger)? | (?:un)? signed (?:\s+int(eger)?)?)  )?
+            !\) \1 }ix
 REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
         return $db->createCommand($sql, $params);
-    }
-
-    /**
-     * Wrap all dynamic attributes like {attr.child} to brackets (! !) to prevent escaping
-     * E.g. without this fix attribute {attr.child} will be escaped to `{attr`.`child}`
-     * @return array
-     */
-    protected function preProcessDynamicAttributes()
-    {
-        $this->wrap($this->select);
-        $this->wrap($this->where);
-        $this->wrap($this->groupBy);
-        $this->wrap($this->having);
-        $this->wrap($this->orderBy);
-
-        $this->wrapped = true;
-    }
-
-    protected function wrap(&$array)
-    {
-        $pattern = '%({[^{}]+?})%';
-        if (is_array($array)) {
-            foreach ($array as $key => &$value) {
-                $this->wrap($value);
-
-                if (strpos($key, '{') !== false && strpos($key, '(') === false) {
-                    unset($array[$key]);
-                    $key = preg_replace($pattern, '(!$1!)', $key);
-                    $array[$key] = $value;
-                }
-            }
-        } elseif (strpos($array, '{') !== false && strpos($array, '(') === false) {
-            $array = preg_replace($pattern, '(!$1!)', $array);
-        }
-    }
-
-    /**
-     * Unwrap dynamic attributes
-     * @param $sql
-     */
-    protected function postProcessDynamicAttributes(&$sql)
-    {
-        if ($this->wrapped) {
-            $this->unwrap($this->select);
-            $this->unwrap($this->where);
-            $this->unwrap($this->groupBy);
-            $this->unwrap($this->having);
-            $this->unwrap($this->orderBy);
-
-            $this->unwrap($sql);
-            $this->wrapped = false;
-        }
-    }
-
-    protected function unwrap(&$array)
-    {
-        $pattern = '%\(!({[^{}]+?})!\)%';
-        if (is_array($array)) {
-            foreach ($array as $key => &$value) {
-                $this->unwrap($value);
-
-                if (strpos('{', $key) !== false && strpos($key, '(') !== false) {
-                    unset($array[$key]);
-                    $key = preg_replace($pattern, '$1', $key);
-                    $array[$key] = $value;
-                }
-            }
-        } elseif (strpos($array, '{') !== false && strpos($array, '(') !== false) {
-            $array = preg_replace($pattern, '$1', $array);
-        }
     }
 
     protected function getDotNotatedValue($array, $attribute)

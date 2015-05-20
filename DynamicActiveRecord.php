@@ -195,7 +195,7 @@ class DynamicActiveRecord extends ActiveRecord
         // control characters U+0000 through U+001F. This causes JSON decoders to fail.
         // This workaround escapes those characters.
         $encoded = preg_replace_callback(
-            '{[\x00-\x1f]}',
+            '/[\x00-\x1f]/',
             function ($matches) {
                 return sprintf('\u00%02x', ord($matches[0]));
             },
