@@ -214,7 +214,8 @@ CREATE TABLE `supplier` (
     PRIMARY KEY (`id`)
 ) ENGINE =InnoDB DEFAULT CHARSET =utf8;
 
-INSERT INTO `product` (name, dynamic_columns) VALUES (
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    1,
     'product1',
     COLUMN_CREATE(
         'supplier_id', 1,
@@ -232,13 +233,15 @@ INSERT INTO `product` (name, dynamic_columns) VALUES (
         )
     ));
 
-INSERT INTO `product` (name, dynamic_columns) VALUES (
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    2,
     'product2',
     COLUMN_CREATE(
         'int', 456
     ));
 
-INSERT INTO `product` (name, dynamic_columns) VALUES (
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    3,
     'product3',
     COLUMN_CREATE(
         'int', 792,
@@ -247,7 +250,8 @@ INSERT INTO `product` (name, dynamic_columns) VALUES (
         )
     ));
 
-INSERT INTO `supplier` (name, dynamic_columns) VALUES (
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
+    3,
     'One',
     COLUMN_CREATE(
         'address', COLUMN_CREATE(
@@ -256,6 +260,7 @@ INSERT INTO `supplier` (name, dynamic_columns) VALUES (
             'country', 'de'
         )
     )), (
+    4,
     'Two',
     COLUMN_CREATE(
         'address', COLUMN_CREATE(
@@ -266,7 +271,8 @@ INSERT INTO `supplier` (name, dynamic_columns) VALUES (
         )
     ));
 
-INSERT INTO `supplier` (name, dynamic_columns) VALUES (
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
+    1,
     'three',
     COLUMN_CREATE(
         'address', COLUMN_CREATE(
