@@ -485,9 +485,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->assertArrayHasKey('dynamic_columns', $products['value1']);
 
         // column missing - pk should be used
-        $this->assertArrayHasKey('id', $products[2]);
-        $this->assertArrayHasKey('name', $products[2]);
-        $this->assertArrayHasKey('dynamic_columns', $products[2]);
+        $this->assertArrayHasKey('id', $products['']);
+        $this->assertArrayHasKey('name', $products['']);
+        $this->assertArrayHasKey('dynamic_columns', $products['']);
 
         $this->assertArrayHasKey('id', $products['value3']);
         $this->assertArrayHasKey('name', $products['value3']);

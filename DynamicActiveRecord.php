@@ -194,7 +194,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         try {
             parent::__set($name, $value);
         } catch (\yii\base\UnknownPropertyException $e) {
-            if (!preg_match('/^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$/i', $name)) {
+            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$}i', $name)) {
                 throw new InvalidCallException('Invalid attribute name "' . $name . '"');
             }
             $this->dynamicAttributes[$name] = $value;
@@ -367,15 +367,15 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
     public function refresh()
     {
-        if (parent::refresh()) {
-            $dynCol = static::dynamicColumn();
-            if (isset($this->attributes[$dynCol])) {
-                $this->dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
-            }
-
-            return true;
-        } else {
+        if (!parent::refresh()) {
             return false;
         }
+
+        $dynCol = static::dynamicColumn();
+        if (isset($this->attributes[$dynCol])) {
+            $this->dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
+        }
+
+        return true;
     }
 }

@@ -6,6 +6,9 @@
 namespace tests\unit;
 
 use spinitron\dynamicAr\DynamicActiveQuery;
+use tests\unit\data\ar\UsualModel;
+use tests\unit\data\BaseRecord;
+use tests\unit\data\dar\MissingDynColumn;
 use yii\db\Query;
 use yiiunit\framework\db\DatabaseTestCase;
 use tests\unit\data\dar\Product;
@@ -17,7 +20,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     {
         static::$params = require(__DIR__ . '/data/config.php');
         parent::setUp();
-        Product::$db = $this->getConnection();
+        BaseRecord::$db = $this->getConnection();
     }
 
     public function testDynamicSelect()
@@ -154,5 +157,22 @@ class DynamicActiveQueryTest extends DatabaseTestCase
                 'unsigned integer',
             ],
         ];
+    }
+
+    public function testExceptionForMissingDynColumn()
+    {
+        $this->setExpectedException('yii\base\Exception');
+
+        $query = new DynamicActiveQuery(MissingDynColumn::className());
+        $query->one();
+    }
+
+    public function testIndexByExceptionForMissingDynColumn()
+    {
+        $this->setExpectedException('yii\base\UnknownPropertyException');
+
+        $query = new DynamicActiveQuery(Product::className());
+        $query->select('name')->asArray()->indexBy('str');
+        $query->all();
     }
 }

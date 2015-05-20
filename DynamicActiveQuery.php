@@ -47,20 +47,15 @@ class DynamicActiveQuery extends ActiveQuery
                 return $row[$column];
             }
 
-            if (!method_exists($modelClass, 'dynamicColumn')) {
-                throw new UnknownMethodException("Method {$modelClass}::dynamicColumn() does not exist");
-            }
-
             $dynamicColumn = $modelClass::dynamicColumn();
             if (!isset($row[$dynamicColumn])) {
-                throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist");
+                throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist - wasn't set in select");
             }
 
             $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
             $value = $this->getDotNotatedValue($dynamicAttributes, $column);
 
-            // in case if dynamic column does not exist for this row - use PK
-            return $value ?: $row[$modelClass::primaryKey()[0]];
+            return $value;
         };
 
         return $this;
@@ -194,12 +189,12 @@ class DynamicActiveQuery extends ActiveQuery
         };
 
         $pattern = <<<'REGEXP'
-            % (`?) \(!
+            { (`?) \(!
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
                         | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?,\d\d?\))?
                         | int(eger)? | (?:un)? signed (?:\s+int(eger)?)?)  )?
-            !\) \1 %ix
+            !\) \1 }ix
 REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
