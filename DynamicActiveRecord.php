@@ -33,7 +33,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * @var int
      */
-    private static $placeholderCounter;
+    protected static $placeholderCounter;
 
     public static function placeholder()
     {
