@@ -2,10 +2,10 @@
 
 namespace spinitron\dynamicAr;
 
-use tests\unit\DynamicActiveRecordTest;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidCallException;
+use yii\base\UnknownPropertyException;
 use yii\db\ActiveRecord;
 
 /**
@@ -37,15 +37,22 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
     public static function placeholder()
     {
-        if (self::$placeholderCounter === null) {
-            self::$placeholderCounter = 1;
+        if (static::$placeholderCounter === null) {
+            static::$placeholderCounter = 1;
         } else {
-            self::$placeholderCounter += 1;
+            static::$placeholderCounter += 1;
         }
 
-        return self::PARAM_PREFIX . self::$placeholderCounter;
+        return static::PARAM_PREFIX . static::$placeholderCounter;
     }
 
+    /**
+     * Encode as data URIs strings that JSON cannot express.
+     *
+     * @param $value
+     *
+     * @return string
+     */
     public static function encodeForMaria($value)
     {
         return is_string($value)
@@ -54,6 +61,13 @@ abstract class DynamicActiveRecord extends ActiveRecord
             : $value;
     }
 
+    /**
+     * Decode strings encoded as data URIs
+     *
+     * @param $value
+     *
+     * @return string
+     */
     public static function decodeForMaria($value)
     {
         return is_string($value) && strpos($value, self::DATA_URI_PREFIX) === 0
@@ -61,22 +75,27 @@ abstract class DynamicActiveRecord extends ActiveRecord
             : $value;
     }
 
-    public static function walk(&$array, $method)
+    /**
+     * Replacement for PHP's array walk and map builtins.
+     * @param $array
+     * @param $method
+     */
+    protected static function walk(& $array, $method)
     {
         if (is_scalar($array)) {
-            $array = self::$method($array);
+            $array = static::$method($array);
 
             return;
         }
 
         $replacements = [];
-        foreach ($array as $key => &$value) {
+        foreach ($array as $key => & $value) {
             if (is_scalar($value) || $value === null) {
-                $value = self::$method($value);
+                $value = static::$method($value);
             } else {
-                self::walk($value, $method);
+                static::walk($value, $method);
             }
-            $newKey = self::$method($key);
+            $newKey = static::$method($key);
             if ($newKey !== $key) {
                 $replacements[$newKey] = $value;
                 unset($array[$key]);
@@ -87,16 +106,27 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
     }
 
-    public static function encodeArrayForMaria(&$array)
+    /**
+     * Encodes as data URIs any "binary' strings in an array.
+     * @param $array
+     */
+    public static function encodeArrayForMaria(& $array)
     {
         self::walk($array, 'encodeForMaria');
     }
 
-    public static function decodeArrayForMaria(&$array)
+    /**
+     * Encodes any data URI strings in an array.
+     * @param $array
+     */
+    public static function decodeArrayForMaria(& $array)
     {
         self::walk($array, 'decodeForMaria');
     }
 
+    /**
+     * @inheritdoc
+     */
     public static function find()
     {
         return Yii::createObject(DynamicActiveQuery::className(), [get_called_class()]);
@@ -111,25 +141,30 @@ abstract class DynamicActiveRecord extends ActiveRecord
      * @return string SQL for a DB Expression
      * @throws \yii\base\Exception
      */
-    private static function dynColSqlMaria($attrs, &$params)
+    private static function dynColSqlMaria($attrs, & $params)
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
-            $phKey = self::placeholder();
-            $phValue = self::placeholder();
+            $phKey = static::placeholder();
+            $phValue = static::placeholder();
             $sql[] = $phKey;
             $params[$phKey] = $key;
             if (is_scalar($value) || $value === null) {
                 $sql[] = $phValue;
                 $params[$phValue] = $value;
             } else {
-                $sql[] = empty($value) ? 'NULL' : self::dynColSqlMaria((array) $value, $params);
+                $sql[] = static::dynColSqlMaria((array) $value, $params);
             }
         }
 
         return 'COLUMN_CREATE(' . implode(',', $sql) . ')';
     }
 
+    /**
+     * @param $attrs
+     *
+     * @return null|\yii\db\Expression
+     */
     public static function dynColExpression($attrs)
     {
         if (!$attrs) {
@@ -139,7 +174,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         $params = [];
 
         // todo For now we only have Maria. Add PgSQL and generic JSON.
-        self::encodeArrayForMaria($attrs);
+        static::encodeArrayForMaria($attrs);
         $sql = static::dynColSqlMaria($attrs, $params);
 
         return new \yii\db\Expression($sql, $params);
@@ -169,18 +204,25 @@ abstract class DynamicActiveRecord extends ActiveRecord
 
         $decoded = json_decode($encoded, true);
         if ($decoded) {
-            self::decodeArrayForMaria($decoded);
+            static::decodeArrayForMaria($decoded);
         }
 
         return $decoded;
     }
 
+    /**
+     * Different from familliar __get() in Yii because it returns null if the requested attribute doesn't exist.
+     *
+     * @param string $name
+     *
+     * @return mixed|null
+     */
     public function __get($name)
     {
         $value = null;
         try {
             $value = parent::__get($name);
-        } catch (\yii\base\UnknownPropertyException $e) {
+        } catch (UnknownPropertyException $ignore) {
             if (isset($this->dynamicAttributes) && array_key_exists($name, $this->dynamicAttributes)) {
                 $value = $this->dynamicAttributes[$name];
             }
@@ -189,11 +231,17 @@ abstract class DynamicActiveRecord extends ActiveRecord
         return $value;
     }
 
+    /**
+     * Sets a dynamic attribute if a property, VA or column attribute cannot be set.
+     *
+     * @param string $name
+     * @param mixed $value
+     */
     public function __set($name, $value)
     {
         try {
             parent::__set($name, $value);
-        } catch (\yii\base\UnknownPropertyException $e) {
+        } catch (UnknownPropertyException $ignore) {
             if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$}i', $name)) {
                 throw new InvalidCallException('Invalid attribute name "' . $name . '"');
             }
@@ -201,6 +249,13 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
     }
 
+    /**
+     * Tests any kind of property or attribute, dynamic or otherwise.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
     public function __isset($name)
     {
         try {
@@ -216,6 +271,11 @@ abstract class DynamicActiveRecord extends ActiveRecord
         return $set;
     }
 
+    /**
+     * Unsets any kind of property or attribute, dynamic or otherwise.
+     *
+     * @param string $name
+     */
     public function __unset($name)
     {
         if (array_key_exists($name, $this->dynamicAttributes)) {
@@ -225,13 +285,23 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function fields()
     {
-        $fields = array_keys((array)$this->dynamicAttributes);
+        $fields = array_keys((array) $this->dynamicAttributes);
 
         return array_merge(parent::fields(), $fields);
     }
 
+    /**
+     * Allows access to child attributes through dot notation.
+     *
+     * @param $name
+     *
+     * @return bool
+     */
     public function issetAttribute($name)
     {
         if (strpos($name, '.') === false) {
@@ -239,7 +309,7 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = &$this->dynamicAttributes;
+        $ref = & $this->dynamicAttributes;
 
         foreach ($path as $key) {
             if (!isset($ref[$key])) {
@@ -251,6 +321,11 @@ abstract class DynamicActiveRecord extends ActiveRecord
         return true;
     }
 
+    /**
+     * Allows access to child attributes through dot notation.
+     *
+     * @param $name
+     */
     public function unsetAttribute($name)
     {
         if (strpos($name, '.') === false) {
@@ -263,23 +338,27 @@ abstract class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Allows access to child attributes through dot notation.
+     *
+     * @param string $name
+     *
+     * @return mixed|null
      */
     public function getAttribute($name)
     {
-        if (strpos($name, '.') === false) {
-            return $this->$name;
+        try {
+            return parent::__get($name);
+        } catch (UnknownPropertyException $ignore) {
         }
 
         $path = explode('.', $name);
-        $ref = &$this->dynamicAttributes;
+        $ref = & $this->dynamicAttributes;
 
         foreach ($path as $key) {
             if (!isset($ref[$key])) {
-                trigger_error('Undefined attribute ' . $name);
-
                 return null;
             }
+            $ref = & $ref[$key];
         }
 
         return $ref;
@@ -307,13 +386,13 @@ abstract class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = &$this->dynamicAttributes;
+        $ref = & $this->dynamicAttributes;
 
         // Walk forwards through $path to find the deepends key already set.
         do {
             $key = $path[0];
             if (isset($ref[$key])) {
-                $ref = &$ref[$key];
+                $ref = & $ref[$key];
                 array_shift($path);
             } else {
                 break;
@@ -339,28 +418,32 @@ abstract class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
+     * Specifies the name of the table column containing dynamic attributes.
+     *
      * @return string Name of the table column containing dynamic column data
-     * @throws \yii\base\Exception
+     * @throws \yii\base\Exception if not overriden by descendent class.
      */
     public static function dynamicColumn()
     {
         throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
-        if (parent::beforeSave($insert)) {
-            $this->setAttribute(static::dynamicColumn(), self::dynColExpression($this->dynamicAttributes));
-
-            return true;
+        if (!parent::beforeSave($insert)) {
+            return false;
         }
 
-        return false;
+        $this->setAttribute(static::dynamicColumn(), static::dynColExpression($this->dynamicAttributes));
+
+        return true;
     }
 
     /**
-     * @param DynamicActiveRecord $record
-     * @param array $row
+     * @inheritdoc
      */
     public static function populateRecord($record, $row)
     {
@@ -371,17 +454,20 @@ abstract class DynamicActiveRecord extends ActiveRecord
         parent::populateRecord($record, $row);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function refresh()
     {
-        if (parent::refresh()) {
-            $dynCol = static::dynamicColumn();
-            if (isset($this->attributes[$dynCol])) {
-                $this->dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
-            }
-
-            return true;
-        } else {
+        if (!parent::refresh()) {
             return false;
         }
+
+        $dynCol = static::dynamicColumn();
+        if (isset($this->attributes[$dynCol])) {
+            $this->dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
+        }
+
+        return true;
     }
 }
