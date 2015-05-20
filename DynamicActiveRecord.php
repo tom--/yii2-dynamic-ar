@@ -24,7 +24,7 @@ use yii\db\ActiveRecord;
  *
  * @package app\db
  */
-abstract class DynamicActiveRecord extends ActiveRecord
+class DynamicActiveRecord extends ActiveRecord
 {
     const PARAM_PREFIX = ':dqp';
 
