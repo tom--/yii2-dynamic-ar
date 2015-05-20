@@ -23,8 +23,8 @@ $config = [
 //        ],
         'mysql' => [
             'dsn' => 'mysql:host=localhost;dbname=test',
-            'username' => 'root',
-            'password' => 'root',
+            'username' => 'travis',
+            'password' => '',
             'fixture' => __DIR__ . '/mysql.sql',
         ],
 //        'sqlite' => [
