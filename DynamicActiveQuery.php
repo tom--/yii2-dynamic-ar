@@ -3,7 +3,6 @@
 namespace spinitron\dynamicAr;
 
 use Yii;
-use yii\base\UnknownMethodException;
 use yii\base\UnknownPropertyException;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
@@ -40,7 +39,7 @@ class DynamicActiveQuery extends ActiveQuery
             return parent::indexBy($column);
         }
 
-        /** @var \yii\db\ActiveRecord $modelClass */
+        /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
         $this->indexBy = function ($row) use ($column, $modelClass) {
             if (isset($row[$column])) {
@@ -77,6 +76,7 @@ class DynamicActiveQuery extends ActiveQuery
         $this->dynamicColumn = $modelClass::dynamicColumn();
 
         if (empty($this->dynamicColumn)) {
+            /** @var string $modelClass */
             throw new \yii\base\InvalidConfigException(
                 $modelClass . '::dynamicColumn() must return an attribute name'
             );
@@ -135,7 +135,7 @@ class DynamicActiveQuery extends ActiveQuery
      * So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
      * of dynamic attributes and by explicitly specifying the type. The format I chose is:
      *
-     *     {name|type}
+     *     (!name|type!)
      *
      * Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
      * array elements, are separated from parents with . (period), e.g. (!address.country|CHAR!).
@@ -189,12 +189,12 @@ class DynamicActiveQuery extends ActiveQuery
         };
 
         $pattern = <<<'REGEXP'
-            { (`?) \(!
+            % (`?) \(!
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
                         | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?,\d\d?\))?
                         | int(eger)? | (?:un)? signed (?:\s+int(eger)?)?)  )?
-            !\) \1 }ix
+            !\) \1 %ix
 REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
