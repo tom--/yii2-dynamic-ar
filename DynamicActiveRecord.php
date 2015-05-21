@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://github.com/tom--/dynamic-ar
+ * @copyright Copyright (c) 2015 Spinitron LLC
+ * @license http://opensource.org/licenses/ISC
+ */
 
 namespace spinitron\dynamicAr;
 
@@ -9,20 +14,22 @@ use yii\base\UnknownPropertyException;
 use yii\db\ActiveRecord;
 
 /**
- * Class DynamicActiveRecord
+ * DynamicActiveRecord represents relational data with structured dynamic attributes.
  *
- * DynamicActiveRecord adds structured dynamic attributes to Yii 2.0 ActiveRecord
- * stored, when available, in Maria 10.0+ **Dynamic Columns**, PostgreSQL 9.4+
+ * DynamicActiveRecord adds NoSQL-like structured dynamic attributes to Yii 2.0 ActiveRecord.
+ * Dynamic attributes are stored in Maria 10.0+ **Dynamic Columns**, PostgreSQL 9.4+
  * **jsonb** columns, or otherwise in plain JSON, providing something like a NoSQL
  * document store within SQL relational DB tables.
  *
- * If the DBMS supports using the dynamic attributes in queries then
- * DynamicActiveRecord can combines with DynamicActiveQuery to provide an abstract
- * interface for that purpose.
+ * > NOTE: In this version only Maria 10.0+ is supported.
+ *
+ * If the DBMS supports using the dynamic attributes in queries (Maria, PostgreSQL) then
+ * DynamicActiveRecord combines with DynamicActiveQuery to provide an abstract
+ * interface for querying dynamic attributes.
  *
  * See the README of yii2-dynamic-ar extension for full description.
  *
- * @package app\db
+ * @author Tom Worster <fsb@thefsb.org>
  */
 class DynamicActiveRecord extends ActiveRecord
 {

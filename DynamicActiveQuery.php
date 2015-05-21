@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://github.com/tom--/dynamic-ar
+ * @copyright Copyright (c) 2015 Spinitron LLC
+ * @license http://opensource.org/licenses/ISC
+ */
 
 namespace spinitron\dynamicAr;
 
@@ -8,14 +13,16 @@ use yii\db\ActiveQuery;
 use yii\db\Connection;
 
 /**
- * Class DynamicActiveQuery
+ * DynamicActiveRecord represents queries on relational data with structured dynamic attributes.
  *
  * DynamicActiveQuery adds an abstraction for writing queries that involve
  * the dynamic attributes of a DynamicAccessRecord. This is only possible on
- * a DBMS that supports querying elements in serialized data structures. At
- * present this includes Maria 10+ and PostgreSQL 9.4+.
+ * a DBMS that supports querying elements in serialized data structures.
  *
- * @package app\db
+ * > NOTE: In this version only Maria 10.0+ is supported.
+ *
+ * @author Tom Worster <fsb@thefsb.org>
+ * @author Danil Zakablukovskii danil.kabluk@gmail.com
  */
 class DynamicActiveQuery extends ActiveQuery
 {

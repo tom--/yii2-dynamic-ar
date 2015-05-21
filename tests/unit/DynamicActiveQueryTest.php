@@ -1,6 +1,8 @@
 <?php
 /**
- * @author danil danil.kabluk@gmail.com
+ * @link https://github.com/tom--/dynamic-ar
+ * @copyright Copyright (c) 2015 Spinitron LLC
+ * @license http://opensource.org/licenses/ISC
  */
 
 namespace tests\unit;
@@ -13,6 +15,9 @@ use yii\db\Query;
 use yiiunit\framework\db\DatabaseTestCase;
 use tests\unit\data\dar\Product;
 
+/**
+ * @author Danil Zakablukovskii danil.kabluk@gmail.com
+ */
 class DynamicActiveQueryTest extends DatabaseTestCase
 {
 

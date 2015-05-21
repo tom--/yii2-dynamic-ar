@@ -194,3 +194,7 @@ DynamicActiveRecord saves PHP arrays such that they are associative on load. In 
 ### Object
 
 DynamicActiveRecord converts to PHP array before save so you'd be better of not using PHP objects.
+
+- - -
+
+@copyright Copyright (c) 2015 Spinitron LLC

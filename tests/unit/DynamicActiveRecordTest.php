@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://github.com/tom--/dynamic-ar
+ * @copyright Copyright (c) 2015 Spinitron LLC
+ * @license http://opensource.org/licenses/ISC
+ */
 
 namespace tests\unit;
 
@@ -16,6 +21,10 @@ use yii\db\Connection;
 use yii\db\Query;
 use yii\db\ActiveQuery;
 
+/**
+ * @author Tom Worster <fsb@thefsb.org>
+ * @author Danil Zakablukovskii danil.kabluk@gmail.com
+ */
 class DynamicActiveRecordTest extends ActiveRecordTest
 {
     /** @var Connection */
