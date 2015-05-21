@@ -2,6 +2,8 @@
 
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+
 /**
  * Class NullValues
  *
@@ -11,7 +13,7 @@ namespace tests\unit\data\ar;
  * @property integer $var3
  * @property string $stringcol
  */
-class NullValues extends ActiveRecord
+class NullValues extends BaseRecord
 {
     public static function tableName()
     {

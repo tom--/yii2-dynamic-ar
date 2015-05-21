@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="./tests/unit/bootstrap.php"
+		colors="true"
+		convertErrorsToExceptions="true"
+		convertNoticesToExceptions="true"
+		convertWarningsToExceptions="true"
+		stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>./tests/unit</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <log type="coverage-html" target="./tests/log/coverage.html"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="json" target="./tests/log/logfile.json"/>
+        <log type="tap" target="./tests/log/logfile.tap"/>
+        <log type="testdox-html" target="./tests/log/testdox.html"/>
+        <log type="testdox-text" target="./tests/log/testdox.txt"/>
+    </logging>
+</phpunit>

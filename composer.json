@@ -1,15 +1,32 @@
 {
-    "name": "spinitron/yii2-dynamic-ar",
+    "name": "tom--/yii2-dynamic-ar",
     "description": "Extends Yii ActiveRecord for Maria Dynamic Columns",
-    "version": "0.0.1-a",
+    "keywords": ["yii2", "Maria", "MariaDB", "Dynamic Columns", "ActiveRecord", "ar", "ORM"],
     "type": "yii2-extension",
     "license": "ISC",
-    "authors": [{"name": "Tom Worster"}],
+    "support": {
+        "issues": "https://github.com/tom--/dynamic-ar/issues",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/tom--/dynamic-ar",
+        "email": "Tom Worster <tom@thefsb.org>"
+    },
+    "authors": [
+        {
+            "name": "Tom Worster",
+            "email": "tom@thefsb.org"
+        },
+        {
+            "name": "Danil Zakablukovskii",
+            "email": "danil.kabluk@gmail.com",
+            "homepage": "http://danilz.me/",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "yiisoft/yii2": "~2.0.0"
+        "yiisoft/yii2": "~2.0"
     },
     "require-dev": {
-        "yiisoft/yii2-dev": "~2.0.0",
+        "yiisoft/yii2-dev": "~2.0",
         "phpunit/phpunit": "~4.4"
     },
     "autoload": {

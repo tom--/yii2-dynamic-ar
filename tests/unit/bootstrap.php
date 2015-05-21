@@ -1,5 +1,6 @@
 <?php
 
+
 // ensure we get report on all possible php errors
 error_reporting(-1);
 
@@ -12,7 +13,7 @@ $_SERVER['SCRIPT_FILENAME'] = __FILE__;
 $composerAutoload = __DIR__ . '/../../vendor/autoload.php';
 require_once(__DIR__ . '/../../vendor/yiisoft/yii2-dev/framework/Yii.php');
 
-Yii::setAlias('@yiiunit', __DIR__ . '/../../vendor/yiisoft/yii2-dev/tests/unit');
+Yii::setAlias('@yiiunit', __DIR__ . '/../../vendor/yiisoft/yii2-dev/tests');
 Yii::setAlias('@tests', dirname(__DIR__));
 
 // TODO change this to the real namespace of the extension!

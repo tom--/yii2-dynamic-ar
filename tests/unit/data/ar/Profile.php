@@ -5,6 +5,8 @@
 
 namespace tests\unit\data\ar;
 
+use tests\unit\data\BaseRecord;
+
 /**
  * Class Profile
  *
@@ -12,12 +14,9 @@ namespace tests\unit\data\ar;
  * @property string $description
  *
  */
-class Profile extends ActiveRecord
+class Profile extends BaseRecord
 {
-    public static function dynamicColumn()
-    {
-        return 'dynamic_columns';
-    }
+
 
     public static function tableName()
     {

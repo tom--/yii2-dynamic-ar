@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\unit\data\ar;
+namespace tests\unit\data;
 
 use \spinitron\dynamicAr\DynamicActiveQuery;
 

@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace tests\unit\data\ar;
+namespace tests\unit\data;
 
 use \spinitron\dynamicAr\DynamicActiveRecord;
 
@@ -15,7 +15,7 @@ use \spinitron\dynamicAr\DynamicActiveRecord;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class ActiveRecord extends DynamicActiveRecord
+class BaseRecord extends DynamicActiveRecord
 {
     public static $db;
 

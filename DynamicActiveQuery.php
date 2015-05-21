@@ -1,20 +1,28 @@
 <?php
+/**
+ * @link https://github.com/tom--/dynamic-ar
+ * @copyright Copyright (c) 2015 Spinitron LLC
+ * @license http://opensource.org/licenses/ISC
+ */
 
 namespace spinitron\dynamicAr;
 
 use Yii;
+use yii\base\UnknownPropertyException;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
 
 /**
- * Class DynamicActiveQuery
+ * DynamicActiveRecord represents queries on relational data with structured dynamic attributes.
  *
  * DynamicActiveQuery adds an abstraction for writing queries that involve
  * the dynamic attributes of a DynamicAccessRecord. This is only possible on
- * a DBMS that supports querying elements in serialized data structures. At
- * present this includes Maria 10+ and PostgreSQL 9.4+.
+ * a DBMS that supports querying elements in serialized data structures.
  *
- * @package app\db
+ * > NOTE: In this version only Maria 10.0+ is supported.
+ *
+ * @author Tom Worster <fsb@thefsb.org>
+ * @author Danil Zakablukovskii danil.kabluk@gmail.com
  */
 class DynamicActiveQuery extends ActiveQuery
 {
@@ -26,6 +34,38 @@ class DynamicActiveQuery extends ActiveQuery
      * @var string
      */
     private $dynamicColumn;
+
+    /**
+     * Convert index value to closure, that will get decoded dynamic attribute, in case if indexing attribute is dynamic
+     * @param callable|string $column
+     * @return $this
+     */
+    public function indexBy($column)
+    {
+        if (!$this->asArray) {
+            return parent::indexBy($column);
+        }
+
+        /** @var DynamicActiveRecord $modelClass */
+        $modelClass = $this->modelClass;
+        $this->indexBy = function ($row) use ($column, $modelClass) {
+            if (isset($row[$column])) {
+                return $row[$column];
+            }
+
+            $dynamicColumn = $modelClass::dynamicColumn();
+            if (!isset($row[$dynamicColumn])) {
+                throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist - wasn't set in select");
+            }
+
+            $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
+            $value = $this->getDotNotatedValue($dynamicAttributes, $column);
+
+            return $value;
+        };
+
+        return $this;
+    }
 
     /**
      * Maria-specific preparation for building a query that includes a dynamic column.
@@ -43,12 +83,17 @@ class DynamicActiveQuery extends ActiveQuery
         $this->dynamicColumn = $modelClass::dynamicColumn();
 
         if (empty($this->dynamicColumn)) {
+            /** @var string $modelClass */
             throw new \yii\base\InvalidConfigException(
                 $modelClass . '::dynamicColumn() must return an attribute name'
             );
         }
-        if (empty($this->select) || $this->select === '*') {
-            $this->select = array_diff(array_keys($modelClass::getTableSchema()->columns), [$this->dynamicColumn]);
+
+        if (empty($this->select)) {
+            $this->select[] = '*';
+        }
+
+        if (is_array($this->select) && in_array('*', $this->select)) {
             $this->db = $modelClass::getDb();
             $this->select[$this->dynamicColumn] =
                 'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
@@ -97,20 +142,20 @@ class DynamicActiveQuery extends ActiveQuery
      * So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
      * of dynamic attributes and by explicitly specifying the type. The format I chose is:
      *
-     *     {name|type}
+     *     (!name|type!)
      *
      * Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
-     * array elements, are separated from parents with . (period), e.g. {address.country|CHAR}.
+     * array elements, are separated from parents with . (period), e.g. (!address.country|CHAR!).
      * Spaces are not tolerated. So a user can do:
      *
      *     $blackShirts = Product::find()
-     *         ->where(['category' => Product::SHIRT, '{color}' => 'black'])
+     *         ->where(['category' => Product::SHIRT, '(!color!)' => 'black'])
      *         ->all();
      *
      *     $cheapShirts = Product::find()
-     *         ->select('sale' => 'MAX({cost|decimal(6,2)}, 0.75 * {price.wholesale.12|decimal(6,2)})')
+     *         ->select(['sale' => 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))'])
      *         ->where(['category' => Product::SHIRT])
-     *         ->andWhere('{price.retail.unit|decimal(6,2)} < 20.00')
+     *         ->andWhere('(!price.retail.unit|decimal(6,2)!) < 20.00')
      *         ->all();
      *
      * The implementation is like db\Connection's quoting of [[string]] and {{string}}. Once
@@ -138,7 +183,6 @@ class DynamicActiveQuery extends ActiveQuery
         }
 
         $dynamicColumn = $modelClass::dynamicColumn();
-
         $callback = function ($matches) use (&$params, $dynamicColumn) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
             $sql = $dynamicColumn;
@@ -147,19 +191,33 @@ class DynamicActiveQuery extends ActiveQuery
                 $params[$placeholder] = $column;
                 $sql = "COLUMN_GET($sql, $placeholder AS $type)";
             }
+
             return $sql;
         };
 
         $pattern = <<<'REGEXP'
-            % (`?) \{
+            % (`?) \(!
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
-                        | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?(?:,\d\d?)?\))?
-                        | int(eger)? | (?:un)? signed (?:\int(eger)?)?)  )?
-            \} \1 %ix
+                        | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?,\d\d?\))?
+                        | int(eger)? | (?:un)? signed (?:\s+int(eger)?)?)  )?
+            !\) \1 %ix
 REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
         return $db->createCommand($sql, $params);
+    }
+
+    protected function getDotNotatedValue($array, $attribute)
+    {
+        $pieces = explode('.', $attribute);
+        foreach ($pieces as $piece) {
+            if (!is_array($array) || !array_key_exists($piece, $array)) {
+                return null;
+            }
+            $array = $array[$piece];
+        }
+
+        return $array;
     }
 }

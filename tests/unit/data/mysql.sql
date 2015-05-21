@@ -25,8 +25,7 @@ CREATE TABLE `constraints`
 
 CREATE TABLE `profile` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-#   `description` varchar(128) NOT NULL,
-  `dynamic_columns` blob,
+  `description` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -34,10 +33,9 @@ CREATE TABLE `customer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(128) NOT NULL,
   `name` varchar(128),
-#   `address` text,
+  `address` text,
   `status` int (11) DEFAULT 0,
   `profile_id` int(11),
-  `dynamic_columns` blob,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -128,20 +126,12 @@ CREATE TABLE `type` (
   `bit_col` BIT(8) NOT NULL DEFAULT b'10000010'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# INSERT INTO `profile` (description) VALUES ('profile customer 1');
-# INSERT INTO `profile` (description) VALUES ('profile customer 3');
-INSERT INTO `profile` (dynamic_columns) VALUES (COLUMN_CREATE('description', 'profile customer 1'));
-INSERT INTO `profile` (dynamic_columns) VALUES (COLUMN_CREATE('description', 'profile customer 3'));
+INSERT INTO `profile` (description) VALUES ('profile customer 1');
+INSERT INTO `profile` (description) VALUES ('profile customer 3');
 
-# INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user1@example.com', 'user1', 'address1', 1, 1);
-# INSERT INTO `customer` (email, name, address, status) VALUES ('user2@example.com', 'user2', 'address2', 1);
-# INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user3@example.com', 'user3', 'address3', 2, 2);
-INSERT INTO `customer` (email, name, dynamic_columns, status, profile_id)
-    VALUES ('user1@example.com', 'user1', COLUMN_CREATE('address', 'address1'), 1, 1);
-INSERT INTO `customer` (email, name, dynamic_columns, status)
-    VALUES ('user2@example.com', 'user2', COLUMN_CREATE('address', 'address2'), 1);
-INSERT INTO `customer` (email, name, dynamic_columns, status, profile_id)
-    VALUES ('user3@example.com', 'user3', COLUMN_CREATE('address', 'address3'), 2, 2);
+INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user1@example.com', 'user1', 'address1', 1, 1);
+INSERT INTO `customer` (email, name, address, status) VALUES ('user2@example.com', 'user2', 'address2', 1);
+INSERT INTO `customer` (email, name, address, status, profile_id) VALUES ('user3@example.com', 'user3', 'address3', 2, 2);
 
 INSERT INTO `category` (name) VALUES ('Books');
 INSERT INTO `category` (name) VALUES ('Movies');
@@ -205,3 +195,105 @@ INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_3', 3);
 INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_4', 4);
 INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_4', 4);
 INSERT INTO `validator_ref` (a_field, ref) VALUES ('ref_to_5', 5);
+
+-- new rows for dynamic columns testing
+DROP TABLE IF EXISTS `product` CASCADE;
+DROP TABLE IF EXISTS `supplier` CASCADE;
+DROP TABLE IF EXISTS `missing_dyn_column` CASCADE;
+
+CREATE TABLE `product` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128),
+    `dynamic_columns` BLOB,
+    PRIMARY KEY (`id`)
+) ENGINE =InnoDB DEFAULT CHARSET =utf8;
+
+CREATE TABLE `supplier` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128),
+    `dynamic_columns` BLOB,
+    PRIMARY KEY (`id`)
+) ENGINE =InnoDB DEFAULT CHARSET =utf8;
+
+CREATE TABLE `missing_dyn_column` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(128),
+    PRIMARY KEY (`id`)
+) ENGINE =InnoDB DEFAULT CHARSET =utf8;
+
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    1,
+    'product1',
+    COLUMN_CREATE(
+        'supplier_id', 1,
+        'str', 'value1',
+        'int', 123,
+        'float', 123.456,
+        'bool', TRUE,
+        'null', null,
+        'children', COLUMN_CREATE(
+            'str', 'value1',
+            'int', 123,
+            'float', 123.456,
+            'bool', TRUE,
+            'null', null
+        )
+    ));
+
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    2,
+    'product2',
+    COLUMN_CREATE(
+        'int', 456
+    ));
+
+INSERT INTO `product` (id, name, dynamic_columns) VALUES (
+    3,
+    'product3',
+    COLUMN_CREATE(
+        'int', 792,
+        'children', COLUMN_CREATE(
+            'str', 'value3'
+        )
+    ));
+
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
+    3,
+    'One',
+    COLUMN_CREATE(
+        'address', COLUMN_CREATE(
+            'line1', 'Hoffmannstr. 51',
+            'line2', 'D81379 München',
+            'country', 'de'
+        )
+    )), (
+    4,
+    'Two',
+    COLUMN_CREATE(
+        'address', COLUMN_CREATE(
+            'line1', '100 Foo St.',
+            'city', 'Barton',
+            'state', 'VT',
+            'country', 'us'
+        )
+    ));
+
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
+    1,
+    'three',
+    COLUMN_CREATE(
+        'address', COLUMN_CREATE(
+            'country', 'england'
+        )
+    ));
+
+INSERT INTO `supplier` (id, name, dynamic_columns) VALUES (
+    10,
+    'binary',
+    COLUMN_CREATE(
+        'name', unhex('c1c2c3c4c5c6')
+    ));
+
+INSERT INTO `missing_dyn_column` (name) VALUES (
+    'one'
+   );

@@ -5,7 +5,8 @@
 
 ## Motivation
 
-NoSQL-like features have been appearing in some SQL relational databases, including [Dynamic Columns in Maria 10.0+](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
+NoSQL-like features have been appearing in some SQL relational databases, 
+including [Dynamic Columns in Maria 10.0+](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
 and
 [jsonb column types](http://www.postgresql.org/docs/9.4/static/datatype-json.html)
 and
@@ -37,6 +38,8 @@ The goal of yii2-dynamic-ar extension is to provide a comfortable API to these c
 ## Design and operation
 
 DynamicActiveRecord extends [ActiveRecord](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) to represent structured dynamic attributes that are stored in serialized form in the database. If the particular DBMS has features to support this then they are used, otherwise JSON is used. In the case that the DBMS allows querying of the serialized properties DynamicActiveQuery extends  [Active Query](http://www.yiiframework.com/doc-2.0/yii-db-activequery.html) to represent such queries.
+
+At present DynamicActiveRecord works only with Maria 10. Other DBMSs and plain JSON to come.
 
 ### DynamicActiveRecord
 
@@ -78,7 +81,7 @@ When updating a model, the DB record's dynamic attributes are all overwritten. A
 
 ### DynamicActiveQuery
 
-**tl;dr** When you use a dynamic attribute in a query, write it as a *dynamic attribute token*, e.g. `{color}` or `{employee.id|INT}` (see below for full details). 
+**tl;dr** When you use a dynamic attribute in a query, write it as a *dynamic attribute token*, e.g. `(!color!)` or `(!employee.id|INT!)` (see below for full details). 
 
 
 DynamicActiveQuery only exists for those DMBSs that provide a way to query elements in data structures serialized to a field (for now, Maria 10+ and PostgreSQL 9.4+).
@@ -120,22 +123,22 @@ The token is wrapped in curly braces containing the dynamic attribute name and o
 
 Description | Token
 --- | ---
-General form | `{label[.label[...]]|type}`
-`->color` with default datatype CHAR | `{color}`
-`->price` with explicit datatype | `{price|DECIMAL(5,2)}`
-`->address['city']` with default datatype CHAR | `{address.city}`
-`->voltage['Vcc'][1]` with explicit datatype | `{voltage.Vcd.1|DOUBLE}`
+General form | `(!label[.label[...]]|type!)`
+`->color` with default datatype CHAR | `(!color!)`
+`->price` with explicit datatype | `(!price|DECIMAL(5,2)!)`
+`->address['city']` with default datatype CHAR | `(!address.city!)`
+`->voltage['Vcc'][1]` with explicit datatype | `(!voltage.Vcd.1|DOUBLE!)`
 
 Examples in queries
 
 ```php
 $blackShirts = Product::find()
-    ->where(['category' => Product::SHIRT, '{color}' => 'black'])
+    ->where(['category' => Product::SHIRT, '(!color!)' => 'black'])
     ->all();
 $cheapShirts = Product::find()
     ->where(['category' => Product::SHIRT])
-    ->andWhere('{price.wholesale.12|DECIMAL(6,2)} < 20.00')
-    ->select('sale' => 'CONCAT("On sale at $", {price.discount})')
+    ->andWhere('(!price.wholesale.12|DECIMAL(6,2)!) < 20.00')
+    ->select(['sale' => 'CONCAT("On sale at $", (!price.discount!))'])
     ->all();
 ```
 
@@ -191,3 +194,7 @@ DynamicActiveRecord saves PHP arrays such that they are associative on load. In 
 ### Object
 
 DynamicActiveRecord converts to PHP array before save so you'd be better of not using PHP objects.
+
+- - -
+
+@copyright Copyright (c) 2015 Spinitron LLC
