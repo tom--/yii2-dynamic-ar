@@ -152,6 +152,10 @@ class DynamicActiveRecord extends ActiveRecord
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
+            if (!is_scalar($value) && empty($value)) {
+                continue;
+            }
+
             $phKey = static::placeholder();
             $phValue = static::placeholder();
             $sql[] = $phKey;
