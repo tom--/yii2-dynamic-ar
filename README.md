@@ -197,4 +197,4 @@ DynamicActiveRecord converts to PHP array before save so you'd be better of not 
 
 - - -
 
-@copyright Copyright (c) 2015 Spinitron LLC
+Copyright (c) 2015 Spinitron LLC
