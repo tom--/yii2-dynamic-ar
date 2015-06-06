@@ -307,6 +307,46 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
+     * Return a list of string array keys in dotted notation, recursing subarrays.
+     *
+     * @param string $prefix Prefix returned array keys with this string
+     * @param array $array An array of attributeName => value pairs
+     *
+     * @return array The list of attribute names in dotted notation
+     */
+    protected static function dotAttributes($prefix, $array)
+    {
+        $fields = [];
+        foreach ($array as $key => $value) {
+            if (is_string($key)) {
+                $newPos = $prefix . '.' . $key;
+                $fields[] = $newPos;
+                if (is_array($value)) {
+                    $fields = array_merge($fields, static::dotAttributes($newPos, $value));
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Return a list of all model attribute names recursing structured dynamic attributes.
+     *
+     * @return string[] The list of all attribute names
+     * @throws Exception
+     */
+    public function allAttributes()
+    {
+        $fields = parent::fields();
+
+        return array_merge(
+            array_values(parent::fields()),
+            static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
+        );
+    }
+
+    /**
      * Allows access to child attributes through dot notation.
      *
      * @param $name
