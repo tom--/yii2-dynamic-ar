@@ -183,17 +183,25 @@ SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1);
 
 So `$product->foo = null; $product->save();` actually deletes dynamic attribute 'foo' in the corresponding DB record.
 
-This is perfectly reasonable. The meaning and purpose of SQL NULL makes no sense for dynamic fields. The 'x' not existing in the record a better representation for 'x' not existing than a serialized data element with the funny NULL value/type.
+This is perfectly reasonable. The meaning and purpose of SQL NULL makes no sense for dynamic fields. The 'x' not 
+existing in the record a better representation for 'x' not existing than a serialized data element with the 
+funny NULL value/type.
 
-So, even though JSON can adequately represent a PHP null, DynamicActiveRecord does promise to return a PHP null if you try to save one. If you do $x = null then PHP considers $x to be "unset".
+So, even though JSON can adequately represent a PHP null, DynamicActiveRecord does promise to return a PHP null 
+if you try to save one. If you do $x = null then PHP considers $x to be "unset".
 
 ### Array
 
-DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words, you may as well use string keys because they will be strings on load and they need to be strings when dynamic attribute names are used in queries.
+DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words, 
+you may as well use string keys because they will be strings on load and they need to be strings 
+when dynamic attribute names are used in queries.
+
+Empty arrays are not saved in Maria.
 
 ### Object
 
 DynamicActiveRecord converts to PHP array before save so you'd be better of not using PHP objects.
+
 
 - - -
 
