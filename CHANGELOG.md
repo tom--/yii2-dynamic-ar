@@ -7,3 +7,7 @@
 ## 0.1.1 June 1 2015
 
 - Bug: Empty array dynamic column value leads to invalid SQL: COLUMN_CREATE()
+
+## 0.2.0 June 6 2015
+
+- Enh: New attribute name getter method DynamicActiveRecord::allAttributes()
