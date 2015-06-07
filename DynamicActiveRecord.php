@@ -148,11 +148,14 @@ class DynamicActiveRecord extends ActiveRecord
      * @return string SQL for a DB Expression
      * @throws \yii\base\Exception
      */
-    private static function dynColSqlMaria($attrs, & $params)
+    private static function dynColSqlMaria(array $attrs, & $params)
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
-            if (!is_scalar($value) && empty($value)) {
+            if (is_object($value)) {
+                $value = (array)$value;
+            }
+            if ($value === [] || $value === null) {
                 continue;
             }
 
@@ -160,15 +163,16 @@ class DynamicActiveRecord extends ActiveRecord
             $phValue = static::placeholder();
             $sql[] = $phKey;
             $params[$phKey] = $key;
-            if (is_scalar($value) || $value === null) {
+
+            if (is_scalar($value)) {
                 $sql[] = $phValue;
                 $params[$phValue] = $value;
-            } else {
-                $sql[] = static::dynColSqlMaria((array) $value, $params);
+            } elseif (is_array($value)) {
+                $sql[] = static::dynColSqlMaria($value, $params);
             }
         }
 
-        return 'COLUMN_CREATE(' . implode(',', $sql) . ')';
+        return $sql === [] ? 'null' : 'COLUMN_CREATE(' . implode(',', $sql) . ')';
     }
 
     /**

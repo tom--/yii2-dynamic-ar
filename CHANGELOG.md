@@ -11,3 +11,7 @@
 ## 0.2.0 June 6 2015
 
 - Enh: New attribute name getter method DynamicActiveRecord::allAttributes()
+
+## 0.2.1 June 8 2015
+
+- Bug: Empty array in DynamicActiveRecord::dynColSqlMaria() creates invalid COLUMN_CREATE() command
