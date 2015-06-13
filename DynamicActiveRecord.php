@@ -342,8 +342,6 @@ class DynamicActiveRecord extends ActiveRecord
      */
     public function allAttributes()
     {
-        $fields = parent::fields();
-
         return array_merge(
             array_values(parent::fields()),
             static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
