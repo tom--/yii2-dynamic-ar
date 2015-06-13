@@ -196,12 +196,12 @@ class DynamicActiveQuery extends ActiveQuery
         };
 
         $pattern = <<<'REGEXP'
-            % (`?) \(!
+            % (`?) \(!\s*?
                 ( [a-z_\x7f-\xff][a-z0-9_\x7f-\xff]* (?: \. [^.|\s]+)* )
                 (?:  \| (binary (?:\(\d+\))? | char (?:\(\d+\))? | time (?:\(\d+\))? | datetime (?:\(\d+\))? | date
                         | decimal (?:\(\d\d?(?:,\d\d?)?\))?  | double (?:\(\d\d?,\d\d?\))?
                         | int(eger)? | (?:un)? signed (?:\s+int(eger)?)?)  )?
-            !\) \1 %ix
+            \s*?!\) \1 %ix
 REGEXP;
         $sql = preg_replace_callback($pattern, $callback, $sql);
 
