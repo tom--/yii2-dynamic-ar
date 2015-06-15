@@ -7,49 +7,91 @@ use tests\unit\data\dar\Product;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\Supplier;
 use yii\db\Connection;
-use yiiunit\framework\db\ActiveRecordTest;
+use yiiunit\framework\db\DatabaseTestCase;
 
-class DynamicModelTest extends ActiveRecordTest
+class DynamicModelTest extends DatabaseTestCase
 {
     /** @var Connection */
-    protected $db;
+    static $db;
 
     protected function setUp()
     {
-        if ($this->db === null) {
-            static::$params = require(__DIR__ . '/data/config.php');
-            parent::setUp();
-            $this->db = BaseRecord::$db = $this->getConnection();
-        }
+        static::$params = require(__DIR__ . '/data/config.php');
+        parent::setUp();
+        self::$db = BaseRecord::$db = $this->getConnection(self::$db === null, self::$db === null);
     }
 
-    public function testLoad()
-    {
-        $post = [
+    protected static $postInput = [
+        'Person' => [
             'boss.first' => 'Tom',
             'boss.last' => 'Worster',
             'address.street' => '123 Foo St',
             'address.city' => 'Barton',
-        ];
+        ]
+    ];
+    protected static $toArray = [
+        'boss' => [
+            'first' => 'Tom',
+            'last' => 'Worster',
+        ],
+        'address' => [
+            'street' => '123 Foo St',
+            'city' => 'Barton',
+        ],
+    ];
 
-        $model = new Person();
-        $this->assertFalse($model->load($post));
-        $this->assertEmpty($model->toArray());
+    public function testLoad()
+    {
+        $p = new Person();
+        $p->scenario = 'all';
+        $this->assertTrue($p->load(self::$postInput));
+        $this->assertEquals(self::$toArray, $p->toArray());
+    }
 
-        $model->scenario = 'boss';
-//        $this->assertTrue($model->load($post));
-        $model->attributes = $post;
-        $this->assertEquals(
-            [
-                'boss.first' => 'Tom',
-                'boss.last' => 'Worster',
-            ],
-            $model->toArray()
-        );
+    public function testMassive()
+    {
+        $p = new Person();
+        $p->scenario = 'all';
+        $p->attributes = self::$postInput['Person'];
+        $this->assertEquals(self::$toArray, $p->toArray());
+    }
 
-        $model->scenario = 'all';
-        $this->assertTrue($model->load($post));
-        $this->assertEquals($post, $model->toArray());
+    public function testSafe()
+    {
+        $p = new Person();
+        $p->load(self::$postInput);
+        $this->assertEmpty($p->toArray());
+
+        $p->scenario = 'boss';
+        $p->load(self::$postInput);
+        $this->assertEquals(['boss' => self::$toArray['boss']], $p->toArray());
+
+        $p->scenario = 'all';
+        $p->load(self::$postInput);
+        $this->assertEquals(self::$toArray, $p->toArray());
+    }
+
+    public function testValidationSome()
+    {
+        $p = new Person();
+        $p->scenario = 'boss';
+        $p->load(self::$postInput);
+
+        $this->assertTrue($p->validate(['boss.first']));
+
+        $this->assertEmpty($p->errors);
+        $this->assertFalse($p->validate(['boss.last']));
+        $this->assertEquals(['boss.last'], array_keys($p->errors));
+    }
+
+    public function testValidationAll()
+    {
+        $p = new Person();
+        $p->scenario = 'all';
+        $this->assertTrue($p->load(self::$postInput));
+
+        $this->assertFalse($p->validate());
+        $this->assertEquals(['boss.last'], array_keys($p->errors));
     }
 
     /**
