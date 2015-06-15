@@ -229,21 +229,37 @@ class DynamicActiveRecord extends ActiveRecord
      * Different from familliar __get() in Yii because it returns null if the requested attribute doesn't exist.
      *
      * @param string $name
-     *
      * @return mixed|null
      */
     public function __get($name)
     {
-        $value = null;
+        return $this->getAttribute($name);
+    }
+
+    /**
+     * Allows access to child attributes through dot notation.
+     *
+     * @param string $name
+     * @return mixed|null
+     */
+    public function getAttribute($name)
+    {
         try {
-            $value = parent::__get($name);
+            return parent::__get($name);
         } catch (UnknownPropertyException $ignore) {
-            if (isset($this->dynamicAttributes) && array_key_exists($name, $this->dynamicAttributes)) {
-                $value = $this->dynamicAttributes[$name];
-            }
         }
 
-        return $value;
+        $path = explode('.', $name);
+        $ref = & $this->dynamicAttributes;
+
+        foreach ($path as $key) {
+            if (!isset($ref[$key])) {
+                return null;
+            }
+            $ref = & $ref[$key];
+        }
+
+        return $ref;
     }
 
     /**
@@ -257,18 +273,75 @@ class DynamicActiveRecord extends ActiveRecord
         try {
             parent::__set($name, $value);
         } catch (UnknownPropertyException $ignore) {
-            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$}i', $name)) {
+            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\.\x7f-\xff]*$}i', $name)) {
                 throw new InvalidCallException('Invalid attribute name "' . $name . '"');
             }
-            $this->dynamicAttributes[$name] = $value;
+
+            if (strpos($name, '.') !== false) {
+                $this->setAttribute($name, $value);
+            } else {
+                $this->dynamicAttributes[$name] = $value;
+            }
         }
     }
+
+    /**
+      * @param string $name Dot notation signifies position in an array in
+      * a dynamic attribute, for example
+      *
+      *     $model->setAttribute('car.owner.name.last', 'Smith')
+      *
+      * is like
+      *
+      *     $model->car['owner']['name']['last'] = 'Smith'
+      *
+      * if that were possible, if you know what I mean.
+      * @param mixed $value
+      */
+     public function setAttribute($name, $value)
+     {
+         if (strpos($name, '.') === false) {
+             $this->$name = $value;
+
+             return;
+         }
+
+         $path = explode('.', $name);
+         $ref = & $this->dynamicAttributes;
+
+         // Walk forwards through $path to find the deepest key already set.
+         do {
+             $key = $path[0];
+             if (isset($ref[$key])) {
+                 $ref = & $ref[$key];
+                 array_shift($path);
+             } else {
+                 break;
+             }
+         } while ($path);
+
+         // If the whole path already existed then we can just set it.
+         if (!$path) {
+             $ref = $value;
+
+             return;
+         }
+
+         // If there is remaining path then we have to set a new leaf
+         // in dynamicAttributes. Its key will be the first part of the
+         // remaining path. If there is any path beyond that then we need
+         // build an array to set it to.
+         while (count($path) > 1) {
+             $key = array_pop($path);
+             $value = [$key => $value];
+         }
+         $ref[$path[0]] = $value;
+     }
 
     /**
      * Tests any kind of property or attribute, dynamic or otherwise.
      *
      * @param string $name
-     *
      * @return bool
      */
     public function __isset($name)
@@ -287,6 +360,31 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
+     * Allows access to child attributes through dot notation.
+     *
+     * @param $name
+     * @return bool
+     */
+    public function issetAttribute($name)
+    {
+        if (strpos($name, '.') === false) {
+            return isset($this->$name);
+        }
+
+        $path = explode('.', $name);
+        $ref = & $this->dynamicAttributes;
+
+        foreach ($path as $key) {
+            if (!isset($ref[$key])) {
+                return false;
+            }
+            $ref = & $ref[$key];
+        }
+
+        return true;
+    }
+
+    /**
      * Unsets any kind of property or attribute, dynamic or otherwise.
      *
      * @param string $name
@@ -298,6 +396,22 @@ class DynamicActiveRecord extends ActiveRecord
         } else {
             parent::__unset($name);
         }
+    }
+
+    /**
+     * Allows access to child attributes through dot notation.
+     *
+     * @param $name
+     */
+    public function unsetAttribute($name)
+    {
+        if (strpos($name, '.') === false) {
+            unset($this->name);
+
+            return;
+        }
+
+        $this->setAttribute($name, null);
     }
 
     /**
@@ -333,7 +447,6 @@ class DynamicActiveRecord extends ActiveRecord
 
         return $fields;
     }
-
     /**
      * Return a list of all model attribute names recursing structured dynamic attributes.
      *
@@ -348,128 +461,6 @@ class DynamicActiveRecord extends ActiveRecord
             array_values(parent::fields()),
             static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
         );
-    }
-
-    /**
-     * Allows access to child attributes through dot notation.
-     *
-     * @param $name
-     *
-     * @return bool
-     */
-    public function issetAttribute($name)
-    {
-        if (strpos($name, '.') === false) {
-            return isset($this->$name);
-        }
-
-        $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
-
-        foreach ($path as $key) {
-            if (!isset($ref[$key])) {
-                return false;
-            }
-            $ref = & $ref[$key];
-        }
-
-        return true;
-    }
-
-    /**
-     * Allows access to child attributes through dot notation.
-     *
-     * @param $name
-     */
-    public function unsetAttribute($name)
-    {
-        if (strpos($name, '.') === false) {
-            unset($this->name);
-
-            return;
-        }
-
-        $this->setAttribute($name, null);
-    }
-
-    /**
-     * Allows access to child attributes through dot notation.
-     *
-     * @param string $name
-     *
-     * @return mixed|null
-     */
-    public function getAttribute($name)
-    {
-        try {
-            return parent::__get($name);
-        } catch (UnknownPropertyException $ignore) {
-        }
-
-        $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
-
-        foreach ($path as $key) {
-            if (!isset($ref[$key])) {
-                return null;
-            }
-            $ref = & $ref[$key];
-        }
-
-        return $ref;
-    }
-
-    /**
-     * @param string $name Dot notation signifies position in an array in
-     * a dynamic attribute, for example
-     *
-     *     $model->setAttribute('car.owner.name.last', 'Smith')
-     *
-     * is like
-     *
-     *     $model->car['owner']['name']['last'] = 'Smith'
-     *
-     * if that were possible, if you know what I mean.
-     * @param mixed $value
-     */
-    public function setAttribute($name, $value)
-    {
-        if (strpos($name, '.') === false) {
-            $this->$name = $value;
-
-            return;
-        }
-
-        $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
-
-        // Walk forwards through $path to find the deepends key already set.
-        do {
-            $key = $path[0];
-            if (isset($ref[$key])) {
-                $ref = & $ref[$key];
-                array_shift($path);
-            } else {
-                break;
-            }
-        } while ($path);
-
-        // If the whole path already existed then we can just set it.
-        if (!$path) {
-            $ref = $value;
-
-            return;
-        }
-
-        // If there is remaining path then we have to set a new leaf
-        // in dynamicAttributes. Its key will be the first part of the
-        // remaining path. If there is any path beyond that then we need
-        // build an array to set it to.
-        while (count($path) > 1) {
-            $key = array_pop($path);
-            $value = [$key => $value];
-        }
-        $ref[$path[0]] = $value;
     }
 
     /**
