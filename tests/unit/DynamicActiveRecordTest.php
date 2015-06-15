@@ -42,130 +42,10 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->db = BaseRecord::$db = $this->getConnection(self::$resetFixture);
     }
 
-    /**
-     * Also test __get()
-     */
-    public function testSetGetAttribute()
-    {
-        self::$resetFixture = false;
-        $array = [
-            'a' => 1,
-            'b' => ['a' => 1, 'b' => 2],
-            'c' => [
-                'a' => 1,
-                'b' => ['a' => 1, 'b' => 2],
-                'c' => [
-                    'a' => 1,
-                    'b' => ['a' => 1, 'b' => 2],
-                    'c' => [
-                        'a' => 1,
-                        'b' => ['a' => 1, 'b' => 2],
-                        'c' => 3
-                    ]
-                ]
-            ]
-        ];
-
-        $p = new Product();
-        $p->setAttribute('array', $array);
-
-        $array['d'] = 4;
-        $p->setAttribute('array.d', 4);
-        $this->assertEquals($array, $p->array);
-        $this->assertEquals($array, $p->getAttribute('array'));
-        $this->assertEquals(4, $p->getAttribute('array.d'));
-
-        $array['e']['a']['b']['c'] = 5;
-        $p->setAttribute('array.e.a.b.c', 5);
-        $this->assertEquals($array, $p->array);
-        $this->assertEquals($array, $p->getAttribute('array'));
-        $this->assertEquals(5, $p->getAttribute('array.e.a.b.c'));
-
-        $array['c']['b']['c'] = 6;
-        $p->setAttribute('array.c.b.c', 6);
-        $this->assertEquals($array, $p->array);
-        $this->assertEquals($array, $p->getAttribute('array'));
-        $this->assertEquals(6, $p->getAttribute('array.c.b.c'));
-
-        $array['c']['c']['b']['d'] = ['x' => 1, 'y' => ['z' => 2]];
-        $p->setAttribute('array.c.c.b.d', ['x' => 1, 'y' => ['z' => 2]]);
-        $this->assertEquals($array, $p->array);
-        $this->assertEquals($array, $p->getAttribute('array'));
-        $this->assertEquals(['x' => 1, 'y' => ['z' => 2]], $p->getAttribute('array.c.c.b.d'));
-
-        $array['c']['c']['c'] = 7;
-        $p->setAttribute('array.c.c.c', 7);
-        $this->assertEquals($array, $p->array);
-        $this->assertEquals($array, $p->getAttribute('array'));
-        $this->assertEquals(7, $p->getAttribute('array.c.c.c'));
-
-        $array['c']['c'] = [9, 8, 7, 6];
-        $p->setAttribute('array.c.c', [9, 8, 7, 6]);
-        $this->assertEquals($array, $p->array);
-        $this->assertEquals($array, $p->getAttribute('array'));
-        $this->assertEquals([9, 8, 7, 6], $p->getAttribute('array.c.c'));
-    }
-
-    public function testIssetUnsetAttribute()
-    {
-        $p = new Product();
-
-        $this->assertFalse($p->issetAttribute('doesntexist'));
-        $p->unsetAttribute('doesntexist');
-        $this->assertFalse($p->issetAttribute('doesntexist'));
-
-        // unset column attribute
-        $this->assertFalse($p->issetAttribute('name'));
-
-        $p->name = 'spinitron';
-        $this->assertTrue($p->issetAttribute('name'));
-        $p->unsetAttribute('name');
-        $this->assertFalse($p->issetAttribute('name'));
-
-        $p->setAttribute('array.c.c.b.d', ['x' => 1, 'y' => ['z' => 2]]);
-        $this->assertTrue($p->issetAttribute('array.c.c.b.d.y.z'));
-        $this->assertFalse($p->issetAttribute('array.c.c.b.d.doesntexist'));
-
-        $p->unsetAttribute('array.c.c.b.d.doesntexist');
-        $this->assertFalse($p->issetAttribute('array.c.c.b.d.doesntexist'));
-
-        $p->unsetAttribute('array.c.c.b');
-        $this->assertFalse($p->issetAttribute('array.c.c.b.d.doesntexist'));
-        $this->assertFalse($p->issetAttribute('array.c.c.b.d.y.z'));
-        $this->assertFalse($p->issetAttribute('array.c.c.b.d.y'));
-        $this->assertFalse($p->issetAttribute('array.c.c.b.d'));
-        $this->assertFalse($p->issetAttribute('array.c.c.b'));
-        $this->assertTrue($p->issetAttribute('array.c.c'));
-    }
-
-    public function testGetNullAttribute()
-    {
-        $p = new Product();
-        $this->assertNull($p->doesntexist);
-        $this->assertNull($p->name);
-        $p->setAttribute('array.c.c.b.d', ['x' => 1, 'y' => ['z' => 2]]);
-        $this->assertNotNull($p->getAttribute('array.c.c.b.d.y.z'));
-        $this->assertNull($p->getAttribute('array.c.c.b.d.y.z.doesntexist'));
-        $this->assertNull($p->getAttribute('array.c.doesntexist'));
-        $p->unsetAttribute('array.c.c.b');
-        $this->assertNull($p->getAttribute('array.c.c.b.d.y.z'));
-        $this->assertNull($p->getAttribute('array.c.c.b'));
-    }
-
-    /**
-     * @expectedException \yii\base\InvalidCallException
-     * @expectedExceptionMessage Invalid attribute name "4chan"
-     */
-    public function testInvalidAttributeName()
-    {
-        $p = new Product();
-        $p->__set('4chan', 'sucks');
-    }
-
     public function testReadBinary()
     {
         $json = $this->db->createCommand(
-            'select column_json(dynamic_columns) from product where id=10'
+            'SELECT column_json(dynamic_columns) FROM product WHERE id=10'
         )->queryScalar();
         // todo need an assertion
     }
@@ -394,7 +274,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         self::$resetFixture = false;
         $product = new Product();
-        /** @var string $product->$name */
+        /** @var string $product ->$name */
         $product->$name = $value;
 
         $product->save(false);
@@ -453,8 +333,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindColumn();
 
         $this->assertEquals([123, 456, 792], Product::find()->select(['(!int|int!)'])->column());
-        $this->assertEquals([792, 456, 123], Product::find()->orderBy(['(!int|int!)' => SORT_DESC])->select(['(!int|int!)'])
-            ->column());
+        $this->assertEquals([792, 456, 123],
+            Product::find()->orderBy(['(!int|int!)' => SORT_DESC])->select(['(!int|int!)'])
+                ->column());
     }
 
     public function testFindBySql()
@@ -462,8 +343,12 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindBySql();
 
         // find with parameter binding
-        $product = Product::findBySql('SELECT *, COLUMN_JSON(dynamic_columns) as dynamic_columns FROM product WHERE (!children.str!)=:v', [':v' => 'value1'])
-            ->one();
+        $product =
+            Product::findBySql(
+                'SELECT *, COLUMN_JSON(dynamic_columns) AS dynamic_columns
+                FROM product WHERE (! children.str !)=:v',
+                [':v' => 'value1'])
+                ->one();
         $this->assertTrue($product instanceof Product);
         $this->assertEquals('product1', $product->name);
         $this->assertEquals('value1', $product->children['str']);
@@ -623,7 +508,8 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::testFindComplexCondition();
 
         $this->assertEquals(2, Product::find()->where(['OR', ['(!int!)' => '123'], ['(!int!)' => '456']])->count());
-        $this->assertEquals(2, count(Product::find()->where(['OR', ['(!int!)' => '123'], ['(!int!)' => '456']])->all()));
+        $this->assertEquals(2,
+            count(Product::find()->where(['OR', ['(!int!)' => '123'], ['(!int!)' => '456']])->all()));
 
         $this->assertEquals(2, Product::find()->where(['(!children.str!)' => ['value1', 'value3']])->count());
         $this->assertEquals(2, count(Product::find()->where(['(!children.str!)' => ['value1', 'value3']])->all()));
