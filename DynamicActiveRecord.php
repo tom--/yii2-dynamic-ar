@@ -226,10 +226,7 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Different from familliar __get() in Yii because it returns null if the requested attribute doesn't exist.
-     *
-     * @param string $name
-     * @return mixed|null
+     * @inheritdoc
      */
     public function __get($name)
     {
@@ -263,26 +260,11 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Sets a dynamic attribute if a property, VA or column attribute cannot be set.
-     *
-     * @param string $name
-     * @param mixed $value
+     * @inheritdoc
      */
     public function __set($name, $value)
     {
-        try {
-            parent::__set($name, $value);
-        } catch (UnknownPropertyException $ignore) {
-            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\.\x7f-\xff]*$}i', $name)) {
-                throw new InvalidCallException('Invalid attribute name "' . $name . '"');
-            }
-
-            if (strpos($name, '.') !== false) {
-                $this->setAttribute($name, $value);
-            } else {
-                $this->dynamicAttributes[$name] = $value;
-            }
-        }
+        $this->setAttribute($name, $value);
     }
 
     /**
@@ -300,9 +282,18 @@ class DynamicActiveRecord extends ActiveRecord
       */
      public function setAttribute($name, $value)
      {
-         if (strpos($name, '.') === false) {
-             $this->$name = $value;
+         try {
+             parent::__set($name, $value);
+             return;
+         } catch (UnknownPropertyException $ignore) {
+         }
 
+         if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*(\.|$)}i', $name, $matches)) {
+             throw new InvalidCallException('Invalid attribute name "' . $name . '"');
+         }
+
+         if ($matches[1] === '') {
+             $this->dynamicAttributes[$name] = $value;
              return;
          }
 
@@ -455,8 +446,6 @@ class DynamicActiveRecord extends ActiveRecord
      */
     public function allAttributes()
     {
-        $fields = parent::fields();
-
         return array_merge(
             array_values(parent::fields()),
             static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
