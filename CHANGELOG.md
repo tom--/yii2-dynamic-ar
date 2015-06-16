@@ -15,3 +15,7 @@
 ## 0.2.1 June 8 2015
 
 - Bug: Empty array in DynamicActiveRecord::dynColSqlMaria() creates invalid COLUMN_CREATE() command
+
+## 0.2.2 June 13 2015
+
+- Enh: Allowed to use spaces in dyn attributes in queries, e.g. `(! attr !)`
