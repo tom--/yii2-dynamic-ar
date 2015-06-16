@@ -5,7 +5,6 @@ namespace tests\unit;
 use tests\unit\data\dar\Person;
 use tests\unit\data\dar\Product;
 use tests\unit\data\BaseRecord;
-use tests\unit\data\dar\Supplier;
 use yii\db\Connection;
 use yiiunit\framework\db\DatabaseTestCase;
 
@@ -19,6 +18,14 @@ class DynamicActiveRecordAccessTest extends DatabaseTestCase
         static::$params = require(__DIR__ . '/data/config.php');
         parent::setUp();
         self::$db = BaseRecord::$db = $this->getConnection(self::$db === null, self::$db === null);
+    }
+
+    public function testIsset()
+    {
+        $p = new Person();
+        $p->setAttribute('a.b.c', null);
+        $this->assertTrue($p->issetAttribute('a.b'));
+        $this->assertFalse($p->issetAttribute('a.b.c'));
     }
 
     protected static $postInput = [
@@ -203,13 +210,11 @@ class DynamicActiveRecordAccessTest extends DatabaseTestCase
         $this->assertNull($p->getAttribute('array.c.c.b'));
     }
 
-    /**
-     * @expectedException \yii\base\InvalidCallException
-     * @expectedExceptionMessage Invalid attribute name "4chan"
-     */
-    public function testInvalidAttributeName()
+    public function testWonkyAttributeNames()
     {
         $p = new Product();
         $p->__set('4chan', 'sucks');
+        $this->assertTrue($p->__isset('4chan'));
+        $this->assertEquals('sucks', $p->__get('4chan'));
     }
 }
