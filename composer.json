@@ -28,7 +28,6 @@
     "require-dev": {
         "yiisoft/yii2-dev": "~2.0",
         "phpunit/phpunit": "~4.4",
-        "psy/psysh": "*"
     },
     "autoload": {
    		"psr-4": {
