@@ -9,7 +9,7 @@ use tests\unit\data\dar\Supplier;
 use yii\db\Connection;
 use yiiunit\framework\db\DatabaseTestCase;
 
-class DynamicModelTest extends DatabaseTestCase
+class DynamicActiveRecordAccessTest extends DatabaseTestCase
 {
     /** @var Connection */
     static $db;
