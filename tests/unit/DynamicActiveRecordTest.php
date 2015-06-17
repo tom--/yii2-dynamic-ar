@@ -45,7 +45,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testReadBinary()
     {
         $json = $this->db->createCommand(
-            'SELECT column_json(dynamic_columns) FROM product WHERE id=10'
+            'select column_json(dynamic_columns) from product where id=10'
         )->queryScalar();
         // todo need an assertion
     }
@@ -274,7 +274,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         self::$resetFixture = false;
         $product = new Product();
-        /** @var string $product ->$name */
+        /** @var string $product->$name */
         $product->$name = $value;
 
         $product->save(false);
