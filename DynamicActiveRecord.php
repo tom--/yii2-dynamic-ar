@@ -9,7 +9,6 @@ namespace spinitron\dynamicAr;
 
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidCallException;
 use yii\base\UnknownPropertyException;
 use yii\db\ActiveRecord;
 
@@ -41,6 +40,193 @@ class DynamicActiveRecord extends ActiveRecord
      * @var int
      */
     protected static $placeholderCounter;
+
+    public function __get($name)
+    {
+        return $this->getAttribute($name);
+    }
+
+    public function __set($name, $value)
+    {
+        $this->setAttribute($name, $value);
+    }
+
+    public function __isset($name)
+    {
+        return $this->issetAttribute($name);
+    }
+
+    public function __unset($name)
+    {
+        $this->unsetAttribute($name);
+    }
+
+    /**
+     * Returns a model attribute value.
+     *
+     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     *
+     * @return mixed|null
+     */
+    public function getAttribute($name)
+    {
+        try {
+            return parent::__get($name);
+        } catch (UnknownPropertyException $ignore) {
+        }
+
+        $path = explode('.', $name);
+        $ref = &$this->dynamicAttributes;
+
+        foreach ($path as $key) {
+            if (!isset($ref[$key])) {
+                return null;
+            }
+            $ref = &$ref[$key];
+        }
+
+        return $ref;
+    }
+
+    /**
+     * Sets a model attribute.
+     *
+     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     * @param mixed $value the attribute value
+     */
+    public function setAttribute($name, $value)
+    {
+        try {
+            parent::__set($name, $value);
+
+            return;
+        } catch (UnknownPropertyException $ignore) {
+        }
+
+        $path = explode('.', $name);
+        $ref = &$this->dynamicAttributes;
+
+        // Walk forwards through $path to find the deepest key already set.
+        do {
+            $key = $path[0];
+            if (isset($ref[$key])) {
+                $ref = &$ref[$key];
+                array_shift($path);
+            } else {
+                break;
+            }
+        } while ($path);
+
+        // If the whole path already existed then we can just set it.
+        if (!$path) {
+            $ref = $value;
+
+            return;
+        }
+
+        // There is remaining path so we have to set a new leaf with the first
+        // part of the remaining path as key. But first, if there is any path
+        // beyond that then we need build an array to set as the new leaf value.
+        while (count($path) > 1) {
+            $key = array_pop($path);
+            $value = [$key => $value];
+        }
+        $ref[$path[0]] = $value;
+    }
+
+    /**
+     * Returns if a model attribute is set.
+     *
+     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     *
+     * @return bool true if the attribute is set
+     */
+    public function issetAttribute($name)
+    {
+        try {
+            if (parent::__get($name) !== null) {
+                return true;
+            }
+        } catch (Exception $ignore) {
+        }
+
+        $path = explode('.', $name);
+        $ref = &$this->dynamicAttributes;
+
+        foreach ($path as $key) {
+            if (!isset($ref[$key])) {
+                return false;
+            }
+            $ref = &$ref[$key];
+        }
+
+        return true;
+    }
+
+    /**
+     * Unset a model attribute.
+     *
+     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     */
+    public function unsetAttribute($name)
+    {
+        try {
+            parent::__unset($name);
+        } catch (\Exception $ignore) {
+        }
+
+        if ($this->issetAttribute($name)) {
+            $this->setAttribute($name, null);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fields()
+    {
+        $fields = array_keys((array) $this->dynamicAttributes);
+
+        return array_merge(parent::fields(), $fields);
+    }
+
+    /**
+     * Return a list of string array keys in dotted notation, recursing subarrays.
+     *
+     * @param string $prefix Prefix returned array keys with this string
+     * @param array $array An array of attributeName => value pairs
+     *
+     * @return array The list of attribute names in dotted notation
+     */
+    protected static function dotAttributes($prefix, $array)
+    {
+        $fields = [];
+        foreach ($array as $key => $value) {
+            if (is_string($key)) {
+                $newPos = $prefix . '.' . $key;
+                $fields[] = $newPos;
+                if (is_array($value)) {
+                    $fields = array_merge($fields, static::dotAttributes($newPos, $value));
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Return a list of all model attribute names recursing structured dynamic attributes.
+     *
+     * @return string[] The list of all attribute names
+     * @throws Exception
+     */
+    public function allAttributes()
+    {
+        return array_merge(
+            array_values(parent::fields()),
+            static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
+        );
+    }
 
     public static function placeholder()
     {
@@ -84,6 +270,7 @@ class DynamicActiveRecord extends ActiveRecord
 
     /**
      * Replacement for PHP's array walk and map builtins.
+     *
      * @param $array
      * @param $method
      */
@@ -115,6 +302,7 @@ class DynamicActiveRecord extends ActiveRecord
 
     /**
      * Encodes as data URIs any "binary' strings in an array.
+     *
      * @param $array
      */
     public static function encodeArrayForMaria(& $array)
@@ -124,19 +312,12 @@ class DynamicActiveRecord extends ActiveRecord
 
     /**
      * Encodes any data URI strings in an array.
+     *
      * @param $array
      */
     public static function decodeArrayForMaria(& $array)
     {
         self::walk($array, 'decodeForMaria');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function find()
-    {
-        return Yii::createObject(DynamicActiveQuery::className(), [get_called_class()]);
     }
 
     /**
@@ -153,7 +334,7 @@ class DynamicActiveRecord extends ActiveRecord
         $sql = [];
         foreach ($attrs as $key => $value) {
             if (is_object($value)) {
-                $value = (array)$value;
+                $value = (array) $value;
             }
             if ($value === [] || $value === null) {
                 continue;
@@ -226,251 +407,6 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Different from familliar __get() in Yii because it returns null if the requested attribute doesn't exist.
-     *
-     * @param string $name
-     *
-     * @return mixed|null
-     */
-    public function __get($name)
-    {
-        $value = null;
-        try {
-            $value = parent::__get($name);
-        } catch (UnknownPropertyException $ignore) {
-            if (isset($this->dynamicAttributes) && array_key_exists($name, $this->dynamicAttributes)) {
-                $value = $this->dynamicAttributes[$name];
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * Sets a dynamic attribute if a property, VA or column attribute cannot be set.
-     *
-     * @param string $name
-     * @param mixed $value
-     */
-    public function __set($name, $value)
-    {
-        try {
-            parent::__set($name, $value);
-        } catch (UnknownPropertyException $ignore) {
-            if (!preg_match('{^[a-z_\x7f-\xff][a-z0-9_\x7f-\xff]*$}i', $name)) {
-                throw new InvalidCallException('Invalid attribute name "' . $name . '"');
-            }
-            $this->dynamicAttributes[$name] = $value;
-        }
-    }
-
-    /**
-     * Tests any kind of property or attribute, dynamic or otherwise.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function __isset($name)
-    {
-        try {
-            $set = parent::__get($name) !== null;
-        } catch (Exception $ignore) {
-            $set = false;
-        }
-
-        if (!$set) {
-            $set = isset($this->dynamicAttributes[$name]);
-        }
-
-        return $set;
-    }
-
-    /**
-     * Unsets any kind of property or attribute, dynamic or otherwise.
-     *
-     * @param string $name
-     */
-    public function __unset($name)
-    {
-        if (array_key_exists($name, $this->dynamicAttributes)) {
-            unset($this->dynamicAttributes[$name]);
-        } else {
-            parent::__unset($name);
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function fields()
-    {
-        $fields = array_keys((array) $this->dynamicAttributes);
-
-        return array_merge(parent::fields(), $fields);
-    }
-
-    /**
-     * Return a list of string array keys in dotted notation, recursing subarrays.
-     *
-     * @param string $prefix Prefix returned array keys with this string
-     * @param array $array An array of attributeName => value pairs
-     *
-     * @return array The list of attribute names in dotted notation
-     */
-    protected static function dotAttributes($prefix, $array)
-    {
-        $fields = [];
-        foreach ($array as $key => $value) {
-            if (is_string($key)) {
-                $newPos = $prefix . '.' . $key;
-                $fields[] = $newPos;
-                if (is_array($value)) {
-                    $fields = array_merge($fields, static::dotAttributes($newPos, $value));
-                }
-            }
-        }
-
-        return $fields;
-    }
-
-    /**
-     * Return a list of all model attribute names recursing structured dynamic attributes.
-     *
-     * @return string[] The list of all attribute names
-     * @throws Exception
-     */
-    public function allAttributes()
-    {
-        return array_merge(
-            array_values(parent::fields()),
-            static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
-        );
-    }
-
-    /**
-     * Allows access to child attributes through dot notation.
-     *
-     * @param $name
-     *
-     * @return bool
-     */
-    public function issetAttribute($name)
-    {
-        if (strpos($name, '.') === false) {
-            return isset($this->$name);
-        }
-
-        $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
-
-        foreach ($path as $key) {
-            if (!isset($ref[$key])) {
-                return false;
-            }
-            $ref = & $ref[$key];
-        }
-
-        return true;
-    }
-
-    /**
-     * Allows access to child attributes through dot notation.
-     *
-     * @param $name
-     */
-    public function unsetAttribute($name)
-    {
-        if (strpos($name, '.') === false) {
-            unset($this->name);
-
-            return;
-        }
-
-        $this->setAttribute($name, null);
-    }
-
-    /**
-     * Allows access to child attributes through dot notation.
-     *
-     * @param string $name
-     *
-     * @return mixed|null
-     */
-    public function getAttribute($name)
-    {
-        try {
-            return parent::__get($name);
-        } catch (UnknownPropertyException $ignore) {
-        }
-
-        $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
-
-        foreach ($path as $key) {
-            if (!isset($ref[$key])) {
-                return null;
-            }
-            $ref = & $ref[$key];
-        }
-
-        return $ref;
-    }
-
-    /**
-     * @param string $name Dot notation signifies position in an array in
-     * a dynamic attribute, for example
-     *
-     *     $model->setAttribute('car.owner.name.last', 'Smith')
-     *
-     * is like
-     *
-     *     $model->car['owner']['name']['last'] = 'Smith'
-     *
-     * if that were possible, if you know what I mean.
-     * @param mixed $value
-     */
-    public function setAttribute($name, $value)
-    {
-        if (strpos($name, '.') === false) {
-            $this->$name = $value;
-
-            return;
-        }
-
-        $path = explode('.', $name);
-        $ref = & $this->dynamicAttributes;
-
-        // Walk forwards through $path to find the deepends key already set.
-        do {
-            $key = $path[0];
-            if (isset($ref[$key])) {
-                $ref = & $ref[$key];
-                array_shift($path);
-            } else {
-                break;
-            }
-        } while ($path);
-
-        // If the whole path already existed then we can just set it.
-        if (!$path) {
-            $ref = $value;
-
-            return;
-        }
-
-        // If there is remaining path then we have to set a new leaf
-        // in dynamicAttributes. Its key will be the first part of the
-        // remaining path. If there is any path beyond that then we need
-        // build an array to set it to.
-        while (count($path) > 1) {
-            $key = array_pop($path);
-            $value = [$key => $value];
-        }
-        $ref[$path[0]] = $value;
-    }
-
-    /**
      * Specifies the name of the table column containing dynamic attributes.
      *
      * @return string Name of the table column containing dynamic column data
@@ -479,6 +415,14 @@ class DynamicActiveRecord extends ActiveRecord
     public static function dynamicColumn()
     {
         throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function find()
+    {
+        return Yii::createObject(DynamicActiveQuery::className(), [get_called_class()]);
     }
 
     /**
