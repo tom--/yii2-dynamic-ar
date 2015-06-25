@@ -19,3 +19,8 @@
 ## 0.2.2 June 13 2015
 
 - Enh: Allowed to use spaces in dyn attributes in queries, e.g. `(! attr !)`
+
+## 0.2.3 June 25 2015
+
+- Bug: Inconsistencies in magic methods
+- Refactor: Reorganized DynamicActiveRecord, made each magic method a wrapper
