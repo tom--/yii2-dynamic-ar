@@ -13,7 +13,7 @@
     "authors": [
         {
             "name": "Tom Worster",
-            "email": "tom@thefsb.org"
+            "email": "tom@spinitron.org"
         },
         {
             "name": "Danil Zakablukovskii",
@@ -42,7 +42,7 @@
     },
     "autoload": {
    		"psr-4": {
-   			"spinitron\\dynamicAr\\": ""
-   		}
+            "spinitron\\dynamicAr\\": ""
+        }
    	}
 }
