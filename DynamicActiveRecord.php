@@ -16,28 +16,29 @@ use yii\db\ActiveRecord;
  * DynamicActiveRecord represents relational data with structured dynamic attributes
  * in addition to column attributes supported by ActiveRecord.
  *
- * DynamicActiveRecord adds structured dynamic attributes to Yii 2.0 ActiveRecord a bit
+ * DynamicActiveRecord adds structured dynamic attributes to Yii 2 ActiveRecord a bit
  * like adding a document, in the sense of a NoSQL document store database, to each
  * SQL table record. At present this is implemented for
- * [Maria 10.0+ Dynamic Columns](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
+ * [Maria 10.0+ Dynamic Columns](https://mariadb.com/kb/en/mariadb/dynamic-columns/).
  *
- * Model classes must implement the {dynamicColumn()} method to specify the name of the
- * table column containing the serialized dynamic attributes.
- *
- * You can read and write attributes of a DynamicActiveRecord model that have no
- * declaration as instance variables, column attributes or virtual attribute.
+ * You can read and write attributes of a DynamicActiveRecord model that are not
+ * instance variables, column attributes or virtual attribute. In other words, you can make
+ * up attribute names on-the-fly, assign values and they are stored in the database. You can
+ * then involve these dynamic attributes in queries using [[DynamicActiveQuery]].
  *
  * Dynamic attributes may also be data structures in the form of PHP arrays, elements of
  * which can be accessed through dotted attribute notation.
  *
- *     $model->specs = ['dimensions' => ['length' => 20]];
- *     $model->setAttribute('specs.dimensions.width', 4);
- *     $model->setAttribute('specs.color', 'blue');
- *     // $model->specs now has the value
- *     // ['dimensions' => ['length' => 20, 'width' => 4], 'color' => 'blue']
+ * ```php
+ * $model->specs = ['dimensions' => ['length' => 20]];
+ * $model->setAttribute('specs.dimensions.width', 4);
+ * $model->setAttribute('specs.color', 'blue');
+ * // $model->specs now has the value
+ * // ['dimensions' => ['length' => 20, 'width' => 4], 'color' => 'blue']
+ * ```
  *
- * DynamicActiveRecord can be used together with {DynamicActiveQuery} which can represent
- * dynamic attributes in queries.
+ * Model classes must implement the [[dynamicColumn()]] method to specify the name of the
+ * table column containing the serialized dynamic attributes.
  *
  * @author Tom Worster <fsb@thefsb.org>
  */
@@ -233,14 +234,14 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Return a list of string array keys in dotted notation, recursing subarrays.
+     * Return a list of an array's keys in dotted notation, recursing subarrays.
      *
      * @param string $prefix Prefix returned array keys with this string
      * @param array $array An array of attributeName => value pairs
      *
-     * @return array The list of attribute names in dotted notation
+     * @return array The list of keys in dotted notation
      */
-    protected static function dotAttributes($prefix, $array)
+    protected static function dotKeys($prefix, $array)
     {
         $fields = [];
         foreach ($array as $key => $value) {
@@ -248,7 +249,7 @@ class DynamicActiveRecord extends ActiveRecord
                 $newPos = $prefix . '.' . $key;
                 $fields[] = $newPos;
                 if (is_array($value)) {
-                    $fields = array_merge($fields, static::dotAttributes($newPos, $value));
+                    $fields = array_merge($fields, static::dotKeys($newPos, $value));
                 }
             }
         }
@@ -259,14 +260,14 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Return a list of all model attribute names recursing structured dynamic attributes.
      *
-     * @return string[] The list of all attribute names
+     * @return array an array of all attribute names in dotted notation
      * @throws Exception
      */
     public function allAttributes()
     {
         return array_merge(
             array_values(parent::fields()),
-            static::dotAttributes(static::dynamicColumn(), $this->_dynamicAttributes)
+            static::dotKeys(static::dynamicColumn(), $this->_dynamicAttributes)
         );
     }
 

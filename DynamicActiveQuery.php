@@ -10,30 +10,36 @@ namespace spinitron\dynamicAr;
 use Yii;
 use yii\base\UnknownPropertyException;
 use yii\db\ActiveQuery;
-use yii\db\Connection;
 
 /**
- * DynamicActiveRecord represents queries on relational data with structured dynamic attributes.
+ * DynamicActiveQuery represents queries on relational data with structured dynamic attributes.
  *
- * DynamicActiveQuery adds a way to write queries that involve
+ * DynamicActiveQuery adds to [[ActiveQuery]] a way to write queries that involve
  * the dynamic attributes of DynamicAccessRecord models. This is only possible on
  * a DBMS that supports querying elements in serialized data structures.
  *
- * Dynamic attribtes names bust be enclosed in (! … !) bang-parens and child attributes in
+ * > NOTE: In this version of Dynamic AR only Maria 10.0+ is supported in this version.
+ *
+ * Dynamic attribtes names must be enclosed in `(! … !)` (bang-parens) and child attributes in
  * structured dynamic attributes are accessed using dotted notation, for example
  *
- *     $model = Product::find()->where(['(!specs.color!)' => 'blue']);
- *
- * > NOTE: In this version only Maria 10.0+ is supported in this version.
+ * ```php
+ * $model = Product::find()->where(['(!specs.color!)' => 'blue']);
+ * ```
  *
  * If there is any need to specify the SQL data type of the dynamic attribute in the query,
  * for example if it appears in an SQL expression that needs this, then the type and dimension
- * can be given in the bang-parents after a pipe | following the attribute name, e.g.
+ * can be given in the bang-parents after a `|` (vertical bar or pipe character)
+ * following the attribute name, e.g.
  *
- *     $model = Product::find()->where(['(!specs.length|INT!) != 10']);
+ * ```php
+ * $model = Product::find()->where(['(! price.unit|DECIMAL(9,2) !) = 14.49']);
+ * ```
  *
  * Allowed datatypes are specified in
  * [Maria documentation](https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes)
+ *
+ * Whitespace inside the bang-parens is allowed but not around the vertical bar.
  *
  * @author Tom Worster <fsb@thefsb.org>
  * @author Danil Zakablukovskii danil.kabluk@gmail.com
@@ -117,6 +123,10 @@ class DynamicActiveQuery extends ActiveQuery
     /**
      * Generate DB command from ActiveQuery with Maria-specific SQL for dynamic columns.
      *
+     * User of DynamicActiveQuery should not normally need to use this method.
+     *
+     * ## History
+     *
      * This implementation is the best I could manage. A dynamic attribute name
      * can appear anywhere that a schema attribute name could appear (select, join, where, ...).
      * It needs to be converted to the Maria SQL using COLUMN_CREATE('name', value, …)
@@ -124,7 +134,9 @@ class DynamicActiveQuery extends ActiveQuery
      * Because SQL is statically-typed and there is no schema to refer to for dynamic
      * attributes, the accessor SQL must specify the the dyn-col's type, e.g.
      *
-     *     WHERE COLUMN_GET(details, 'color' AS CHAR) = 'black'
+     * ```sql
+     * WHERE COLUMN_GET(details, 'color' AS CHAR) = 'black'
+     * ```
      *
      * In which details is the blob column containing all the dynamic columns, 'color' is the
      * name of a dynamic column that may or may not appear in any given table record, and
@@ -152,20 +164,22 @@ class DynamicActiveQuery extends ActiveQuery
      * fundamentally intractible.
      *
      * So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
-     * of dynamic attributes and by explicitly specifying the type. The format I chose is:
+     * of dynamic attributes and by explicitly specifying the type. The format for this:
      *
-     *     (!name|type!)
+     *         (!name|type!)
      *
      * Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
-     * array elements, are separated from parents with . (period), e.g. (!address.country|CHAR!).
-     * Spaces are not tolerated. So a user can do:
+     * array elements, are separated from parents with `.` (period), e.g.
+     * `(!address.country|CHAR!)`. (Spaces are not alowed around the `|`.) So a user can do:
      *
-     *     $blackShirts = Product::find()
-     *         ->where(['category' => Product::SHIRT, '(!color!)' => 'black'])
+     *     $blueShirts = Product::find()
+     *         ->where(['category' => Product::SHIRT, '(!color!)' => 'blue'])
      *         ->all();
      *
      *     $cheapShirts = Product::find()
-     *         ->select(['sale' => 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))'])
+     *         ->select(
+     *             ['sale' => 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))']
+     *         )
      *         ->where(['category' => Product::SHIRT])
      *         ->andWhere('(!price.retail.unit|decimal(6,2)!) < 20.00')
      *         ->all();
@@ -220,6 +234,15 @@ REGEXP;
         return $db->createCommand($sql, $params);
     }
 
+    /**
+     * Returns the value of the element in an array refereced by a dot-notated attribute name.
+     *
+     * @param array $array an array of attributes and values, possibly nested
+     * @param string $attribute the attribute name in dotted notation
+     *
+     * @return mixed|null the element in $array referenced by $attribute or null if no such
+     * element exists
+     */
     protected function getDotNotatedValue($array, $attribute)
     {
         $pieces = explode('.', $attribute);
