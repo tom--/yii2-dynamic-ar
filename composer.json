@@ -22,8 +22,14 @@
             "role": "Developer"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.x-dev"
+        }
+    },
     "require": {
-        "yiisoft/yii2": "~2.0"
+        "yiisoft/yii2": "~2.0",
+        "yiisoft/yii2-apidoc": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-dev": "~2.0",
