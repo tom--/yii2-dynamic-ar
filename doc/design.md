@@ -1,8 +1,8 @@
 # yii2-dynamic-ar extension
 
 > NOTE: this was the original README for Dynamic AR when it was still in early design. It
-may still be of interest to som readers. But I'm not planning to make strenuous efforts to
-maintain this doc or keep it in line with the code.
+may still be of interest to some readers. But I'm not planning to make strenuous efforts to
+maintain.
 
 
 **Dynamic, structured attributes in [Active Record](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) and [Active Query](http://www.yiiframework.com/doc-2.0/yii-db-activequery.html) for SQL tables**
@@ -10,7 +10,7 @@ maintain this doc or keep it in line with the code.
 
 ## Motivation
 
-NoSQL-like features have been appearing in some SQL relational databases, 
+NoSQL-like features have been appearing in some SQL relational databases,
 including [Dynamic Columns in Maria 10.0+](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
 and
 [jsonb column types](http://www.postgresql.org/docs/9.4/static/datatype-json.html)
@@ -86,9 +86,9 @@ When updating a model, the DB record's dynamic attributes are all overwritten. A
 
 ### DynamicActiveQuery
 
-**tl;dr** When you use a dynamic attribute in a query, write it in bang-parens, e.g. `(!color!)` or `(!employee.id!)` 
+**tl;dr** When you use a dynamic attribute in a query, write it in bang-parens, e.g. `(!color!)` or `(!employee.id!)`
 and if your query needs it, specify the attribute type after a pipe or vertical bar, e.g.
-`(!employee.id|INT!) = 10` or `(!price.unit.usd|DECIMAL(6,2)!) <= 4.99`. 
+`(!employee.id|INT!) = 10` or `(!price.unit.usd|DECIMAL(6,2)!) <= 4.99`.
 
 DynamicActiveQuery only exists for those DMBSs that provide a way to query elements in data structures serialized to a field (for now, Maria 10+ and PostgreSQL 9.4+).
 
@@ -97,9 +97,9 @@ attributes. DynamicActiveQuery should allow, for example, creation of SQL such a
 the columns involved are serialized dynamic properties or table columns in the schema:
 
 ```sql
-SELECT 
+SELECT
 	t1.price,
-	CONCAT('Compare at $', t1.price) AS foo, 
+	CONCAT('Compare at $', t1.price) AS foo,
 	MIN(t1.price, t1.discount) AS sale
 FROM t1 JOIN t2 ON MIN(t1.price, t1.discount) > t2.cost
 WHERE price * 1.33 < 50.00
@@ -121,16 +121,16 @@ So DynamicActiveQuery needs a way to:
 
 The first cannot in general be automated by our extension without constraining the requirements or by radically changing ActiveQuery. Automating the second seems intractable to me. So I decided instead to require the user to distinguish dynamic attributes and
 declare their type. I feel this is reasonable since the user must always know both when accessing a dynamic attribute. (This is actually the
-basic nature of NoSQL – the schema is implicit in the application's business logic.) For this I needed a notation for dynamic attribute in DynamicActiveQuery. 
+basic nature of NoSQL – the schema is implicit in the application's business logic.) For this I needed a notation for dynamic attribute in DynamicActiveQuery.
 
 ### Dynamic attribute notation in queries
 
-A dynamic attribute reference is enclosed in bang-parens `(! … !)`. Whitespace in the 
+A dynamic attribute reference is enclosed in bang-parens `(! … !)`. Whitespace in the
 bang-parens is allowed. Inside the bang-parens is the dynamic attribute name optionally
-followed by a pipe or vertical bar `|` character and a datatype. 
+followed by a pipe or vertical bar `|` character and a datatype.
 The dynamic attribute name uses dot notation to represent child elements in a structure
 e.g. `grandparent.parent.child`.
-[Allowed datatypes](https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes) are determined by the RBDMS. 
+[Allowed datatypes](https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes) are determined by the RBDMS.
 If datatype is not specified `CHAR` is assumed.
 
 
@@ -142,7 +142,7 @@ General form | `(!label[.label[...]]|type!)`
 `->address['city']` with default datatype CHAR | `(!address.city!)`
 `->voltage['Vcc'][1]` with explicit datatype | `(!voltage.Vcd.1|DOUBLE!)`
 
-There is often no need to specify datatype in the dynamic attribute reference because 
+There is often no need to specify datatype in the dynamic attribute reference because
 both SQL and PHP can juggle type according to context.
 
 
