@@ -28,7 +28,7 @@
         },
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower-asset"
+            "bower-asset-library": "vendor/bower"
         }
     },
     "require": {
