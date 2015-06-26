@@ -16,8 +16,12 @@ attached to every row of an SQL table. It's a powerful
 feature that allows you to do things that have been hard in relational DBs.
 Problems that might drive you to Couch or Mongo, or to commit a crime like 
 [EAV](https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model)
-to your schema, can suddenly be easy when any record can have any number of attributes,
-structured like an associative array that are named by the app and not in the schema.
+to your schema, can suddenly be easy when
+
+- records can have any number of attributes,
+- attribute names can be made up on the fly,
+- the dynamic attribute names don't appear in teh schema,
+- dynamic attributes can be structured like an associative array.
 
 Dynamic AR works for Maria now and will come to PostgreSQL in the future.
 
@@ -138,9 +142,14 @@ class Product extends \spinitron\dynamicAr\DynamicActiveRecord
 }
 ```
 
-### Design principle
+## Design principle
 
-The design principles of Dynamic AR are:
+The design principle of Dynamic AR is
+
+> You can read, write and unset model attributes that
+aren't declared anywhere and their values may be structured, i.e. associative arrays.
+
+More formally
 
 - When you write to an attribute that isn't
     - a property declared in the model class
@@ -172,20 +181,31 @@ and is PHP null.
     PHP null.
 
 
-## More info
+## Further reading
 
-Class reference for
+Class reference
 
-- [DynamciActiveRecord]()
-- [DynamicActiveQuery]()
+- [DynamciActiveRecord](spinitron-dynamicar-dynamicactiverecord.html)
+- [DynamicActiveQuery](spinitron-dynamicar-dynamicactivequery.html)
 
-Some incompatibility in the data types as represented in PHP, SQL and JSON could potentually
-cause trouble. These are documented here.
+More documentation
 
-Anyone using Maria Dynamic Columns and OS X might find 
-[this Sequel Pro bundle](https://github.com/tom--/sequel-pro-maria-dynamic-column) useful.
+- [Datatypes](doc-datatypes.html) in PHP, SQL and JSON are not identical.
+- [Design history](doc-design.html) – The projects original README.
+
+Useful links
+
+- [Yii 2 Framework](http://www.yiiframework.com/doc-2.0/guide-index.html)
+- [Active Record guide](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html)
+- [Query Builder guide](http://www.yiiframework.com/doc-2.0/guide-db-query-builder.html)
+- [Maria Dynamic Columns](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
+- [Sequel Pro Dynamic Columns bundle](https://github.com/tom--/sequel-pro-maria-dynamic-column)
 
 ## Questions, comments, issues
 
-Use the [issue tracker](https://github.com/tom--/dynamic-ar/issues). Or you can easily find my email if you prefer.
+Use the [issue tracker](dynamic-ar/dynamic-ar/issues). Or you can easily find my email if you prefer.
 
+
+- - -
+
+Copyright (c) 2015 Spinitron LLC

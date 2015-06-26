@@ -1,5 +1,10 @@
 # yii2-dynamic-ar extension
 
+> NOTE: this was the original README for Dynamic AR when it was still in early design. It
+may still be of interest to som readers. But I'm not planning to make strenuous efforts to
+maintain this doc or keep it in line with the code.
+
+
 **Dynamic, structured attributes in [Active Record](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) and [Active Query](http://www.yiiframework.com/doc-2.0/yii-db-activequery.html) for SQL tables**
 
 
@@ -81,8 +86,9 @@ When updating a model, the DB record's dynamic attributes are all overwritten. A
 
 ### DynamicActiveQuery
 
-**tl;dr** When you use a dynamic attribute in a query, write it as a *dynamic attribute token*, e.g. `(!color!)` or `(!employee.id|INT!)` (see below for full details). 
-
+**tl;dr** When you use a dynamic attribute in a query, write it in bang-parens, e.g. `(!color!)` or `(!employee.id!)` 
+and if your query needs it, specify the attribute type after a pipe or vertical bar, e.g.
+`(!employee.id|INT!) = 10` or `(!price.unit.usd|DECIMAL(6,2)!) <= 4.99`. 
 
 DynamicActiveQuery only exists for those DMBSs that provide a way to query elements in data structures serialized to a field (for now, Maria 10+ and PostgreSQL 9.4+).
 
@@ -115,13 +121,20 @@ So DynamicActiveQuery needs a way to:
 
 The first cannot in general be automated by our extension without constraining the requirements or by radically changing ActiveQuery. Automating the second seems intractable to me. So I decided instead to require the user to distinguish dynamic attributes and
 declare their type. I feel this is reasonable since the user must always know both when accessing a dynamic attribute. (This is actually the
-basic nature of NoSQL – the schema is implicit in the application's business logic.) For this I invented a  notation for dynamic attribute tokens in DynamicActiveQuery. 
+basic nature of NoSQL – the schema is implicit in the application's business logic.) For this I needed a notation for dynamic attribute in DynamicActiveQuery. 
 
-### Dynamic attribute tokens
+### Dynamic attribute notation in queries
 
-The token is wrapped in curly braces containing the dynamic attribute name and optionally its type. Type may be omitted, in which case it defaults to `CHAR`, otherwise it is one of the datatypes allowed by the respective DBMS. Hierarchy in structured data is represented with dot separators: `grandparent.parent.child`.
+A dynamic attribute reference is enclosed in bang-parens `(! … !)`. Whitespace in the 
+bang-parens is allowed. Inside the bang-parens is the dynamic attribute name optionally
+followed by a pipe or vertical bar `|` character and a datatype. 
+The dynamic attribute name uses dot notation to represent child elements in a structure
+e.g. `grandparent.parent.child`.
+[Allowed datatypes](https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes) are determined by the RBDMS. 
+If datatype is not specified `CHAR` is assumed.
 
-Description | Token
+
+Description | Query notation
 --- | ---
 General form | `(!label[.label[...]]|type!)`
 `->color` with default datatype CHAR | `(!color!)`
@@ -129,7 +142,11 @@ General form | `(!label[.label[...]]|type!)`
 `->address['city']` with default datatype CHAR | `(!address.city!)`
 `->voltage['Vcc'][1]` with explicit datatype | `(!voltage.Vcd.1|DOUBLE!)`
 
-Examples in queries
+There is often no need to specify datatype in the dynamic attribute reference because 
+both SQL and PHP can juggle type according to context.
+
+
+#### Examples in queries
 
 ```php
 $blackShirts = Product::find()
@@ -141,66 +158,6 @@ $cheapShirts = Product::find()
     ->select(['sale' => 'CONCAT("On sale at $", (!price.discount!))'])
     ->all();
 ```
-
-## On datatypes
-
-**tl;dr** While you're unlikely to lose data, you might not get the same datatype back that you put in. Use your understanding of the attribute in the context of your app to decide how to handle it after loading a model. When you want to use an attribute in a query, you have to specify its datatype.
-
-The following discusses the details.
-
-Types are a bit of a muddle and you need to take care. Currently, for all DBMSs except Maria, dynamic attribute are serialized and unserialized PHP's `json_encode()` and `json_decode()`. The same datatype conversion considerations and corner cases apply as in any use of JSON serialization, e.g. JSON has no integers, JSON arrays are different from PHP's, etc.
-
-In Maria the situation is worse. Data is saved via SQL and retrieved via JSON. This may seem perverse but here's the logic.
-
-- To save dynamic attribute in a Maria dynamic column, we have to use use the [COLUMN_CREATE('name', value)](https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_create) SQL function. Maria infers an SQL datatype from the value and saves it with the dynamic column.
-- When we load a record from the table into a model, we want the datatypes and values. We cannot retrieve the datatypes using Maria's [COLUMN_GET()](https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_get) function so we instead use Maria's [COLUMN_JSON()](https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_json) getter to fetch all the record's dynamic columns at once together with datatypes converted into JSON.
-
-This is better than nothing and should be tolerable in a lot of cases but it is a bit weird and introduces a number of considerations regarding datatypes through the lifecycle of an AR model/record.
-
-So the thing to remember:
-
-- Maria: The PHP model is converted to SQL on save, which, on load, is converted to JSON and then to PHP.
-- Everything else: The PHP model is converted to JSON on save and back to PHP on load.
-
-With respect to specific types...
-
-### Number types
-
-SQL doesn't have float but has integer and decimal. JSON has only number, which is decimal and almost always an IEEE floating point double without NaN. PHP has integer and IEEE floats. This can get tricky but there is nothing really new here.
-
-### Boolean
-
-SQL doesn't have any such thing but JSON does. Maria (SQL) converts to int 0 or 1 on save. DMBS using JSON retain boolean type.
-
-### Null
-
-Maria does not save a dynamic column with a null value, thus
-
-```sql
-SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1);
->> 1
-```
-
-So `$product->foo = null; $product->save();` actually deletes dynamic attribute 'foo' in the corresponding DB record.
-
-This is perfectly reasonable. The meaning and purpose of SQL NULL makes no sense for dynamic fields. The 'x' not 
-existing in the record a better representation for 'x' not existing than a serialized data element with the 
-funny NULL value/type.
-
-So, even though JSON can adequately represent a PHP null, DynamicActiveRecord does promise to return a PHP null 
-if you try to save one. If you do $x = null then PHP considers $x to be "unset".
-
-### Array
-
-DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words, 
-you may as well use string keys because they will be strings on load and they need to be strings 
-when dynamic attribute names are used in queries.
-
-Empty arrays are not saved in Maria.
-
-### Object
-
-DynamicActiveRecord converts to PHP array before save so you'd be better of not using PHP objects.
 
 
 - - -
