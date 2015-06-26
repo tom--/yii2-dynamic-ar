@@ -13,49 +13,91 @@ use yii\base\UnknownPropertyException;
 use yii\db\ActiveRecord;
 
 /**
- * DynamicActiveRecord represents relational data with structured dynamic attributes.
+ * DynamicActiveRecord represents relational data with structured dynamic attributes
+ * in addition to column attributes supported by ActiveRecord.
  *
- * DynamicActiveRecord adds NoSQL-like structured dynamic attributes to Yii 2.0 ActiveRecord.
- * Dynamic attributes are stored in Maria 10.0+ **Dynamic Columns**, PostgreSQL 9.4+
- * **jsonb** columns, or otherwise in plain JSON, providing something like a NoSQL
- * document store within SQL relational DB tables.
+ * DynamicActiveRecord adds structured dynamic attributes to Yii 2.0 ActiveRecord a bit
+ * like adding a document, in the sense of a NoSQL document store database, to each
+ * SQL table record. At present this is implemented for
+ * [Maria 10.0+ Dynamic Columns](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
  *
- * > NOTE: In this version only Maria 10.0+ is supported.
+ * Model classes must implement the {dynamicColumn()} method to specify the name of the
+ * table column containing the serialized dynamic attributes.
  *
- * If the DBMS supports using the dynamic attributes in queries (Maria, PostgreSQL) then
- * DynamicActiveRecord combines with DynamicActiveQuery to provide an abstract
- * interface for querying dynamic attributes.
+ * You can read and write attributes of a DynamicActiveRecord model that have no
+ * declaration as instance variables, column attributes or virtual attribute.
  *
- * See the README of yii2-dynamic-ar extension for full description.
+ * Dynamic attributes may also be data structures in the form of PHP arrays, elements of
+ * which can be accessed through dotted attribute notation.
+ *
+ *     $model->specs = ['dimensions' => ['length' => 20]];
+ *     $model->setAttribute('specs.dimensions.width', 4);
+ *     $model->setAttribute('specs.color', 'blue');
+ *     // $model->specs now has the value
+ *     // ['dimensions' => ['length' => 20, 'width' => 4], 'color' => 'blue']
+ *
+ * DynamicActiveRecord can be used together with {DynamicActiveQuery} which can represent
+ * dynamic attributes in queries.
  *
  * @author Tom Worster <fsb@thefsb.org>
  */
 class DynamicActiveRecord extends ActiveRecord
 {
+    /**
+     * Prefix for base64 encoded dynamic sttribute values
+     */
+    const DATA_URI_PREFIX = 'data:application/octet-stream;base64,';
+
+    /**
+     * Prefix of PDO playholders for Dynamic Column names and values
+     */
     const PARAM_PREFIX = ':dqp';
 
-    private $dynamicAttributes = [];
-    const DATA_URI_PREFIX = 'data:application/octet-stream;base64,';
     /**
-     * @var int
+     * @var int Counter of PDO placeholders used in a query.
      */
     protected static $placeholderCounter;
 
+    private $_dynamicAttributes = [];
+
+    /**
+     * Specifies the name of the table column containing dynamic attributes.
+     *
+     * @return string Name of the table column containing dynamic column data
+     * @throws \yii\base\Exception if not overriden by descendent class.
+     */
+    public static function dynamicColumn()
+    {
+        throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function __get($name)
     {
         return $this->getAttribute($name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __set($name, $value)
     {
         $this->setAttribute($name, $value);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __isset($name)
     {
         return $this->issetAttribute($name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function __unset($name)
     {
         $this->unsetAttribute($name);
@@ -64,9 +106,9 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Returns a model attribute value.
      *
-     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     * @param string $name attribute name, use dotted notation for strucuted attributes.
      *
-     * @return mixed|null
+     * @return mixed|null the attribute value or null if the attribute does not exist
      */
     public function getAttribute($name)
     {
@@ -76,7 +118,7 @@ class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = &$this->dynamicAttributes;
+        $ref = &$this->_dynamicAttributes;
 
         foreach ($path as $key) {
             if (!isset($ref[$key])) {
@@ -91,8 +133,8 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Sets a model attribute.
      *
-     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
-     * @param mixed $value the attribute value
+     * @param string $name attribute name, use dotted notation for strucuted attributes.
+     * @param mixed $value the attribute value. A value of null effectively unsets the attribute.
      */
     public function setAttribute($name, $value)
     {
@@ -104,7 +146,7 @@ class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = &$this->dynamicAttributes;
+        $ref = &$this->_dynamicAttributes;
 
         // Walk forwards through $path to find the deepest key already set.
         do {
@@ -137,7 +179,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Returns if a model attribute is set.
      *
-     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     * @param string $name attribute name, use dotted notation for strucuted attributes.
      *
      * @return bool true if the attribute is set
      */
@@ -151,7 +193,7 @@ class DynamicActiveRecord extends ActiveRecord
         }
 
         $path = explode('.', $name);
-        $ref = &$this->dynamicAttributes;
+        $ref = &$this->_dynamicAttributes;
 
         foreach ($path as $key) {
             if (!isset($ref[$key])) {
@@ -166,7 +208,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Unset a model attribute.
      *
-     * @param string $name attribute name. Dot notation for structured dynamic attributes allowed.
+     * @param string $name attribute name, use dotted notation for strucuted attributes.
      */
     public function unsetAttribute($name)
     {
@@ -185,7 +227,7 @@ class DynamicActiveRecord extends ActiveRecord
      */
     public function fields()
     {
-        $fields = array_keys((array) $this->dynamicAttributes);
+        $fields = array_keys((array) $this->_dynamicAttributes);
 
         return array_merge(parent::fields(), $fields);
     }
@@ -224,10 +266,15 @@ class DynamicActiveRecord extends ActiveRecord
     {
         return array_merge(
             array_values(parent::fields()),
-            static::dotAttributes(static::dynamicColumn(), $this->dynamicAttributes)
+            static::dotAttributes(static::dynamicColumn(), $this->_dynamicAttributes)
         );
     }
 
+    /**
+     * Returns a PDO parameter placeholder string, incrementing the placeholder counter.
+     *
+     * @return string the placeholder string
+     */
     public static function placeholder()
     {
         if (static::$placeholderCounter === null) {
@@ -242,9 +289,9 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Encode as data URIs strings that JSON cannot express.
      *
-     * @param $value
+     * @param mixed $value a value to encode
      *
-     * @return string
+     * @return string the encoded data URI
      */
     public static function encodeForMaria($value)
     {
@@ -255,11 +302,11 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Decode strings encoded as data URIs
+     * Decode strings encoded as data URIs.
      *
-     * @param $value
+     * @param string $value the data URI to decode
      *
-     * @return string
+     * @return string the decoded value
      */
     public static function decodeForMaria($value)
     {
@@ -271,8 +318,8 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Replacement for PHP's array walk and map builtins.
      *
-     * @param $array
-     * @param $method
+     * @param array $array An array to walk, which may be nested
+     * @param callable $method A method to map on the array
      */
     protected static function walk(& $array, $method)
     {
@@ -301,35 +348,36 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Encodes as data URIs any "binary' strings in an array.
+     * Encodes as data URIs any "binary" strings in an array.
      *
-     * @param $array
+     * @param array $array the array
      */
-    public static function encodeArrayForMaria(& $array)
+    protected static function encodeArrayForMaria(& $array)
     {
         self::walk($array, 'encodeForMaria');
     }
 
     /**
-     * Encodes any data URI strings in an array.
+     * Decodes any data URI strings in an array.
      *
-     * @param $array
+     * @param array $array the array
      */
-    public static function decodeArrayForMaria(& $array)
+    protected static function decodeArrayForMaria(& $array)
     {
         self::walk($array, 'decodeForMaria');
     }
 
     /**
-     * Create the SQL and parameter bindings for setting attributes as dynamic fields in a DB record.
+     * Creates the SQL and parameter bindings for setting dynamic attributes
+     * in a DB record as Dynamic Columns in Maria.
      *
-     * @param array $attrs Name and value pairs of dynamic fields to be saved in DB
-     * @param array $params Expression parameters for binding, passed by reference
+     * @param array $attrs the dynamic attributes, which may be nested
+     * @param array $params expression parameters for binding, passed by reference
      *
      * @return string SQL for a DB Expression
      * @throws \yii\base\Exception
      */
-    private static function dynColSqlMaria(array $attrs, & $params)
+    protected static function dynColSqlMaria(array $attrs, & $params)
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
@@ -357,7 +405,9 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * @param $attrs
+     * Creates a dynamic column SQL expression representing the given attributes.
+     *
+     * @param array $attrs the dynamic attributes, which may be nested
      *
      * @return null|\yii\db\Expression
      */
@@ -379,7 +429,8 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Decode a serialized blob of dynamic attributes.
      *
-     * For now the format is JSON for Maria, PgSQL and unaware DBs.
+     * At present the only supported input format is JSON returned from Maria. It may work
+     * also for PostgreSQL.
      *
      * @param string $encoded Serialized array of attributes in DB-specific form
      *
@@ -407,17 +458,6 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Specifies the name of the table column containing dynamic attributes.
-     *
-     * @return string Name of the table column containing dynamic column data
-     * @throws \yii\base\Exception if not overriden by descendent class.
-     */
-    public static function dynamicColumn()
-    {
-        throw new \yii\base\Exception('A DynamicActiveRecord class must override "dynamicColumn()"');
-    }
-
-    /**
      * @inheritdoc
      */
     public static function find()
@@ -434,7 +474,7 @@ class DynamicActiveRecord extends ActiveRecord
             return false;
         }
 
-        $this->setAttribute(static::dynamicColumn(), static::dynColExpression($this->dynamicAttributes));
+        $this->setAttribute(static::dynamicColumn(), static::dynColExpression($this->_dynamicAttributes));
 
         return true;
     }
@@ -462,7 +502,7 @@ class DynamicActiveRecord extends ActiveRecord
 
         $dynCol = static::dynamicColumn();
         if (isset($this->attributes[$dynCol])) {
-            $this->dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
+            $this->_dynamicAttributes = static::dynColDecode($this->attributes[$dynCol]);
         }
 
         return true;

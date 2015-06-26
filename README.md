@@ -1,208 +1,191 @@
-# yii2-dynamic-ar extension
+# Dynamic Active Record
 
-**Dynamic, structured attributes in [Active Record](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) and [Active Query](http://www.yiiframework.com/doc-2.0/yii-db-activequery.html) for SQL tables**
+Extends the [Yii 2 Framework](http://www.yiiframework.com/)'s 
+[Active Record ORM](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html)
+to provide NoSQL-like dynamic attributes.
 
+### Maria Dynamic Columns and PostgreSQL jsonb
 
-## Motivation
+[Dynamic Columns](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
+in [Maria 10.0](https://mariadb.com/kb/en/mariadb/what-is-mariadb-100/)+ 
+and [jsonb column types](http://www.postgresql.org/docs/9.4/static/datatype-json.html)
+and [functions](http://www.postgresql.org/docs/9.4/static/functions-json.html) in
+in [PostgreSQL 9.4](http://www.postgresql.org/)+
+provide, in effect, a [NoSQL document](https://en.wikipedia.org/wiki/Document-oriented_database) 
+attached to every row of an SQL table. It's a powerful
+feature that allows you to do things that have been hard in relational DBs.
+Problems that might drive you to Couch or Mongo, or to commit a crime like 
+[EAV](https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model)
+to your schema, can suddenly be easy when any record can have any number of attributes,
+structured like an associative array that are named by the app and not in the schema.
 
-NoSQL-like features have been appearing in some SQL relational databases, 
-including [Dynamic Columns in Maria 10.0+](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
-and
-[jsonb column types](http://www.postgresql.org/docs/9.4/static/datatype-json.html)
-and
-[functions in PostgreSQL 9.4+](http://www.postgresql.org/docs/9.4/static/functions-json.html).
-
-These features are useful for representing entities with properties that don't comfortably map to table columns, for example because:
-
-- the number of properties needed to describe your collection of entities is large
-- individual entities are described by a small subset of the properties
-- the set of properties is fluid with properties being introduced or retired through the life of the application
-
-The classic example is
-product descriptions in a vendor's database. Washing machines need to be described
-with properties relevant to them (capacity, spin speed, power) while cameras
-require other properties. Imagine the set of properties for a general shopping website with a wide range of product types. Now imagine that product and product types need to be changed frequently.
-
-Such entities are easily represented in a NoSQL document store such as CouchDB or MongoDB. But until recently representing them in relational DB tables typically means choosing a method that involves difficult compromise:
-
-- Mapping one property to one column can lead to far too many columns that are very sparsely populated and columns must be frequently added and removed (the table description could be as dynamic as the data in it!).
-- Sub-classing the entities into a hierarchy of types (to the extent that the entities allow such categorization) can allow mapping the types to a schema of related tables. This can mitigate sparse column population and somewhat contain the impact of schema changes at the cost of table proliferation. You have just as many columns and records in total but fewer empty fields.
-- EAV tables make anything except primitive search and querying very complex – well know problems.
-- Serializing the properties into a column containing all the dynamic properties means you cannot query individual properties.
-
-However, Maria 10 and PostgreSQL 9.4 have the ability to serialize an arbitrary set of (structured) properties while allowing them to be used in queries. This suggests the possibility of having the best of both worlds (RDBMS and document store) in one place.
-
-The goal of yii2-dynamic-ar extension is to provide a comfortable API to these capabilities.
+Dynamic AR works for Maria now and will come to PostgreSQL in the future.
 
 
-## Design and operation
+## Example
 
-DynamicActiveRecord extends [ActiveRecord](http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html) to represent structured dynamic attributes that are stored in serialized form in the database. If the particular DBMS has features to support this then they are used, otherwise JSON is used. In the case that the DBMS allows querying of the serialized properties DynamicActiveQuery extends  [Active Query](http://www.yiiframework.com/doc-2.0/yii-db-activequery.html) to represent such queries.
+An online shopping site has a table that stores info about each product.
 
-At present DynamicActiveRecord works only with Maria 10. Other DBMSs and plain JSON to come.
-
-### DynamicActiveRecord
-
-In a DynamicActiveRecord object, any property you access is a dynamic attribute when:
-
-- it isn't a normal column attribute, and
-- it does not have its own [magic getter or setter](http://www.yiiframework.com/doc-2.0/guide-concept-properties.html#properties).
-
-Thus, if `$product` is an instance of a `DynamicActiveRecord` class then
-
-```php
-$product->color = 'red';
+```sql
+CREATE TABLE product (
+    id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    sku VARCHAR(32),
+    upc VARCHAR(32),
+    title VARCHAR(255),
+    price DECIMAL(9, 2),
+    stock INT(11),
+    details LONGBLOB NOT NULL
+);
 ```
 
-will write to:
-
-- the column attribute 'color', if the model's table has a column named 'color',
-- or it will call `$product->setColor('red')`, if you declared this method,
-- otherwise it will write to (either creating or updating) a dynamic attribute named 'color'.
-
-Dynamic attributes can have array values, e.g.
+In this (simplitic) example, `details` will hold the Maria 
+[Dynamic Column blob](https://mariadb.com/kb/en/mariadb/dynamic-columns/) and is 
+declared in the model class by the `dynamicColumn()` method. Everything else in a Dynamic AR
+class declaration is famillair AR stuff.
 
 ```php
-$product->price = [
-    'retail' => 12.99,
-    'wholesale' => [
-        6 => 12.00,
-        12 => 11.50,
-        60 => 10.40,
+<?php
+
+namespace examples\shop;
+
+class Product extends \spinitron\dynamicAr\DynamicActiveRecord
+{
+    public static function tableName()
+    {
+        return 'product';
+    }
+
+    public static function dynamicColumn()
+    {
+        return 'details';
+    }
+}
+```
+
+Now we can do all the normal AR things with `Product` but in addition we can read, write and 
+update attributes not mentioned in the schema.
+
+```php
+$product = new Product([
+    'sku' => 5463,
+    'upc' => '234569',
+    'price' => 4.99,
+    'title' => 'Clue-by-four',
+    'description' => 'Used for larting lusers or constructing things',
+    'dimensions' => [
+        'unit' => 'inch',
+        'width' => 4,
+        'height' => 2,
+        'length' => 20,
     ],
-]
+    'material' => 'wood',
+]);
+$product->save();
 ```
 
-A dynamic attribute's name must be a [valid PHP label](http://php.net/manual/en/language.variables.basics.php) but child labels can be any non-empty string.
+Think of the `details` table column as holding a serialized associative array. But unlike 
+saving a JSON document in a text field, you can use dynamic attributes anywhere in your code,
+including in queries,
+just as you do with schema attributes. The differences are
 
-All dynamic attributes are populated into a model object from the DB when loading a model, regardless of the query's `select` property.
+- Nested attributes use dotted notation, e.g. `dimensions.length`
+- Direct get and set of nested attributes on a model instance use the `getAttribute()`
+and `setAttribute()` methods because PHP doesn't allow dotted notation in identifiers.
+- When a dynamic attribute appears in a query, wrap it in bang-parens `(! … !)`, 
+e.g. `(! dimensions.length !)`. (Space between attribute name and its bang-parens is 
+optional so `(!material!)` is fine.)
 
-When updating a model, the DB record's dynamic attributes are all overwritten. Another way to think about this is – after save, whether it is an insert or update, the DB record has the same set of dynamic attributes as the model. For example, let's say the record with PK of 7 in the `product` table has a dynamic field 'speed'. If we now save a `Product` model with `id` 7 but without a dynamic attribute 'speed' then the dynamic field 'speed' 'is deleted from row 7 in the table.
-
-### DynamicActiveQuery
-
-**tl;dr** When you use a dynamic attribute in a query, write it as a *dynamic attribute token*, e.g. `(!color!)` or `(!employee.id|INT!)` (see below for full details). 
-
-
-DynamicActiveQuery only exists for those DMBSs that provide a way to query elements in data structures serialized to a field (for now, Maria 10+ and PostgreSQL 9.4+).
-
-We would like to be able to use dynamic attributes in database queries with the same flexibility as we have with schema column
-attributes. DynamicActiveQuery should allow, for example, creation of SQL such as the following, whether
-the columns involved are serialized dynamic properties or table columns in the schema:
-
-```sql
-SELECT 
-	t1.price,
-	CONCAT('Compare at $', t1.price) AS foo, 
-	MIN(t1.price, t1.discount) AS sale
-FROM t1 JOIN t2 ON MIN(t1.price, t1.discount) > t2.cost
-WHERE price * 1.33 < 50.00
-ORDER BY MIN(0.66 * t1.price, t2.cost)
-```
-
-There is a challenge. From the Maria manual:
-
-> SQL is a statically-typed language. The SQL interpreter needs to know the datatypes often
-all expressions before the query is run (for example, when one is using prepared statements
-and runs [a SELECT], the prepared statement API requires the server to inform the client
-about the datatype of the column being read before the query is executed and the server can
-see what datatype the column actually has).
-
-So DynamicActiveQuery needs a way to:
-
-1. identify dynamic attribute names anywhere that a column name can appear in an ActiveQuery instance
-1. choose an appropriate SQL type for each dynamic attribute
-
-The first cannot in general be automated by our extension without constraining the requirements or by radically changing ActiveQuery. Automating the second seems intractable to me. So I decided instead to require the user to distinguish dynamic attributes and
-declare their type. I feel this is reasonable since the user must always know both when accessing a dynamic attribute. (This is actually the
-basic nature of NoSQL – the schema is implicit in the application's business logic.) For this I invented a  notation for dynamic attribute tokens in DynamicActiveQuery. 
-
-### Dynamic attribute tokens
-
-The token is wrapped in curly braces containing the dynamic attribute name and optionally its type. Type may be omitted, in which case it defaults to `CHAR`, otherwise it is one of the datatypes allowed by the respective DBMS. Hierarchy in structured data is represented with dot separators: `grandparent.parent.child`.
-
-Description | Token
---- | ---
-General form | `(!label[.label[...]]|type!)`
-`->color` with default datatype CHAR | `(!color!)`
-`->price` with explicit datatype | `(!price|DECIMAL(5,2)!)`
-`->address['city']` with default datatype CHAR | `(!address.city!)`
-`->voltage['Vcc'][1]` with explicit datatype | `(!voltage.Vcd.1|DOUBLE!)`
-
-Examples in queries
+For example
 
 ```php
-$blackShirts = Product::find()
-    ->where(['category' => Product::SHIRT, '(!color!)' => 'black'])
-    ->all();
-$cheapShirts = Product::find()
-    ->where(['category' => Product::SHIRT])
-    ->andWhere('(!price.wholesale.12|DECIMAL(6,2)!) < 20.00')
-    ->select(['sale' => 'CONCAT("On sale at $", (!price.discount!))'])
-    ->all();
+$model = new Product([
+    'title' => 'Car',
+    'specs.fuel.tank.capacity' => 50,
+    'specs.fuel.tank.capacity.unit' => 'liter',
+]);
+$model->setAttribute('specs.wheels.count', 4);
+$model = Product::find()->where(['(!dimensions.length!)' => 10]);
+$section = Product::find()
+    ->select('CONCAT((! dimensions.width !), " x ", (! dimensions.height !))')
+    ->where(['id' => 11])
+    ->one();
 ```
 
-## On datatypes
+The dot notation works anywhere Yii accepts an attribute name string, for example
 
-**tl;dr** While you're unlikely to lose data, you might not get the same datatype back that you put in. Use your understanding of the attribute in the context of your app to decide how to handle it after loading a model. When you want to use an attribute in a query, you have to specify its datatype.
+```php
+class Product extends \spinitron\dynamicAr\DynamicActiveRecord
+{
+    public function rules()
+    {
+        return [['dimensions.length', 'double', 'min' => 0.0]];
+    }
 
-The following discusses the details.
+    public function search($params)
+    {
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'sort' => [
+                'attributes' => [
+                    'dimensions.length' => [
+                        'asc' => ['(! dimensions.length !)' => SORT_DESC],
+                        'desc' => ['(! dimensions.length !)' => SORT_ASC],
+                    ],
+                ],
+            ],
+            // ...
+        ]);
+    }
+}
+```
 
-Types are a bit of a muddle and you need to take care. Currently, for all DBMSs except Maria, dynamic attribute are serialized and unserialized PHP's `json_encode()` and `json_decode()`. The same datatype conversion considerations and corner cases apply as in any use of JSON serialization, e.g. JSON has no integers, JSON arrays are different from PHP's, etc.
+### Design principle
 
-In Maria the situation is worse. Data is saved via SQL and retrieved via JSON. This may seem perverse but here's the logic.
+The design principles of Dynamic AR are:
 
-- To save dynamic attribute in a Maria dynamic column, we have to use use the [COLUMN_CREATE('name', value)](https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_create) SQL function. Maria infers an SQL datatype from the value and saves it with the dynamic column.
-- When we load a record from the table into a model, we want the datatypes and values. We cannot retrieve the datatypes using Maria's [COLUMN_GET()](https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_get) function so we instead use Maria's [COLUMN_JSON()](https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_json) getter to fetch all the record's dynamic columns at once together with datatypes converted into JSON.
+- When you write to an attribute that isn't
+    - a property declared in the model class
+    - a column attribute
+    - a virtual attribute with a setter method
+    
+    then you write to a dynamic attribute, either creating or updating it.
 
-This is better than nothing and should be tolerable in a lot of cases but it is a bit weird and introduces a number of considerations regarding datatypes through the lifecycle of an AR model/record.
-
-So the thing to remember:
-
-- Maria: The PHP model is converted to SQL on save, which, on load, is converted to JSON and then to PHP.
-- Everything else: The PHP model is converted to JSON on save and back to PHP on load.
-
-With respect to specific types...
-
-### Number types
-
-SQL doesn't have float but has integer and decimal. JSON has only number, which is decimal and almost always an IEEE floating point double without NaN. PHP has integer and IEEE floats. This can get tricky but there is nothing really new here.
-
-### Boolean
-
-SQL doesn't have any such thing but JSON does. Maria (SQL) converts to int 0 or 1 on save. DMBS using JSON retain boolean type.
-
-### Null
-
-Maria does not save a dynamic column with a null value, thus
+- If you write PHP null to a dynamic attribute, this is equivalent to unsetting it. 
+Maria does not store dynamic columns set to SQL NULL.
 
 ```sql
-SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1);
->> 1
+SELECT COLUMN_JSON(COLUMN_CREATE('foo', NULL));
+//  →  "{}"
 ```
 
-So `$product->foo = null; $product->save();` actually deletes dynamic attribute 'foo' in the corresponding DB record.
+- So even though DynamicActiveRecord supports `__isset()` and `issetAttribute()`, it makes
+no sense to expect applications to use them because there is no practical difference
+in DynamicActiveRecord between an an attribute that doesn't exist and one that does 
+and is PHP null.
 
-This is perfectly reasonable. The meaning and purpose of SQL NULL makes no sense for dynamic fields. The 'x' not 
-existing in the record a better representation for 'x' not existing than a serialized data element with the 
-funny NULL value/type.
-
-So, even though JSON can adequately represent a PHP null, DynamicActiveRecord does promise to return a PHP null 
-if you try to save one. If you do $x = null then PHP considers $x to be "unset".
-
-### Array
-
-DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words, 
-you may as well use string keys because they will be strings on load and they need to be strings 
-when dynamic attribute names are used in queries.
-
-Empty arrays are not saved in Maria.
-
-### Object
-
-DynamicActiveRecord converts to PHP array before save so you'd be better of not using PHP objects.
+- It therefore follows that if you read an attribute from model that isn't 
+    - a declared property
+    - a column attribute
+    - a virtual attribute
+    - and the model has no dynamic attribute by that name
+    
+    then, unlike ActiveRecord, no exception is thrown and DynamicActiveRecord returns 
+    PHP null.
 
 
-- - -
+## More info
 
-Copyright (c) 2015 Spinitron LLC
+Class reference for
+
+- [DynamciActiveRecord]()
+- [DynamicActiveQuery]()
+
+Some incompatibility in the data types as represented in PHP, SQL and JSON could potentually
+cause trouble. These are documented here.
+
+Anyone using Maria Dynamic Columns and OS X might find 
+[this Sequel Pro bundle](https://github.com/tom--/sequel-pro-maria-dynamic-column) useful.
+
+## Questions, comments, issues
+
+Use the [issue tracker](https://github.com/tom--/dynamic-ar/issues). Or you can easily find my email if you prefer.
+

@@ -15,11 +15,25 @@ use yii\db\Connection;
 /**
  * DynamicActiveRecord represents queries on relational data with structured dynamic attributes.
  *
- * DynamicActiveQuery adds an abstraction for writing queries that involve
- * the dynamic attributes of a DynamicAccessRecord. This is only possible on
+ * DynamicActiveQuery adds a way to write queries that involve
+ * the dynamic attributes of DynamicAccessRecord models. This is only possible on
  * a DBMS that supports querying elements in serialized data structures.
  *
- * > NOTE: In this version only Maria 10.0+ is supported.
+ * Dynamic attribtes names bust be enclosed in (! … !) bang-parens and child attributes in
+ * structured dynamic attributes are accessed using dotted notation, for example
+ *
+ *     $model = Product::find()->where(['(!specs.color!)' => 'blue']);
+ *
+ * > NOTE: In this version only Maria 10.0+ is supported in this version.
+ *
+ * If there is any need to specify the SQL data type of the dynamic attribute in the query,
+ * for example if it appears in an SQL expression that needs this, then the type and dimension
+ * can be given in the bang-parents after a pipe | following the attribute name, e.g.
+ *
+ *     $model = Product::find()->where(['(!specs.length|INT!) != 10']);
+ *
+ * Allowed datatypes are specified in
+ * [Maria documentation](https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes)
  *
  * @author Tom Worster <fsb@thefsb.org>
  * @author Danil Zakablukovskii danil.kabluk@gmail.com
@@ -27,17 +41,15 @@ use yii\db\Connection;
 class DynamicActiveQuery extends ActiveQuery
 {
     /**
-     * @var Connection
+     * @var string name of the DynamicActiveRecord's column storing serialized dynamic attributes
      */
-    private $db;
-    /**
-     * @var string
-     */
-    private $dynamicColumn;
+    private $_dynamicColumn;
 
     /**
-     * Convert index value to closure, that will get decoded dynamic attribute, in case if indexing attribute is dynamic
-     * @param callable|string $column
+     * Converts the indexBy column name an anonymous function that writes rows to the
+     * result array indexed an attribute name that may be in dotted notation.
+     *
+     * @param callable|string $column name of the column by which the query results should be indexed
      * @return $this
      */
     public function indexBy($column)
@@ -80,9 +92,9 @@ class DynamicActiveQuery extends ActiveQuery
     {
         /** @var DynamicActiveRecord $modelClass */
         $modelClass = $this->modelClass;
-        $this->dynamicColumn = $modelClass::dynamicColumn();
+        $this->_dynamicColumn = $modelClass::dynamicColumn();
 
-        if (empty($this->dynamicColumn)) {
+        if (empty($this->_dynamicColumn)) {
             /** @var string $modelClass */
             throw new \yii\base\InvalidConfigException(
                 $modelClass . '::dynamicColumn() must return an attribute name'
@@ -94,9 +106,9 @@ class DynamicActiveQuery extends ActiveQuery
         }
 
         if (is_array($this->select) && in_array('*', $this->select)) {
-            $this->db = $modelClass::getDb();
-            $this->select[$this->dynamicColumn] =
-                'COLUMN_JSON(' . $this->db->quoteColumnName($this->dynamicColumn) . ')';
+            $db = $modelClass::getDb();
+            $this->select[$this->_dynamicColumn] =
+                'COLUMN_JSON(' . $db->quoteColumnName($this->_dynamicColumn) . ')';
         }
 
         return parent::prepare($builder);
@@ -105,27 +117,27 @@ class DynamicActiveQuery extends ActiveQuery
     /**
      * Generate DB command from ActiveQuery with Maria-specific SQL for dynamic columns.
      *
-     * This implementation is the best hack I could manage. A dynamic attribute name
+     * This implementation is the best I could manage. A dynamic attribute name
      * can appear anywhere that a schema attribute name could appear (select, join, where, ...).
-     * It needs to be converted to the Maria SQL for accessing dynamic columns.
+     * It needs to be converted to the Maria SQL using COLUMN_CREATE('name', value, …)
+     * for accessing dynamic columns.
      * Because SQL is statically-typed and there is no schema to refer to for dynamic
      * attributes, the accessor SQL must specify the the dyn-col's type, e.g.
      *
-     * ```sql
-     * WHERE COLUMN_GET(details, 'color' as char) = 'black'
-     *```
+     *     WHERE COLUMN_GET(details, 'color' AS CHAR) = 'black'
      *
      * In which details is the blob column containing all the dynamic columns, 'color' is the
      * name of a dynamic column that may or may not appear in any given table record, and
-     * char means the value should be cast to char before it is compared with 'black'.
-     * `COLUMN_GET(details, 'color' as char)` is the "accessor SQL".
+     * CHAR means the value should be cast to CHAR before it is compared with 'black'.
+     * `COLUMN_GET(details, 'color' AS CHAR)` is the "accessor SQL".
      *
      * So I faced two problems:
-     *    1. How to identify a dynamic attribute name in an ActiveQuery?
-     *    2. How to choose the type to which it should be cast in the SQL?
      *
-     * The operating and design concept of DynamicAR is "an attribute that doesn't appear in the
-     * schema and doesn't have a magic get-/setter is assumed to be a dynamic attribute".
+     * 1. How to identify a dynamic attribute name in an ActiveQuery?
+     * 2. How to choose the type to which it should be cast in the SQL?
+     *
+     * The design prociple of DynamicAR is "an attribute that isn't an instance variable,
+     * a column and doesn't have a magic get-/setter is assumed to be a dynamic attribute".
      * So, in order to infer from the properties of an AQ instance the attribute names
      * that need to be converted to dynamic column accessor SQL, I need to go through
      * the AQ to identify
@@ -137,7 +149,7 @@ class DynamicActiveQuery extends ActiveQuery
      * If it is being used in an SQL function, e.g. CONCAT(), or being compared with a
      * schema column, that suggests something. But if it is on its own in a SELECT then I am
      * stuck. Also stuck if it is compared with another dynamic attribute. This seems
-     * fundamentally intractible to me.
+     * fundamentally intractible.
      *
      * So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
      * of dynamic attributes and by explicitly specifying the type. The format I chose is:
@@ -163,9 +175,9 @@ class DynamicActiveQuery extends ActiveQuery
      * and the replacement callback isn't pretty either. Is there a better way to add to
      * `$params` in the callback than this? And for the parameter placeholder counter `$i`?
      *
-     * @param null|\yii\db\Connection $db
+     * @param null|\yii\db\Connection $db The database connection
      *
-     * @return \yii\db\Command
+     * @return \yii\db\Command the modified SQL statement
      */
     public function createCommand($db = null)
     {
