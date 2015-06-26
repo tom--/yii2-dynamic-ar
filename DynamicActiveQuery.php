@@ -125,7 +125,7 @@ class DynamicActiveQuery extends ActiveQuery
      *
      * User of DynamicActiveQuery should not normally need to use this method.
      *
-     * ## History
+     * #### History
      *
      * This implementation is the best I could manage. A dynamic attribute name
      * can appear anywhere that a schema attribute name could appear (select, join, where, ...).
