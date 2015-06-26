@@ -25,6 +25,10 @@
     "extra": {
         "branch-alias": {
             "dev-master": "0.2.x-dev"
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower-asset"
         }
     },
     "require": {
@@ -35,10 +39,6 @@
     "require-dev": {
         "yiisoft/yii2-dev": "~2.0",
         "phpunit/phpunit": "~4.4"
-    },
-    "asset-installer-paths": {
-        "npm-asset-library": "vendor/npm",
-        "bower-asset-library": "vendor/bower-asset"
     },
     "autoload": {
    		"psr-4": {
