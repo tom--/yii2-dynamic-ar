@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/406708e9/style.css" rel="stylesheet">
+<script src="./assets/b0215f92/jquery.js"></script>
+<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>DynamicActiveQuery - Dynamic Active Record</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w1" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w1-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w1-collapse" class="collapse navbar-collapse"><ul id="w2" class="navbar-nav nav"></ul></div></nav>
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-0" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-0" class="submenu panel-collapse collapse in"><a class="list-group-item active" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
+<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>Class spinitron\dynamicAr\DynamicActiveQuery</h1>
+<div id="nav">
+    <a href="index.html">All Classes</a>
+            | <a href="#properties">Properties</a>
+                | <a href="#methods">Methods</a>
+                | <a href="#events">Events</a>
+        </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-value" />
+    </colgroup>
+            <tr><th>Inheritance</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a> &raquo;
+<a href="yii-db-activequery.html">yii\db\ActiveQuery</a> &raquo;
+<a href="yii-db-query.html">yii\db\Query</a> &raquo;
+<a href="yii-base-component.html">yii\base\Component</a> &raquo;
+<a href="yii-base-object.html">yii\base\Object</a></td></tr>
+                <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>, <a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td></tr>
+                    <tr><th>Uses Traits</th><td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a>, <a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a>, <a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td></tr>
+                            </table>
+
+<div id="classDescription">
+    <p><strong>DynamicActiveQuery represents queries on relational data with structured dynamic attributes.</strong></p>
+    <p>DynamicActiveQuery adds to <a href="yii-db-activequery.html">yii\db\ActiveQuery</a> a way to write queries that involve
+the dynamic attributes of DynamicAccessRecord models. This is only possible on
+a DBMS that supports querying elements in serialized data structures.</p>
+<blockquote><p>NOTE: In this version of Dynamic AR only Maria 10.0+ is supported in this version.</p>
+</blockquote>
+<p>Dynamic attribtes names must be enclosed in <code>(! … !)</code> (bang-parens) and child attributes in
+structured dynamic attributes are accessed using dotted notation, for example</p>
+<pre><code class="language-php"><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'(!specs.color!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'blue'</span><span style="color: #007700">]);</span></code></pre>
+<p>If there is any need to specify the SQL data type of the dynamic attribute in the query,
+for example if it appears in an SQL expression that needs this, then the type and dimension
+can be given in the bang-parents after a <code>|</code> (vertical bar or pipe character)
+following the attribute name, e.g.</p>
+<pre><code class="language-php"><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'(!&nbsp;price.unit|DECIMAL(9,2)&nbsp;!)&nbsp;=&nbsp;14.49'</span><span style="color: #007700">]);</span></code></pre>
+<p>Allowed datatypes are specified in
+<a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes">Maria documentation</a></p>
+<p>Whitespace inside the bang-parens is allowed but not around the vertical bar.</p>
+
+    </div>
+
+<a id="properties"></a>
+
+<div class="summary doc-property">
+<h2>Public Properties</h2>
+
+<p><a href="#" class="toggle">Hide inherited properties</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-property" />
+    <col class="col-type" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Property</th><th>Type</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr class="inherited" id="$asArray">
+        <td><a href="yii-db-activequerytrait.html#$asArray-detail">$asArray</a></td>
+        <td><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+        <td>Whether to return each record as an array.</td>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$behaviors">
+        <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
+        <td>\yii\base\Behavior</td>
+        <td>List of behaviors attached to this component</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="$distinct">
+        <td><a href="yii-db-query.html#$distinct-detail">$distinct</a></td>
+        <td><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+        <td>Whether to select distinct rows of data only.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$from">
+        <td><a href="yii-db-query.html#$from-detail">$from</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The table(s) to be selected from.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$groupBy">
+        <td><a href="yii-db-query.html#$groupBy-detail">$groupBy</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>How to group the query results.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$having">
+        <td><a href="yii-db-query.html#$having-detail">$having</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The condition to be applied in the GROUP BY clause.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$indexBy">
+        <td><a href="yii-db-querytrait.html#$indexBy-detail">$indexBy</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a></td>
+        <td>The name of the column by which the query results should be indexed by.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$inverseOf">
+        <td><a href="yii-db-activerelationtrait.html#$inverseOf-detail">$inverseOf</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a></td>
+        <td>The name of the relation that is the inverse of this relation.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$join">
+        <td><a href="yii-db-query.html#$join-detail">$join</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>How to join with other tables.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$joinWith">
+        <td><a href="yii-db-activequery.html#$joinWith-detail">$joinWith</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>A list of relations that this query should be joined with</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="$limit">
+        <td><a href="yii-db-querytrait.html#$limit-detail">$limit</a></td>
+        <td><a href="http://www.php.net/language.types.integer">integer</a></td>
+        <td>Maximum number of records to be returned.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$link">
+        <td><a href="yii-db-activerelationtrait.html#$link-detail">$link</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The columns of the primary and foreign tables that establish a relation.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$modelClass">
+        <td><a href="yii-db-activequerytrait.html#$modelClass-detail">$modelClass</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a></td>
+        <td>The name of the ActiveRecord class.</td>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$multiple">
+        <td><a href="yii-db-activerelationtrait.html#$multiple-detail">$multiple</a></td>
+        <td><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+        <td>Whether this query represents a relation to more than one record.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$offset">
+        <td><a href="yii-db-querytrait.html#$offset-detail">$offset</a></td>
+        <td><a href="http://www.php.net/language.types.integer">integer</a></td>
+        <td>Zero-based offset from where the records are to be returned.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$on">
+        <td><a href="yii-db-activequery.html#$on-detail">$on</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The join condition to be used when this query is used in a relational context.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="$orderBy">
+        <td><a href="yii-db-querytrait.html#$orderBy-detail">$orderBy</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>How to sort the query results.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$params">
+        <td><a href="yii-db-query.html#$params-detail">$params</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>List of query parameter values indexed by parameter placeholders.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$primaryModel">
+        <td><a href="yii-db-activerelationtrait.html#$primaryModel-detail">$primaryModel</a></td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+        <td>The primary model of a relational query.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$select">
+        <td><a href="yii-db-query.html#$select-detail">$select</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The columns being selected.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$selectOption">
+        <td><a href="yii-db-query.html#$selectOption-detail">$selectOption</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a></td>
+        <td>Additional option that should be appended to the 'SELECT' keyword.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$sql">
+        <td><a href="yii-db-activequery.html#$sql-detail">$sql</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a></td>
+        <td>The SQL statement to be executed for retrieving AR records.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="$union">
+        <td><a href="yii-db-query.html#$union-detail">$union</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>This is used to construct the UNION clause(s) in a SQL statement.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$via">
+        <td><a href="yii-db-activerelationtrait.html#$via-detail">$via</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.object">object</a></td>
+        <td>The query associated with the junction table.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$where">
+        <td><a href="yii-db-querytrait.html#$where-detail">$where</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+        <td>Query condition.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$with">
+        <td><a href="yii-db-activequerytrait.html#$with-detail">$with</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>A list of relations that this query should be performed with</td>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+    </tr>
+    </table>
+</div>
+
+<a id="methods"></a>
+
+<div class="summary doc-method">
+<h2>Public Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr class="inherited" id="__call()">
+        <td><a href="yii-base-component.html#__call()-detail">__call()</a></td>
+        <td>Calls the named method which is not a class method.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__clone()">
+        <td><a href="yii-db-activerelationtrait.html#__clone()-detail">__clone()</a></td>
+        <td>Clones internal objects.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="__construct()">
+        <td><a href="yii-db-activequery.html#__construct()-detail">__construct()</a></td>
+        <td>Constructor.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="__get()">
+        <td><a href="yii-base-component.html#__get()-detail">__get()</a></td>
+        <td>Returns the value of a component property.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__isset()">
+        <td><a href="yii-base-component.html#__isset()-detail">__isset()</a></td>
+        <td>Checks if a property is set, i.e. defined and not null.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__set()">
+        <td><a href="yii-base-component.html#__set()-detail">__set()</a></td>
+        <td>Sets the value of a component property.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__unset()">
+        <td><a href="yii-base-component.html#__unset()-detail">__unset()</a></td>
+        <td>Sets a component property to be null.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="addGroupBy()">
+        <td><a href="yii-db-query.html#addGroupBy()-detail">addGroupBy()</a></td>
+        <td>Adds additional group-by columns to the existing ones.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="addOrderBy()">
+        <td><a href="yii-db-querytrait.html#addOrderBy()-detail">addOrderBy()</a></td>
+        <td>Adds additional ORDER BY columns to the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="addParams()">
+        <td><a href="yii-db-query.html#addParams()-detail">addParams()</a></td>
+        <td>Adds additional parameters to be bound to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="addSelect()">
+        <td><a href="yii-db-query.html#addSelect()-detail">addSelect()</a></td>
+        <td>Add more columns to the SELECT part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="all()">
+        <td><a href="yii-db-activequery.html#all()-detail">all()</a></td>
+        <td>Executes query and returns all results as an array.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="andFilterWhere()">
+        <td><a href="yii-db-querytrait.html#andFilterWhere()-detail">andFilterWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="andHaving()">
+        <td><a href="yii-db-query.html#andHaving()-detail">andHaving()</a></td>
+        <td>Adds an additional HAVING condition to the existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="andOnCondition()">
+        <td><a href="yii-db-activequery.html#andOnCondition()-detail">andOnCondition()</a></td>
+        <td>Adds an additional ON condition to the existing one.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="andWhere()">
+        <td><a href="yii-db-querytrait.html#andWhere()-detail">andWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="asArray()">
+        <td><a href="yii-db-activequerytrait.html#asArray()-detail">asArray()</a></td>
+        <td>Sets the <a href="yii-db-activequerytrait.html#asArray()-detail">asArray()</a> property.</td>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="attachBehavior()">
+        <td><a href="yii-base-component.html#attachBehavior()-detail">attachBehavior()</a></td>
+        <td>Attaches a behavior to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="attachBehaviors()">
+        <td><a href="yii-base-component.html#attachBehaviors()-detail">attachBehaviors()</a></td>
+        <td>Attaches a list of behaviors to the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="average()">
+        <td><a href="yii-db-query.html#average()-detail">average()</a></td>
+        <td>Returns the average of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="batch()">
+        <td><a href="yii-db-query.html#batch()-detail">batch()</a></td>
+        <td>Starts a batch query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="behaviors()">
+        <td><a href="yii-base-component.html#behaviors()-detail">behaviors()</a></td>
+        <td>Returns a list of behaviors that this component should behave as.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="canGetProperty()">
+        <td><a href="yii-base-component.html#canGetProperty()-detail">canGetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be read.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="canSetProperty()">
+        <td><a href="yii-base-component.html#canSetProperty()-detail">canSetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be set.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="className()">
+        <td><a href="yii-base-object.html#className()-detail">className()</a></td>
+        <td>Returns the fully qualified name of this class.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr class="inherited" id="column()">
+        <td><a href="yii-db-query.html#column()-detail">column()</a></td>
+        <td>Executes the query and returns the first column of the result.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="count()">
+        <td><a href="yii-db-query.html#count()-detail">count()</a></td>
+        <td>Returns the number of records.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="create()">
+        <td><a href="yii-db-query.html#create()-detail">create()</a></td>
+        <td>Creates a new Query object and copies its property values from an existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="createCommand()">
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html#createCommand()-detail">createCommand()</a></td>
+        <td>Generate DB command from ActiveQuery with Maria-specific SQL for dynamic columns.</td>
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="detachBehavior()">
+        <td><a href="yii-base-component.html#detachBehavior()-detail">detachBehavior()</a></td>
+        <td>Detaches a behavior from the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="detachBehaviors()">
+        <td><a href="yii-base-component.html#detachBehaviors()-detail">detachBehaviors()</a></td>
+        <td>Detaches all behaviors from the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="distinct()">
+        <td><a href="yii-db-query.html#distinct()-detail">distinct()</a></td>
+        <td>Sets the value indicating whether to SELECT DISTINCT or not.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="each()">
+        <td><a href="yii-db-query.html#each()-detail">each()</a></td>
+        <td>Starts a batch query and retrieves data row by row.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="ensureBehaviors()">
+        <td><a href="yii-base-component.html#ensureBehaviors()-detail">ensureBehaviors()</a></td>
+        <td>Makes sure that the behaviors declared in <a href="yii-base-component.html#behaviors()-detail">behaviors()</a> are attached to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="exists()">
+        <td><a href="yii-db-query.html#exists()-detail">exists()</a></td>
+        <td>Returns a value indicating whether the query result contains any row of data.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                <tr class="inherited" id="filterWhere()">
+        <td><a href="yii-db-querytrait.html#filterWhere()-detail">filterWhere()</a></td>
+        <td>Sets the WHERE part of the query but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="findFor()">
+        <td><a href="yii-db-activerelationtrait.html#findFor()-detail">findFor()</a></td>
+        <td>Finds the related records for the specified primary record.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="findWith()">
+        <td><a href="yii-db-activequerytrait.html#findWith()-detail">findWith()</a></td>
+        <td>Finds records corresponding to one or multiple relations and populates them into the primary models.</td>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="from()">
+        <td><a href="yii-db-query.html#from()-detail">from()</a></td>
+        <td>Sets the FROM part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="getBehavior()">
+        <td><a href="yii-base-component.html#getBehavior()-detail">getBehavior()</a></td>
+        <td>Returns the named behavior object.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="getBehaviors()">
+        <td><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors()</a></td>
+        <td>Returns all behaviors attached to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+                <tr class="inherited" id="groupBy()">
+        <td><a href="yii-db-query.html#groupBy()-detail">groupBy()</a></td>
+        <td>Sets the GROUP BY part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="hasEventHandlers()">
+        <td><a href="yii-base-component.html#hasEventHandlers()-detail">hasEventHandlers()</a></td>
+        <td>Returns a value indicating whether there is any handler attached to the named event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="hasMethod()">
+        <td><a href="yii-base-component.html#hasMethod()-detail">hasMethod()</a></td>
+        <td>Returns a value indicating whether a method is defined.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="hasProperty()">
+        <td><a href="yii-base-component.html#hasProperty()-detail">hasProperty()</a></td>
+        <td>Returns a value indicating whether a property is defined for this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="having()">
+        <td><a href="yii-db-query.html#having()-detail">having()</a></td>
+        <td>Sets the HAVING part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="indexBy()">
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html#indexBy()-detail">indexBy()</a></td>
+        <td>Converts the indexBy column name an anonymous function that writes rows to the
+result array indexed an attribute name that may be in dotted notation.</td>
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="init()">
+        <td><a href="yii-db-activequery.html#init()-detail">init()</a></td>
+        <td>Initializes the object.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="innerJoin()">
+        <td><a href="yii-db-query.html#innerJoin()-detail">innerJoin()</a></td>
+        <td>Appends an INNER JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="innerJoinWith()">
+        <td><a href="yii-db-activequery.html#innerJoinWith()-detail">innerJoinWith()</a></td>
+        <td>Inner joins with the specified relations.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="inverseOf()">
+        <td><a href="yii-db-activerelationtrait.html#inverseOf()-detail">inverseOf()</a></td>
+        <td>Sets the name of the relation that is the inverse of this relation.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+                <tr class="inherited" id="join()">
+        <td><a href="yii-db-query.html#join()-detail">join()</a></td>
+        <td>Appends a JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="joinWith()">
+        <td><a href="yii-db-activequery.html#joinWith()-detail">joinWith()</a></td>
+        <td>Joins with the specified relations.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="leftJoin()">
+        <td><a href="yii-db-query.html#leftJoin()-detail">leftJoin()</a></td>
+        <td>Appends a LEFT OUTER JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="limit()">
+        <td><a href="yii-db-querytrait.html#limit()-detail">limit()</a></td>
+        <td>Sets the LIMIT part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="max()">
+        <td><a href="yii-db-query.html#max()-detail">max()</a></td>
+        <td>Returns the maximum of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="min()">
+        <td><a href="yii-db-query.html#min()-detail">min()</a></td>
+        <td>Returns the minimum of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                <tr class="inherited" id="off()">
+        <td><a href="yii-base-component.html#off()-detail">off()</a></td>
+        <td>Detaches an existing event handler from this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="offset()">
+        <td><a href="yii-db-querytrait.html#offset()-detail">offset()</a></td>
+        <td>Sets the OFFSET part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="on()">
+        <td><a href="yii-base-component.html#on()-detail">on()</a></td>
+        <td>Attaches an event handler to an event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="onCondition()">
+        <td><a href="yii-db-activequery.html#onCondition()-detail">onCondition()</a></td>
+        <td>Sets the ON condition for a relational query.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="one()">
+        <td><a href="yii-db-activequery.html#one()-detail">one()</a></td>
+        <td>Executes query and returns a single row of result.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="orFilterWhere()">
+        <td><a href="yii-db-querytrait.html#orFilterWhere()-detail">orFilterWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="orHaving()">
+        <td><a href="yii-db-query.html#orHaving()-detail">orHaving()</a></td>
+        <td>Adds an additional HAVING condition to the existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="orOnCondition()">
+        <td><a href="yii-db-activequery.html#orOnCondition()-detail">orOnCondition()</a></td>
+        <td>Adds an additional ON condition to the existing one.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="orWhere()">
+        <td><a href="yii-db-querytrait.html#orWhere()-detail">orWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="orderBy()">
+        <td><a href="yii-db-querytrait.html#orderBy()-detail">orderBy()</a></td>
+        <td>Sets the ORDER BY part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="params()">
+        <td><a href="yii-db-query.html#params()-detail">params()</a></td>
+        <td>Sets the parameters to be bound to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="populate()">
+        <td><a href="yii-db-activequery.html#populate()-detail">populate()</a></td>
+        <td>Converts the raw query results into the format as specified by this query.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="populateRelation()">
+        <td><a href="yii-db-activerelationtrait.html#populateRelation()-detail">populateRelation()</a></td>
+        <td>Finds the related records and populates them into the primary models.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr id="prepare()">
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html#prepare()-detail">prepare()</a></td>
+        <td>Maria-specific preparation for building a query that includes a dynamic column.</td>
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></td>
+    </tr>
+                <tr class="inherited" id="rightJoin()">
+        <td><a href="yii-db-query.html#rightJoin()-detail">rightJoin()</a></td>
+        <td>Appends a RIGHT OUTER JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="scalar()">
+        <td><a href="yii-db-query.html#scalar()-detail">scalar()</a></td>
+        <td>Returns the query result as a scalar value.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="select()">
+        <td><a href="yii-db-query.html#select()-detail">select()</a></td>
+        <td>Sets the SELECT part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="sum()">
+        <td><a href="yii-db-query.html#sum()-detail">sum()</a></td>
+        <td>Returns the sum of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="trigger()">
+        <td><a href="yii-base-component.html#trigger()-detail">trigger()</a></td>
+        <td>Triggers an event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="union()">
+        <td><a href="yii-db-query.html#union()-detail">union()</a></td>
+        <td>Appends a SQL statement using UNION operator.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="via()">
+        <td><a href="yii-db-activerelationtrait.html#via()-detail">via()</a></td>
+        <td>Specifies the relation associated with the junction table.</td>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+    </tr>
+            <tr class="inherited" id="viaTable()">
+        <td><a href="yii-db-activequery.html#viaTable()-detail">viaTable()</a></td>
+        <td>Specifies the junction table for a relational query.</td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+            <tr class="inherited" id="where()">
+        <td><a href="yii-db-querytrait.html#where()-detail">where()</a></td>
+        <td>Sets the WHERE part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="with()">
+        <td><a href="yii-db-activequerytrait.html#with()-detail">with()</a></td>
+        <td>Specifies the relations with which this query should be performed.</td>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+    </tr>
+    </table>
+</div>
+
+<div class="summary doc-method">
+<h2>Protected Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+                                                                                                                                                    <tr class="inherited" id="filterCondition()">
+        <td><a href="yii-db-querytrait.html#filterCondition()-detail">filterCondition()</a></td>
+        <td>Removes <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a> from the given query condition.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+                                    <tr id="getDotNotatedValue()">
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html#getDotNotatedValue()-detail">getDotNotatedValue()</a></td>
+        <td>Returns the value of the element in an array refereced by a dot-notated attribute name.</td>
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></td>
+    </tr>
+                                                    <tr class="inherited" id="isEmpty()">
+        <td><a href="yii-db-querytrait.html#isEmpty()-detail">isEmpty()</a></td>
+        <td>Returns a value indicating whether the give value is "empty".</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+                                    <tr class="inherited" id="normalizeOrderBy()">
+        <td><a href="yii-db-querytrait.html#normalizeOrderBy()-detail">normalizeOrderBy()</a></td>
+        <td>Normalizes format of ORDER BY data</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+                                                                    <tr class="inherited" id="queryScalar()">
+        <td><a href="yii-db-query.html#queryScalar()-detail">queryScalar()</a></td>
+        <td>Queries a scalar value by setting <a href="yii-db-query.html#select()-detail">select()</a> first.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                                            </table>
+</div>
+
+<a id="events"></a>
+<div class="summary doc-event">
+    <h2>Events</h2>
+
+    <p><a href="#" class="toggle">Hide inherited events</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+    <colgroup>
+        <col class="col-event" />
+        <col class="col-type" />
+        <col class="col-description" />
+        <col class="col-defined" />
+    </colgroup>
+    <tr>
+        <th>Event</th><th>Type</th><th>Description</th><th>Defined By</th>
+    </tr>
+        <tr class="inherited" id="EVENT_INIT">
+        <td><a href="yii-db-activequery.html#EVENT_INIT-detail">EVENT_INIT</a></td>
+        <td>\yii\db\Event</td>
+        <td>
+            An event that is triggered when the query is initialized via <a href="yii-db-activequery.html#init()-detail">init()</a>.                    </td>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+    </tr>
+        </table>
+</div>
+
+<a id="constants"></a>
+
+<h2>Method Details</h2>
+
+<div class="method-doc">
+
+    <div class="detail-header h3" id="createCommand()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactivequery.html#createCommand()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        createCommand()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Generate DB command from ActiveQuery with Maria-specific SQL for dynamic columns.</strong></p>
+
+        <p>User of DynamicActiveQuery should not normally need to use this method.</p>
+<h4>History <a href="#history" id="history" class="hashlink">&para;</a></h4><p>This implementation is the best I could manage. A dynamic attribute name
+can appear anywhere that a schema attribute name could appear (select, join, where, ...).
+It needs to be converted to the Maria SQL using COLUMN_CREATE('name', value, …)
+for accessing dynamic columns.
+Because SQL is statically-typed and there is no schema to refer to for dynamic
+attributes, the accessor SQL must specify the the dyn-col's type, e.g.</p>
+<pre><code class="language-sql">WHERE COLUMN_GET(details, 'color' AS CHAR) = 'black'
+</code></pre>
+<p>In which details is the blob column containing all the dynamic columns, 'color' is the
+name of a dynamic column that may or may not appear in any given table record, and
+CHAR means the value should be cast to CHAR before it is compared with 'black'.
+<code>COLUMN_GET(details, 'color' AS CHAR)</code> is the "accessor SQL".</p>
+<p>So I faced two problems:</p>
+<ol>
+<li>How to identify a dynamic attribute name in an ActiveQuery?</li>
+<li>How to choose the type to which it should be cast in the SQL?</li>
+</ol>
+<p>The design prociple of DynamicAR is "an attribute that isn't an instance variable,
+a column and doesn't have a magic get-/setter is assumed to be a dynamic attribute".
+So, in order to infer from the properties of an AQ instance the attribute names
+that need to be converted to dynamic column accessor SQL, I need to go through
+the AQ to identify
+all the column names and remove those in the schema. But I don't know how to
+identify column names in an AQ instance. Even if I did, there's problem 2.</p>
+<p>The only way I can imagine to infer datatype from an AQ instance is to look
+at the context. If the attribute is compared with a bound parameter, that's a clue.
+If it is being used in an SQL function, e.g. CONCAT(), or being compared with a
+schema column, that suggests something. But if it is on its own in a SELECT then I am
+stuck. Also stuck if it is compared with another dynamic attribute. This seems
+fundamentally intractible.</p>
+<p>So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
+of dynamic attributes and by explicitly specifying the type. The format for this:</p>
+<pre><code>    (!name|type!)
+</code></pre>
+<p>Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
+array elements, are separated from parents with <code>.</code> (period), e.g.
+<code>(!address.country|CHAR!)</code>. (Spaces are not alowed around the <code>|</code>.) So a user can do:</p>
+<pre><code>$blueShirts = Product::find()
+    -&gt;where(['category' =&gt; Product::SHIRT, '(!color!)' =&gt; 'blue'])
+    -&gt;all();
+
+$cheapShirts = Product::find()
+    -&gt;select(
+        ['sale' =&gt; 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))']
+    )
+    -&gt;where(['category' =&gt; Product::SHIRT])
+    -&gt;andWhere('(!price.retail.unit|decimal(6,2)!) &lt; 20.00')
+    -&gt;all();
+</code></pre>
+<p>The implementation is like db\Connection's quoting of <a href="http://www.php.net/language.types.string">string</a> and {{string}}. Once
+the full SQL string is ready, <code>preg_repalce()</code> it. The regex pattern is a bit complex
+and the replacement callback isn't pretty either. Is there a better way to add to
+<code>$params</code> in the callback than this? And for the parameter placeholder counter <code>$i</code>?</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">\yii\db\Command <strong><a href="spinitron-dynamicar-dynamicactivequery.html#createCommand()-detail">createCommand</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.null">null</a>|\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">\yii\db\Command</td>
+                  <td class="param-desc-col"><p>The modified SQL statement</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getDotNotatedValue()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactivequery.html#getDotNotatedValue()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getDotNotatedValue()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the value of the element in an array refereced by a dot-notated attribute name.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed|<a href="http://www.php.net/language.types.null">null</a> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#getDotNotatedValue()-detail">getDotNotatedValue</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>An array of attributes and values, possibly nested</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The attribute name in dotted notation</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed|<a href="http://www.php.net/language.types.null">null</a></td>
+                  <td class="param-desc-col"><p>The element in $array referenced by $attribute or null if no such
+element exists</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="indexBy()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactivequery.html#indexBy()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        indexBy()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Converts the indexBy column name an anonymous function that writes rows to the
+result array indexed an attribute name that may be in dotted notation.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">$this <strong><a href="spinitron-dynamicar-dynamicactivequery.html#indexBy()-detail">indexBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$column</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.callable">callable</a>|<a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Name of the column by which the query results should be indexed</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="prepare()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactivequery.html#prepare()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        prepare()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Maria-specific preparation for building a query that includes a dynamic column.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#prepare()-detail">prepare</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$builder&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$builder</span></td>
+                  <td class="param-type-col">\yii\db\QueryBuilder</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                                                    <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                            <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\InvalidConfigException</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                        </table>
+
+<!--	-->
+</div>
+        </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/, 'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/, 'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 18:41:39 -0400</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+});</script></body>
+</html>

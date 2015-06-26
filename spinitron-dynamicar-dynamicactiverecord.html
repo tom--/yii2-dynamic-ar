@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/406708e9/style.css" rel="stylesheet">
+<script src="./assets/b0215f92/jquery.js"></script>
+<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>DynamicActiveRecord - Dynamic Active Record</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w4" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w4-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w4-collapse" class="collapse navbar-collapse"><ul id="w5" class="navbar-nav nav"></ul></div></nav>
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-3" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-3" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
+<a class="list-group-item active" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>Class spinitron\dynamicAr\DynamicActiveRecord</h1>
+<div id="nav">
+    <a href="index.html">All Classes</a>
+            | <a href="#properties">Properties</a>
+                | <a href="#methods">Methods</a>
+                | <a href="#events">Events</a>
+                | <a href="#constants">Constants</a>
+    </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-value" />
+    </colgroup>
+            <tr><th>Inheritance</th><td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a> &raquo;
+<a href="yii-db-activerecord.html">yii\db\ActiveRecord</a> &raquo;
+<a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a> &raquo;
+<a href="yii-base-model.html">yii\base\Model</a> &raquo;
+<a href="yii-base-component.html">yii\base\Component</a> &raquo;
+<a href="yii-base-object.html">yii\base\Object</a></td></tr>
+                <tr><th>Implements</th><td><a href="http://www.php.net/class.arrayaccess">ArrayAccess</a>, <a href="http://www.php.net/class.iteratoraggregate">IteratorAggregate</a>, <a href="yii-base-arrayable.html">yii\base\Arrayable</a>, <a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activerecordinterface.html">yii\db\ActiveRecordInterface</a></td></tr>
+                    <tr><th>Uses Traits</th><td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td></tr>
+                <tr><th>Subclasses</th><td>examples\shop\Product</td></tr>
+                        </table>
+
+<div id="classDescription">
+    <p><strong>DynamicActiveRecord represents relational data with structured dynamic attributes
+in addition to column attributes supported by ActiveRecord.</strong></p>
+    <p>DynamicActiveRecord adds structured dynamic attributes to Yii 2 ActiveRecord a bit
+like adding a document, in the sense of a NoSQL document store database, to each
+SQL table record. At present this is implemented for
+<a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/">Maria 10.0+ Dynamic Columns</a>.</p>
+<p>You can read and write attributes of a DynamicActiveRecord model that are not
+instance variables, column attributes or virtual attribute. In other words, you can make
+up attribute names on-the-fly, assign values and they are stored in the database. You can
+then involve these dynamic attributes in queries using <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>.</p>
+<p>Dynamic attributes may also be data structures in the form of PHP arrays, elements of
+which can be accessed through dotted attribute notation.</p>
+<pre><code class="language-php"><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">specs&nbsp;</span><span style="color: #007700">=&nbsp;[</span><span style="color: #DD0000">'dimensions'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'length'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">]];<br /></span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #DD0000">'specs.dimensions.width'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #DD0000">'specs.color'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'blue'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$model-&gt;specs&nbsp;now&nbsp;has&nbsp;the&nbsp;value<br />//&nbsp;['dimensions'&nbsp;=&gt;&nbsp;['length'&nbsp;=&gt;&nbsp;20,&nbsp;'width'&nbsp;=&gt;&nbsp;4],&nbsp;'color'&nbsp;=&gt;&nbsp;'blue']</span></code></pre>
+<p>Model classes must implement the <a href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail">dynamicColumn()</a> method to specify the name of the
+table column containing the serialized dynamic attributes.</p>
+
+    </div>
+
+<a id="properties"></a>
+
+<div class="summary doc-property">
+<h2>Public Properties</h2>
+
+<p><a href="#" class="toggle">Hide inherited properties</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-property" />
+    <col class="col-type" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Property</th><th>Type</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr class="inherited" id="$activeValidators">
+        <td><a href="yii-base-model.html#$activeValidators-detail">$activeValidators</a></td>
+        <td>\yii\validators\Validator</td>
+        <td>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="$attributes">
+        <td><a href="yii-base-model.html#$attributes-detail">$attributes</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>Attribute values (name =&gt; value).</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="$behaviors">
+        <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
+        <td>\yii\base\Behavior</td>
+        <td>List of behaviors attached to this component</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="$dirtyAttributes">
+        <td><a href="yii-db-baseactiverecord.html#$dirtyAttributes-detail">$dirtyAttributes</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The changed attribute values (name-value pairs)</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="$errors">
+        <td><a href="yii-base-model.html#$errors-detail">$errors</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>Errors for all attributes or the specified attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="$firstErrors">
+        <td><a href="yii-base-model.html#$firstErrors-detail">$firstErrors</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The first errors.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="$isNewRecord">
+        <td><a href="yii-db-baseactiverecord.html#$isNewRecord-detail">$isNewRecord</a></td>
+        <td><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+        <td>Whether the record is new and should be inserted when calling <a href="yii-db-baseactiverecord.html#save()-detail">save()</a>.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="$iterator">
+        <td><a href="yii-base-model.html#$iterator-detail">$iterator</a></td>
+        <td><a href="http://www.php.net/class.arrayiterator">ArrayIterator</a></td>
+        <td>An iterator for traversing the items in the list.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="$oldAttributes">
+        <td><a href="yii-db-baseactiverecord.html#$oldAttributes-detail">$oldAttributes</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The old attribute values (name-value pairs)</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="$oldPrimaryKey">
+        <td><a href="yii-db-baseactiverecord.html#$oldPrimaryKey-detail">$oldPrimaryKey</a></td>
+        <td>mixed</td>
+        <td>The old primary key value.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+                <tr class="inherited" id="$primaryKey">
+        <td><a href="yii-db-baseactiverecord.html#$primaryKey-detail">$primaryKey</a></td>
+        <td>mixed</td>
+        <td>The primary key value.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="$relatedRecords">
+        <td><a href="yii-db-baseactiverecord.html#$relatedRecords-detail">$relatedRecords</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>An array of related records indexed by relation names.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="$scenario">
+        <td><a href="yii-base-model.html#$scenario-detail">$scenario</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a></td>
+        <td>The scenario that this model is in.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="$validators">
+        <td><a href="yii-base-model.html#$validators-detail">$validators</a></td>
+        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator</td>
+        <td>All the validators declared in the model.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+    </table>
+</div>
+
+<div class="summary doc-property">
+<h2>Protected Properties</h2>
+
+<p><a href="#" class="toggle">Hide inherited properties</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-property" />
+    <col class="col-type" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Property</th><th>Type</th><th>Description</th><th>Defined By</th>
+</tr>
+                                                <tr id="$placeholderCounter">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail">$placeholderCounter</a></td>
+        <td>int</td>
+        <td>Counter of PDO placeholders used in a query.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                    </table>
+</div>
+
+<a id="methods"></a>
+
+<div class="summary doc-method">
+<h2>Public Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr class="inherited" id="__call()">
+        <td><a href="yii-base-component.html#__call()-detail">__call()</a></td>
+        <td>Calls the named method which is not a class method.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__clone()">
+        <td><a href="yii-base-component.html#__clone()-detail">__clone()</a></td>
+        <td>This method is called after the object is created by cloning an existing one.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__construct()">
+        <td><a href="yii-base-object.html#__construct()-detail">__construct()</a></td>
+        <td>Constructor.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="__get()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#__get()-detail">__get()</a></td>
+        <td>PHP getter magic method.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="__isset()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#__isset()-detail">__isset()</a></td>
+        <td>Checks if a property value is null.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="__set()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#__set()-detail">__set()</a></td>
+        <td>PHP setter magic method.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="__unset()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#__unset()-detail">__unset()</a></td>
+        <td>Sets a component property to be null.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="activeAttributes()">
+        <td><a href="yii-base-model.html#activeAttributes()-detail">activeAttributes()</a></td>
+        <td>Returns the attribute names that are subject to validation in the current scenario.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="addError()">
+        <td><a href="yii-base-model.html#addError()-detail">addError()</a></td>
+        <td>Adds a new error to the specified attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="addErrors()">
+        <td><a href="yii-base-model.html#addErrors()-detail">addErrors()</a></td>
+        <td>Adds a list of errors.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="afterDelete()">
+        <td><a href="yii-db-baseactiverecord.html#afterDelete()-detail">afterDelete()</a></td>
+        <td>This method is invoked after deleting a record.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="afterFind()">
+        <td><a href="yii-db-baseactiverecord.html#afterFind()-detail">afterFind()</a></td>
+        <td>This method is called when the AR object is created and populated with the query result.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="afterSave()">
+        <td><a href="yii-db-baseactiverecord.html#afterSave()-detail">afterSave()</a></td>
+        <td>This method is called at the end of inserting or updating a record.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="afterValidate()">
+        <td><a href="yii-base-model.html#afterValidate()-detail">afterValidate()</a></td>
+        <td>This method is invoked after validation ends.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr id="allAttributes()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#allAttributes()-detail">allAttributes()</a></td>
+        <td>Return a list of all model attribute names recursing structured dynamic attributes.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="attachBehavior()">
+        <td><a href="yii-base-component.html#attachBehavior()-detail">attachBehavior()</a></td>
+        <td>Attaches a behavior to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="attachBehaviors()">
+        <td><a href="yii-base-component.html#attachBehaviors()-detail">attachBehaviors()</a></td>
+        <td>Attaches a list of behaviors to the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="attributeHints()">
+        <td><a href="yii-base-model.html#attributeHints()-detail">attributeHints()</a></td>
+        <td>Returns the attribute hints.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="attributeLabels()">
+        <td><a href="yii-base-model.html#attributeLabels()-detail">attributeLabels()</a></td>
+        <td>Returns the attribute labels.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="attributes()">
+        <td><a href="yii-base-model.html#attributes()-detail">attributes()</a></td>
+        <td>Returns the list of attribute names.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="beforeDelete()">
+        <td><a href="yii-db-baseactiverecord.html#beforeDelete()-detail">beforeDelete()</a></td>
+        <td>This method is invoked before deleting a record.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr id="beforeSave()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail">beforeSave()</a></td>
+        <td>This method is called at the beginning of inserting or updating a record.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="beforeValidate()">
+        <td><a href="yii-base-model.html#beforeValidate()-detail">beforeValidate()</a></td>
+        <td>This method is invoked before validation starts.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="behaviors()">
+        <td><a href="yii-base-component.html#behaviors()-detail">behaviors()</a></td>
+        <td>Returns a list of behaviors that this component should behave as.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="canGetProperty()">
+        <td><a href="yii-base-component.html#canGetProperty()-detail">canGetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be read.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="canSetProperty()">
+        <td><a href="yii-base-component.html#canSetProperty()-detail">canSetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be set.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="className()">
+        <td><a href="yii-base-object.html#className()-detail">className()</a></td>
+        <td>Returns the fully qualified name of this class.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr class="inherited" id="clearErrors()">
+        <td><a href="yii-base-model.html#clearErrors()-detail">clearErrors()</a></td>
+        <td>Removes errors for all attributes or a single attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="createValidators()">
+        <td><a href="yii-base-model.html#createValidators()-detail">createValidators()</a></td>
+        <td>Creates validator objects based on the validation rules specified in <a href="yii-base-model.html#rules()-detail">rules()</a>.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+                <tr id="decodeForMaria()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeForMaria()-detail">decodeForMaria()</a></td>
+        <td>Decode strings encoded as data URIs.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="delete()">
+        <td><a href="yii-db-activerecord.html#delete()-detail">delete()</a></td>
+        <td>Deletes the table row corresponding to this active record.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="deleteAll()">
+        <td><a href="yii-db-activerecord.html#deleteAll()-detail">deleteAll()</a></td>
+        <td>Deletes rows in the table using the provided conditions.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+                <tr class="inherited" id="detachBehavior()">
+        <td><a href="yii-base-component.html#detachBehavior()-detail">detachBehavior()</a></td>
+        <td>Detaches a behavior from the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="detachBehaviors()">
+        <td><a href="yii-base-component.html#detachBehaviors()-detail">detachBehaviors()</a></td>
+        <td>Detaches all behaviors from the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+                <tr id="dynColDecode()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColDecode()-detail">dynColDecode()</a></td>
+        <td>Decode a serialized blob of dynamic attributes.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="dynColExpression()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColExpression()-detail">dynColExpression()</a></td>
+        <td>Creates a dynamic column SQL expression representing the given attributes.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                <tr id="dynamicColumn()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail">dynamicColumn()</a></td>
+        <td>Specifies the name of the table column containing dynamic attributes.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                <tr id="encodeForMaria()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeForMaria()-detail">encodeForMaria()</a></td>
+        <td>Encode as data URIs strings that JSON cannot express.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="ensureBehaviors()">
+        <td><a href="yii-base-component.html#ensureBehaviors()-detail">ensureBehaviors()</a></td>
+        <td>Makes sure that the behaviors declared in <a href="yii-base-component.html#behaviors()-detail">behaviors()</a> are attached to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="equals()">
+        <td><a href="yii-db-activerecord.html#equals()-detail">equals()</a></td>
+        <td>Returns a value indicating whether the given active record is the same as the current one.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="extraFields()">
+        <td><a href="yii-base-arrayabletrait.html#extraFields()-detail">extraFields()</a></td>
+        <td>Returns the list of fields that can be expanded further and returned by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a>.</td>
+        <td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td>
+    </tr>
+            <tr id="fields()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#fields()-detail">fields()</a></td>
+        <td>Returns the list of fields that should be returned by default by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a> when no specific fields are specified.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="find()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#find()-detail">find()</a></td>
+        <td>Creates an <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> instance for query purpose.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="findAll()">
+        <td><a href="yii-db-baseactiverecord.html#findAll()-detail">findAll()</a></td>
+        <td>Returns a list of active record models that match the specified primary key value(s) or a set of column values.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+                <tr class="inherited" id="findBySql()">
+        <td><a href="yii-db-activerecord.html#findBySql()-detail">findBySql()</a></td>
+        <td>Creates an <a href="yii-db-activequery.html">yii\db\ActiveQuery</a> instance with a given SQL statement.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="findOne()">
+        <td><a href="yii-db-baseactiverecord.html#findOne()-detail">findOne()</a></td>
+        <td>Returns a single active record model instance by a primary key or an array of column values.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="formName()">
+        <td><a href="yii-base-model.html#formName()-detail">formName()</a></td>
+        <td>Returns the form name that this model class should use.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="generateAttributeLabel()">
+        <td><a href="yii-base-model.html#generateAttributeLabel()-detail">generateAttributeLabel()</a></td>
+        <td>Generates a user friendly attribute label based on the give attribute name.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getActiveValidators()">
+        <td><a href="yii-base-model.html#getActiveValidators()-detail">getActiveValidators()</a></td>
+        <td>Returns the validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr id="getAttribute()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#getAttribute()-detail">getAttribute()</a></td>
+        <td>Returns a model attribute value.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getAttributeHint()">
+        <td><a href="yii-base-model.html#getAttributeHint()-detail">getAttributeHint()</a></td>
+        <td>Returns the text hint for the specified attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getAttributeLabel()">
+        <td><a href="yii-base-model.html#getAttributeLabel()-detail">getAttributeLabel()</a></td>
+        <td>Returns the text label for the specified attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getAttributes()">
+        <td><a href="yii-base-model.html#getAttributes()-detail">getAttributes()</a></td>
+        <td>Returns attribute values.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getBehavior()">
+        <td><a href="yii-base-component.html#getBehavior()-detail">getBehavior()</a></td>
+        <td>Returns the named behavior object.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="getBehaviors()">
+        <td><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors()</a></td>
+        <td>Returns all behaviors attached to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="getDb()">
+        <td><a href="yii-db-activerecord.html#getDb()-detail">getDb()</a></td>
+        <td>Returns the database connection used by this AR class.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getDirtyAttributes()">
+        <td><a href="yii-db-baseactiverecord.html#getDirtyAttributes()-detail">getDirtyAttributes()</a></td>
+        <td>Returns the attribute values that have been modified since they are loaded or saved most recently.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getErrors()">
+        <td><a href="yii-base-model.html#getErrors()-detail">getErrors()</a></td>
+        <td>Returns the errors for all attribute or a single attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getFirstError()">
+        <td><a href="yii-base-model.html#getFirstError()-detail">getFirstError()</a></td>
+        <td>Returns the first error of the specified attribute.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getFirstErrors()">
+        <td><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors()</a></td>
+        <td>Returns the first error of every attribute in the model.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getIsNewRecord()">
+        <td><a href="yii-db-baseactiverecord.html#getIsNewRecord()-detail">getIsNewRecord()</a></td>
+        <td>Returns a value indicating whether the current record is new.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getIterator()">
+        <td><a href="yii-base-model.html#getIterator()-detail">getIterator()</a></td>
+        <td>Returns an iterator for traversing the attributes in the model.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getOldAttribute()">
+        <td><a href="yii-db-baseactiverecord.html#getOldAttribute()-detail">getOldAttribute()</a></td>
+        <td>Returns the old value of the named attribute.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getOldAttributes()">
+        <td><a href="yii-db-baseactiverecord.html#getOldAttributes()-detail">getOldAttributes()</a></td>
+        <td>Returns the old attribute values.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getOldPrimaryKey()">
+        <td><a href="yii-db-baseactiverecord.html#getOldPrimaryKey()-detail">getOldPrimaryKey()</a></td>
+        <td>Returns the old primary key value(s).</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getPrimaryKey()">
+        <td><a href="yii-db-baseactiverecord.html#getPrimaryKey()-detail">getPrimaryKey()</a></td>
+        <td>Returns the primary key value(s).</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getRelatedRecords()">
+        <td><a href="yii-db-baseactiverecord.html#getRelatedRecords()-detail">getRelatedRecords()</a></td>
+        <td>Returns all populated related records.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getRelation()">
+        <td><a href="yii-db-baseactiverecord.html#getRelation()-detail">getRelation()</a></td>
+        <td>Returns the relation object with the specified name.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getScenario()">
+        <td><a href="yii-base-model.html#getScenario()-detail">getScenario()</a></td>
+        <td>Returns the scenario that this model is used in.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="getTableSchema()">
+        <td><a href="yii-db-activerecord.html#getTableSchema()-detail">getTableSchema()</a></td>
+        <td>Returns the schema information of the DB table associated with this AR class.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="getValidators()">
+        <td><a href="yii-base-model.html#getValidators()-detail">getValidators()</a></td>
+        <td>Returns all the validators declared in <a href="yii-base-model.html#rules()-detail">rules()</a>.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="hasAttribute()">
+        <td><a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute()</a></td>
+        <td>Returns a value indicating whether the model has an attribute with the specified name.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="hasErrors()">
+        <td><a href="yii-base-model.html#hasErrors()-detail">hasErrors()</a></td>
+        <td>Returns a value indicating whether there is any validation error.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="hasEventHandlers()">
+        <td><a href="yii-base-component.html#hasEventHandlers()-detail">hasEventHandlers()</a></td>
+        <td>Returns a value indicating whether there is any handler attached to the named event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="hasMany()">
+        <td><a href="yii-db-baseactiverecord.html#hasMany()-detail">hasMany()</a></td>
+        <td>Declares a <code>has-many</code> relation.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="hasMethod()">
+        <td><a href="yii-base-component.html#hasMethod()-detail">hasMethod()</a></td>
+        <td>Returns a value indicating whether a method is defined.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="hasOne()">
+        <td><a href="yii-db-baseactiverecord.html#hasOne()-detail">hasOne()</a></td>
+        <td>Declares a <code>has-one</code> relation.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="hasProperty()">
+        <td><a href="yii-base-component.html#hasProperty()-detail">hasProperty()</a></td>
+        <td>Returns a value indicating whether a property is defined for this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="init()">
+        <td><a href="yii-db-baseactiverecord.html#init()-detail">init()</a></td>
+        <td>Initializes the object.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="insert()">
+        <td><a href="yii-db-activerecord.html#insert()-detail">insert()</a></td>
+        <td>Inserts a row into the associated database table using the attribute values of this record.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+                <tr class="inherited" id="instantiate()">
+        <td><a href="yii-db-baseactiverecord.html#instantiate()-detail">instantiate()</a></td>
+        <td>Creates an active record instance.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="isAttributeActive()">
+        <td><a href="yii-base-model.html#isAttributeActive()-detail">isAttributeActive()</a></td>
+        <td>Returns a value indicating whether the attribute is active in the current scenario.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="isAttributeChanged()">
+        <td><a href="yii-db-baseactiverecord.html#isAttributeChanged()-detail">isAttributeChanged()</a></td>
+        <td>Returns a value indicating whether the named attribute has been changed.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="isAttributeRequired()">
+        <td><a href="yii-base-model.html#isAttributeRequired()-detail">isAttributeRequired()</a></td>
+        <td>Returns a value indicating whether the attribute is required.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="isAttributeSafe()">
+        <td><a href="yii-base-model.html#isAttributeSafe()-detail">isAttributeSafe()</a></td>
+        <td>Returns a value indicating whether the attribute is safe for massive assignments.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="isPrimaryKey()">
+        <td><a href="yii-db-baseactiverecord.html#isPrimaryKey()-detail">isPrimaryKey()</a></td>
+        <td>Returns a value indicating whether the given set of attributes represents the primary key for this model</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="isRelationPopulated()">
+        <td><a href="yii-db-baseactiverecord.html#isRelationPopulated()-detail">isRelationPopulated()</a></td>
+        <td>Check whether the named relation has been populated with records.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="isTransactional()">
+        <td><a href="yii-db-activerecord.html#isTransactional()-detail">isTransactional()</a></td>
+        <td>Returns a value indicating whether the specified operation is transactional in the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr id="issetAttribute()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#issetAttribute()-detail">issetAttribute()</a></td>
+        <td>Returns if a model attribute is set.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="link()">
+        <td><a href="yii-db-baseactiverecord.html#link()-detail">link()</a></td>
+        <td>Establishes the relationship between two models.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="load()">
+        <td><a href="yii-base-model.html#load()-detail">load()</a></td>
+        <td>Populates the model with the data from end user.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="loadDefaultValues()">
+        <td><a href="yii-db-activerecord.html#loadDefaultValues()-detail">loadDefaultValues()</a></td>
+        <td>Loads default values from database table schema</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="loadMultiple()">
+        <td><a href="yii-base-model.html#loadMultiple()-detail">loadMultiple()</a></td>
+        <td>Populates a set of models with the data from end user.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="markAttributeDirty()">
+        <td><a href="yii-db-baseactiverecord.html#markAttributeDirty()-detail">markAttributeDirty()</a></td>
+        <td>Marks an attribute dirty.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="off()">
+        <td><a href="yii-base-component.html#off()-detail">off()</a></td>
+        <td>Detaches an existing event handler from this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="offsetExists()">
+        <td><a href="yii-base-model.html#offsetExists()-detail">offsetExists()</a></td>
+        <td>Returns whether there is an element at the specified offset.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="offsetGet()">
+        <td><a href="yii-base-model.html#offsetGet()-detail">offsetGet()</a></td>
+        <td>Returns the element at the specified offset.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="offsetSet()">
+        <td><a href="yii-base-model.html#offsetSet()-detail">offsetSet()</a></td>
+        <td>Sets the element at the specified offset.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="offsetUnset()">
+        <td><a href="yii-base-model.html#offsetUnset()-detail">offsetUnset()</a></td>
+        <td>Sets the element value at the specified offset to null.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="on()">
+        <td><a href="yii-base-component.html#on()-detail">on()</a></td>
+        <td>Attaches an event handler to an event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="onUnsafeAttribute()">
+        <td><a href="yii-base-model.html#onUnsafeAttribute()-detail">onUnsafeAttribute()</a></td>
+        <td>This method is invoked when an unsafe attribute is being massively assigned.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="optimisticLock()">
+        <td><a href="yii-db-baseactiverecord.html#optimisticLock()-detail">optimisticLock()</a></td>
+        <td>Returns the name of the column that stores the lock version for implementing optimistic locking.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr id="placeholder()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#placeholder()-detail">placeholder()</a></td>
+        <td>Returns a PDO parameter placeholder string, incrementing the placeholder counter.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="populateRecord()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#populateRecord()-detail">populateRecord()</a></td>
+        <td>Populates an active record object using a row of data from the database/storage.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="populateRelation()">
+        <td><a href="yii-db-baseactiverecord.html#populateRelation()-detail">populateRelation()</a></td>
+        <td>Populates the named relation with the related records.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="primaryKey()">
+        <td><a href="yii-db-activerecord.html#primaryKey()-detail">primaryKey()</a></td>
+        <td>Returns the primary key name(s) for this AR class.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr id="refresh()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#refresh()-detail">refresh()</a></td>
+        <td>Repopulates this active record with the latest data.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                <tr class="inherited" id="rules()">
+        <td><a href="yii-base-model.html#rules()-detail">rules()</a></td>
+        <td>Returns the validation rules for attributes.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="safeAttributes()">
+        <td><a href="yii-base-model.html#safeAttributes()-detail">safeAttributes()</a></td>
+        <td>Returns the attribute names that are safe to be massively assigned in the current scenario.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="save()">
+        <td><a href="yii-db-baseactiverecord.html#save()-detail">save()</a></td>
+        <td>Saves the current record.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="scenarios()">
+        <td><a href="yii-base-model.html#scenarios()-detail">scenarios()</a></td>
+        <td>Returns a list of scenarios and the corresponding active attributes.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr id="setAttribute()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#setAttribute()-detail">setAttribute()</a></td>
+        <td>Sets a model attribute.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="setAttributes()">
+        <td><a href="yii-base-model.html#setAttributes()-detail">setAttributes()</a></td>
+        <td>Sets the attribute values in a massive way.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="setIsNewRecord()">
+        <td><a href="yii-db-baseactiverecord.html#setIsNewRecord()-detail">setIsNewRecord()</a></td>
+        <td>Sets the value indicating whether the record is new.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="setOldAttribute()">
+        <td><a href="yii-db-baseactiverecord.html#setOldAttribute()-detail">setOldAttribute()</a></td>
+        <td>Sets the old value of the named attribute.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="setOldAttributes()">
+        <td><a href="yii-db-baseactiverecord.html#setOldAttributes()-detail">setOldAttributes()</a></td>
+        <td>Sets the old attribute values.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="setScenario()">
+        <td><a href="yii-base-model.html#setScenario()-detail">setScenario()</a></td>
+        <td>Sets the scenario for the model.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="tableName()">
+        <td><a href="yii-db-activerecord.html#tableName()-detail">tableName()</a></td>
+        <td>Declares the name of the database table associated with this AR class.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="toArray()">
+        <td><a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a></td>
+        <td>Converts the model into an array.</td>
+        <td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td>
+    </tr>
+            <tr class="inherited" id="transactions()">
+        <td><a href="yii-db-activerecord.html#transactions()-detail">transactions()</a></td>
+        <td>Declares which DB operations should be performed within a transaction in different scenarios.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="trigger()">
+        <td><a href="yii-base-component.html#trigger()-detail">trigger()</a></td>
+        <td>Triggers an event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="unlink()">
+        <td><a href="yii-db-baseactiverecord.html#unlink()-detail">unlink()</a></td>
+        <td>Destroys the relationship between two models.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="unlinkAll()">
+        <td><a href="yii-db-baseactiverecord.html#unlinkAll()-detail">unlinkAll()</a></td>
+        <td>Destroys the relationship in current model.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr id="unsetAttribute()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#unsetAttribute()-detail">unsetAttribute()</a></td>
+        <td>Unset a model attribute.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="update()">
+        <td><a href="yii-db-activerecord.html#update()-detail">update()</a></td>
+        <td>Saves the changes to this active record into the associated database table.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="updateAll()">
+        <td><a href="yii-db-activerecord.html#updateAll()-detail">updateAll()</a></td>
+        <td>Updates the whole table using the provided attribute values and conditions.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="updateAllCounters()">
+        <td><a href="yii-db-activerecord.html#updateAllCounters()-detail">updateAllCounters()</a></td>
+        <td>Updates the whole table using the provided counter changes and conditions.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="updateAttributes()">
+        <td><a href="yii-db-baseactiverecord.html#updateAttributes()-detail">updateAttributes()</a></td>
+        <td>Updates the specified attributes.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+            <tr class="inherited" id="updateCounters()">
+        <td><a href="yii-db-baseactiverecord.html#updateCounters()-detail">updateCounters()</a></td>
+        <td>Updates one or several counter columns for the current AR object.</td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+                <tr class="inherited" id="validate()">
+        <td><a href="yii-base-model.html#validate()-detail">validate()</a></td>
+        <td>Performs the data validation.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+            <tr class="inherited" id="validateMultiple()">
+        <td><a href="yii-base-model.html#validateMultiple()-detail">validateMultiple()</a></td>
+        <td>Validates multiple models.</td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+        </table>
+</div>
+
+<div class="summary doc-method">
+<h2>Protected Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+                                                                                                                            <tr id="decodeArrayForMaria()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeArrayForMaria()-detail">decodeArrayForMaria()</a></td>
+        <td>Decodes any data URI strings in an array.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                        <tr class="inherited" id="deleteInternal()">
+        <td><a href="yii-db-activerecord.html#deleteInternal()-detail">deleteInternal()</a></td>
+        <td>Deletes an ActiveRecord without considering transaction.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+                    <tr id="dotKeys()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dotKeys()-detail">dotKeys()</a></td>
+        <td>Return a list of an array's keys in dotted notation, recursing subarrays.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                    <tr id="dynColSqlMaria()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColSqlMaria()-detail">dynColSqlMaria()</a></td>
+        <td>Creates the SQL and parameter bindings for setting dynamic attributes
+in a DB record as Dynamic Columns in Maria.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                <tr id="encodeArrayForMaria()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeArrayForMaria()-detail">encodeArrayForMaria()</a></td>
+        <td>Encodes as data URIs any "binary" strings in an array.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+                                        <tr class="inherited" id="findByCondition()">
+        <td><a href="yii-db-activerecord.html#findByCondition()-detail">findByCondition()</a></td>
+        <td>Finds ActiveRecord instance(s) by the given condition.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+                                                                                                                                                            <tr class="inherited" id="insertInternal()">
+        <td><a href="yii-db-activerecord.html#insertInternal()-detail">insertInternal()</a></td>
+        <td>Inserts an ActiveRecord into DB without considering transaction.</td>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+    </tr>
+                                                                                                                        <tr class="inherited" id="resolveFields()">
+        <td><a href="yii-base-arrayabletrait.html#resolveFields()-detail">resolveFields()</a></td>
+        <td>Determines which fields can be returned by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a>.</td>
+        <td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td>
+    </tr>
+                                                                                                    <tr class="inherited" id="updateInternal()">
+        <td><a href="yii-db-baseactiverecord.html#updateInternal()-detail">updateInternal()</a></td>
+        <td></td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+                    <tr id="walk()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#walk()-detail">walk()</a></td>
+        <td>Replacement for PHP's array walk and map builtins.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+    </table>
+</div>
+
+<a id="events"></a>
+<div class="summary doc-event">
+    <h2>Events</h2>
+
+    <p><a href="#" class="toggle">Hide inherited events</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+    <colgroup>
+        <col class="col-event" />
+        <col class="col-type" />
+        <col class="col-description" />
+        <col class="col-defined" />
+    </colgroup>
+    <tr>
+        <th>Event</th><th>Type</th><th>Description</th><th>Defined By</th>
+    </tr>
+        <tr class="inherited" id="EVENT_AFTER_DELETE">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_AFTER_DELETE-detail">EVENT_AFTER_DELETE</a></td>
+        <td>\yii\db\Event</td>
+        <td>
+            An event that is triggered after a record is deleted.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_AFTER_FIND">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_AFTER_FIND-detail">EVENT_AFTER_FIND</a></td>
+        <td>\yii\db\Event</td>
+        <td>
+            An event that is triggered after the record is created and populated with query result.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_AFTER_INSERT">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_AFTER_INSERT-detail">EVENT_AFTER_INSERT</a></td>
+        <td>\yii\db\Event</td>
+        <td>
+            An event that is triggered after a record is inserted.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_AFTER_UPDATE">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_AFTER_UPDATE-detail">EVENT_AFTER_UPDATE</a></td>
+        <td>\yii\db\Event</td>
+        <td>
+            An event that is triggered after a record is updated.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_AFTER_VALIDATE">
+        <td><a href="yii-base-model.html#EVENT_AFTER_VALIDATE-detail">EVENT_AFTER_VALIDATE</a></td>
+        <td>\yii\base\Event</td>
+        <td>
+            An event raised at the end of <a href="yii-base-model.html#validate()-detail">validate()</a>                    </td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_BEFORE_DELETE">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_BEFORE_DELETE-detail">EVENT_BEFORE_DELETE</a></td>
+        <td>\yii\base\ModelEvent</td>
+        <td>
+            An event that is triggered before deleting a record.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_BEFORE_INSERT">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_BEFORE_INSERT-detail">EVENT_BEFORE_INSERT</a></td>
+        <td>\yii\base\ModelEvent</td>
+        <td>
+            An event that is triggered before inserting a record.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_BEFORE_UPDATE">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_BEFORE_UPDATE-detail">EVENT_BEFORE_UPDATE</a></td>
+        <td>\yii\base\ModelEvent</td>
+        <td>
+            An event that is triggered before updating a record.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_BEFORE_VALIDATE">
+        <td><a href="yii-base-model.html#EVENT_BEFORE_VALIDATE-detail">EVENT_BEFORE_VALIDATE</a></td>
+        <td>\yii\base\ModelEvent</td>
+        <td>
+            An event raised at the beginning of <a href="yii-base-model.html#validate()-detail">validate()</a>.                    </td>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+    </tr>
+        <tr class="inherited" id="EVENT_INIT">
+        <td><a href="yii-db-baseactiverecord.html#EVENT_INIT-detail">EVENT_INIT</a></td>
+        <td>\yii\db\Event</td>
+        <td>
+            An event that is triggered when the record is initialized via <a href="yii-db-baseactiverecord.html#init()-detail">init()</a>.                    </td>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+    </tr>
+        </table>
+</div>
+
+<a id="constants"></a>
+<div class="summary doc-const">
+    <h2>Constants</h2>
+
+    <p><a href="#" class="toggle">Hide inherited constants</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+    <colgroup>
+        <col class="col-const" />
+        <col class="col-value" />
+        <col class="col-description" />
+        <col class="col-defined" />
+    </colgroup>
+    <tr>
+        <th>Constant</th><th>Value</th><th>Description</th><th>Defined By</th>
+    </tr>
+            <tr id="DATA_URI_PREFIX">
+          <td id="DATA_URI_PREFIX-detail">DATA_URI_PREFIX</td>
+          <td>'data:application/octet-stream;base64,'</td>
+          <td>Prefix for base64 encoded dynamic sttribute values
+</td>
+          <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+        </tr>
+            <tr class="inherited" id="OP_ALL">
+          <td id="OP_ALL-detail">OP_ALL</td>
+          <td>7</td>
+          <td>All three operations: insert, update, delete.
+This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
+          <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+        </tr>
+            <tr class="inherited" id="OP_DELETE">
+          <td id="OP_DELETE-detail">OP_DELETE</td>
+          <td>4</td>
+          <td>The delete operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
+</td>
+          <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+        </tr>
+            <tr class="inherited" id="OP_INSERT">
+          <td id="OP_INSERT-detail">OP_INSERT</td>
+          <td>1</td>
+          <td>The insert operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
+</td>
+          <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+        </tr>
+            <tr class="inherited" id="OP_UPDATE">
+          <td id="OP_UPDATE-detail">OP_UPDATE</td>
+          <td>2</td>
+          <td>The update operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
+</td>
+          <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+        </tr>
+            <tr id="PARAM_PREFIX">
+          <td id="PARAM_PREFIX-detail">PARAM_PREFIX</td>
+          <td>':dqp'</td>
+          <td>Prefix of PDO playholders for Dynamic Column names and values
+</td>
+          <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+        </tr>
+            <tr class="inherited" id="SCENARIO_DEFAULT">
+          <td id="SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</td>
+          <td>'default'</td>
+          <td>The name of the default scenario.
+</td>
+          <td><a href="yii-base-model.html">yii\base\Model</a></td>
+        </tr>
+        </table>
+</div>
+
+<h2>Property Details</h2>
+
+<div class="property-doc">
+
+    <div class="detail-header h3" id="$placeholderCounter-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        $placeholderCounter        <span class="detailHeaderTag small">
+            protected                                    property
+                    </span>
+    </div>
+
+    <div class="signature">int <a href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail">$placeholderCounter</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>Counter of PDO placeholders used in a query.</p>
+
+    
+</div>
+<h2>Method Details</h2>
+
+<div class="method-doc">
+
+    <div class="detail-header h3" id="__get()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#__get()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        __get()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>PHP getter magic method.</strong></p>
+
+        <p>This method is overridden so that attributes and related objects can be accessed like properties.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__get()-detail">__get</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Property name</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>Property value</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\InvalidParamException</td>
+                  <td class="param-desc-col"><p>if relation name is wrong</p>
+</td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__isset()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#__isset()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        __isset()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Checks if a property value is null.</strong></p>
+
+        <p>This method overrides the parent implementation by checking if the named attribute is null or not.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__isset()-detail">__isset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name or the event name</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the property value is null</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__set()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#__set()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        __set()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>PHP setter magic method.</strong></p>
+
+        <p>This method is overridden so that AR attributes can be accessed like properties.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__set()-detail">__set</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Property name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>Property value</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__unset()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#__unset()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        __unset()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets a component property to be null.</strong></p>
+
+        <p>This method overrides the parent implementation by clearing
+the specified attribute value.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__unset()-detail">__unset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name or the event name</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="allAttributes()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#allAttributes()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        allAttributes()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Return a list of all model attribute names recursing structured dynamic attributes.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#allAttributes()-detail">allAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>An array of all attribute names in dotted notation</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="beforeSave()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        beforeSave()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>This method is called at the beginning of inserting or updating a record.</strong></p>
+
+        <p>The default implementation will trigger an <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_INSERT-detail">EVENT_BEFORE_INSERT</a> event when <code>$insert</code> is true,
+or an <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_UPDATE-detail">EVENT_BEFORE_UPDATE</a> event if <code>$insert</code> is false.
+When overriding this method, make sure you call the parent implementation like the following:</p>
+<pre><code>public function beforeSave($insert)
+{
+    if (parent::beforeSave($insert)) {
+        // ...custom code here...
+        return true;
+    } else {
+        return false;
+    }
+}
+</code></pre>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail">beforeSave</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$insert&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$insert</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether this method called while inserting a record.
+If false, it means the method is called while updating a record.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the insertion or updating should continue.
+If false, the insertion or updating will be cancelled.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="decodeArrayForMaria()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#decodeArrayForMaria()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        decodeArrayForMaria()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Decodes any data URI strings in an array.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeArrayForMaria()-detail">decodeArrayForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The array</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="decodeForMaria()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#decodeForMaria()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        decodeForMaria()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Decode strings encoded as data URIs.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeForMaria()-detail">decodeForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The data URI to decode</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The decoded value</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dotKeys()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dotKeys()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dotKeys()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Return a list of an array's keys in dotted notation, recursing subarrays.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dotKeys()-detail">dotKeys</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$prefix</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$prefix</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Prefix returned array keys with this string</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>An array of attributeName =&gt; value pairs</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The list of keys in dotted notation</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dynColDecode()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dynColDecode()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dynColDecode()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Decode a serialized blob of dynamic attributes.</strong></p>
+
+        <p>At present the only supported input format is JSON returned from Maria. It may work
+also for PostgreSQL.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColDecode()-detail">dynColDecode</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$encoded&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$encoded</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Serialized array of attributes in DB-specific form</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Dynamic attributes in name =&gt; value pairs (possibly nested)</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dynColExpression()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dynColExpression()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dynColExpression()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Creates a dynamic column SQL expression representing the given attributes.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.null">null</a>|\yii\db\Expression <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColExpression()-detail">dynColExpression</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attrs&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$attrs</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The dynamic attributes, which may be nested</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dynColSqlMaria()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dynColSqlMaria()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dynColSqlMaria()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Creates the SQL and parameter bindings for setting dynamic attributes
+in a DB record as Dynamic Columns in Maria.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColSqlMaria()-detail">dynColSqlMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$attrs</span><span style="color: #007700">,&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$attrs</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The dynamic attributes, which may be nested</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Expression parameters for binding, passed by reference</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>SQL for a DB Expression</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dynamicColumn()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dynamicColumn()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Specifies the name of the table column containing dynamic attributes.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail">dynamicColumn</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Name of the table column containing dynamic column data</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"><p>if not overriden by descendent class.</p>
+</td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="encodeArrayForMaria()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#encodeArrayForMaria()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        encodeArrayForMaria()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Encodes as data URIs any "binary" strings in an array.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeArrayForMaria()-detail">encodeArrayForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The array</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="encodeForMaria()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#encodeForMaria()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        encodeForMaria()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Encode as data URIs strings that JSON cannot express.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeForMaria()-detail">encodeForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>A value to encode</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The encoded data URI</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="fields()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#fields()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        fields()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the list of fields that should be returned by default by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a> when no specific fields are specified.</strong></p>
+
+        <p>A field is a named element in the returned array by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a>.</p>
+<p>This method should return an array of field names or field definitions.
+If the former, the field name will be treated as an object property name whose value will be used
+as the field value. If the latter, the array key should be the field name while the array value should be
+the corresponding field definition which can be either an object property name or a PHP callable
+returning the corresponding field value. The signature of the callable should be:</p>
+<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">function&nbsp;(</span><span style="color: #0000BB">$model</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$field</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;return&nbsp;field&nbsp;value<br /></span><span style="color: #007700">}</span></code></pre>
+<p>For example, the following code declares four fields:</p>
+<ul>
+<li><code>email</code>: the field name is the same as the property name <code>email</code>;</li>
+<li><code>firstName</code> and <code>lastName</code>: the field names are <code>firstName</code> and <code>lastName</code>, and their
+values are obtained from the <code>first_name</code> and <code>last_name</code> properties;</li>
+<li><code>fullName</code>: the field name is <code>fullName</code>. Its value is obtained by concatenating <code>first_name</code>
+and <code>last_name</code>.</li>
+</ul>
+<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">return&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'email'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'firstName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'first_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'lastName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'last_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'fullName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;function&nbsp;()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">first_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">last_name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />];</span></code></pre>
+<p>In this method, you may also want to return different lists of fields based on some context
+information. For example, depending on the privilege of the current application user,
+you may return different sets of visible fields or filter out some fields.</p>
+<p>The default implementation of this method returns the public object member variables indexed by themselves.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#fields()-detail">fields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The list of field names or field definitions.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="find()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#find()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        find()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Creates an <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> instance for query purpose.</strong></p>
+
+        <p>The returned <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> instance can be further customized by calling
+methods defined in <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> before <code>one()</code> or <code>all()</code> is called to return
+populated ActiveRecord instances. For example,</p>
+<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;find&nbsp;the&nbsp;customer&nbsp;whose&nbsp;ID&nbsp;is&nbsp;1<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;all&nbsp;active&nbsp;customers&nbsp;and&nbsp;order&nbsp;them&nbsp;by&nbsp;their&nbsp;age:<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">orderBy</span><span style="color: #007700">(</span><span style="color: #DD0000">'age'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+<p>This method is also called by <span class="broken-link">\spinitron\dynamicAr\BaseActiveRecord::hasOne()</span> and <span class="broken-link">\spinitron\dynamicAr\BaseActiveRecord::hasMany()</span> to
+create a relational query.</p>
+<p>You may override this method to return a customized query. For example,</p>
+<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;use&nbsp;CustomerQuery&nbsp;instead&nbsp;of&nbsp;the&nbsp;default&nbsp;ActiveQuery<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;new&nbsp;</span><span style="color: #0000BB">CustomerQuery</span><span style="color: #007700">(</span><span style="color: #0000BB">get_called_class</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
+<p>The following code shows how to apply a default condition for all queries:</p>
+<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'deleted'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;Use&nbsp;andWhere()/orWhere()&nbsp;to&nbsp;apply&nbsp;the&nbsp;default&nbsp;condition<br />//&nbsp;SELECT&nbsp;FROM&nbsp;customer&nbsp;WHERE&nbsp;`deleted`=:deleted&nbsp;AND&nbsp;age&gt;30<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">andWhere</span><span style="color: #007700">(</span><span style="color: #DD0000">'age&gt;30'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;Use&nbsp;where()&nbsp;to&nbsp;ignore&nbsp;the&nbsp;default&nbsp;condition<br />//&nbsp;SELECT&nbsp;FROM&nbsp;customer&nbsp;WHERE&nbsp;age&gt;30<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">(</span><span style="color: #DD0000">'age&gt;30'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#find()-detail">find</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+                  <td class="param-desc-col"><p>The newly created <span class="broken-link">\spinitron\dynamicAr\ActiveQuery</span> instance.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getAttribute()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#getAttribute()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getAttribute()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a model attribute value.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed|<a href="http://www.php.net/language.types.null">null</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#getAttribute()-detail">getAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed|<a href="http://www.php.net/language.types.null">null</a></td>
+                  <td class="param-desc-col"><p>The attribute value or null if the attribute does not exist</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="issetAttribute()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#issetAttribute()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        issetAttribute()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns if a model attribute is set.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">bool <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#issetAttribute()-detail">issetAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">bool</td>
+                  <td class="param-desc-col"><p>True if the attribute is set</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="placeholder()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#placeholder()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        placeholder()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a PDO parameter placeholder string, incrementing the placeholder counter.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#placeholder()-detail">placeholder</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The placeholder string</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="populateRecord()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#populateRecord()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        populateRecord()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Populates an active record object using a row of data from the database/storage.</strong></p>
+
+        <p>This is an internal method meant to be called to create active record objects after
+fetching data from the database. It is mainly used by <span class="broken-link">\spinitron\dynamicAr\ActiveQuery</span> to populate
+the query results into active records.</p>
+<p>When calling this method manually you should call <a href="yii-db-baseactiverecord.html#afterFind()-detail">afterFind()</a> on the created
+record to trigger the <a href="yii-db-baseactiverecord.html#EVENT_AFTER_FIND-detail">afterFind Event</a>.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#populateRecord()-detail">populateRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$record</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$record</span></td>
+                  <td class="param-type-col"><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+                  <td class="param-desc-col"><p>The record to be populated. In most cases this will be an instance
+created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantiate()</a> beforehand.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$row</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Attribute values (name =&gt; value)</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="refresh()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#refresh()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        refresh()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Repopulates this active record with the latest data.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#refresh()-detail">refresh</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the row still exists in the database. If true, the latest data
+will be populated to this active record. Otherwise, this record will remain unchanged.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="setAttribute()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#setAttribute()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        setAttribute()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets a model attribute.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#setAttribute()-detail">setAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The attribute value. A value of null effectively unsets the attribute.</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="unsetAttribute()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#unsetAttribute()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        unsetAttribute()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Unset a model attribute.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#unsetAttribute()-detail">unsetAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="walk()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#walk()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        walk()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Replacement for PHP's array walk and map builtins.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#walk()-detail">walk</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$array</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$method&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>An array to walk, which may be nested</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$method</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.callable">callable</a></td>
+                  <td class="param-desc-col"><p>A method to map on the array</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+</div>
+        </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/, 'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/, 'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 18:41:39 -0400</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+});</script></body>
+</html>
