@@ -98,7 +98,7 @@ optional so <code>(!material!)</code> is fine.)</li>
 <blockquote><p>You can read, write and unset model attributes that
 aren't declared anywhere and their values may be structured, i.e. associative arrays.</p>
 </blockquote>
-<p>More formally</p>
+<p>A little more formally</p>
 <ul>
 <li><p>When you write to an attribute that isn't</p>
 <ul>
@@ -108,16 +108,15 @@ aren't declared anywhere and their values may be structured, i.e. associative ar
 </ul>
 <p>  then you write to a dynamic attribute, either creating or updating it.</p>
 </li>
-<li><p>If you write PHP null to a dynamic attribute, this is equivalent to unsetting it.
-Maria does not store dynamic columns set to SQL NULL, <code>COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)</code>
-is true.</p>
+<li><p>Maria does not save a dynamic column that is set to SQL NULL: 
+<code>COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)</code> is true. Thus if 
+a record currently has a dynamic column 'b' and Maria recieves an update to 
+the record setting 'b' to NULL then Maria removes it from the record.</p>
 </li>
-<li><p>So even though DynamicActiveRecord supports <code>__isset()</code> and <code>issetAttribute()</code>, it makes
-no sense to expect applications to use them because there is no practical difference
-in DynamicActiveRecord between an an attribute that doesn't exist and one that does
-and is PHP null.</p>
+<li><p>Hence there is no practical difference between a DynamicActiveRecord model 
+having a dynamic attribute set to PHP null and not having the attribute at all.</p>
 </li>
-<li><p>It therefore follows that if you read an attribute from model that isn't</p>
+<li><p>Therefore, if you read an attribute from model that isn't</p>
 <ul>
 <li>a declared property</li>
 <li>a column attribute</li>
@@ -128,6 +127,8 @@ and is PHP null.</p>
   PHP null.</p>
 </li>
 </ul>
+<p>So even though DynamicActiveRecord supports <code>__isset()</code> and <code>issetAttribute()</code>, 
+there's no need for an applications to use them on dynamic attributes.</p>
 <h2>Further reading <a href="#further-reading" id="further-reading" class="hashlink">&para;</a></h2><p>Class reference</p>
 <ul>
 <li><a href="spinitron-dynamicar-dynamicactiverecord.html">DynamciActiveRecord</a></li>
@@ -275,7 +276,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 20:45:14 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 20:59:52 -0400</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
