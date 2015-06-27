@@ -157,12 +157,8 @@ More formally
     then you write to a dynamic attribute, either creating or updating it.
 
 - If you write PHP null to a dynamic attribute, this is equivalent to unsetting it.
-Maria does not store dynamic columns set to SQL NULL.
-
-```sql
-SELECT COLUMN_JSON(COLUMN_CREATE('foo', NULL));
-//  →  "{}"
-```
+Maria does not store dynamic columns set to SQL NULL:  
+`COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)`
 
 - So even though DynamicActiveRecord supports `__isset()` and `issetAttribute()`, it makes
 no sense to expect applications to use them because there is no practical difference
