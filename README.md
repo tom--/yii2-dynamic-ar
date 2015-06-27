@@ -147,7 +147,7 @@ The design principle of Dynamic AR is
 > You can read, write and unset model attributes that
 aren't declared anywhere and their values may be structured, i.e. associative arrays.
 
-More formally
+A little more formally
 
 - When you write to an attribute that isn't
     - a property declared in the model class
@@ -156,16 +156,15 @@ More formally
 
     then you write to a dynamic attribute, either creating or updating it.
 
-- If you write PHP null to a dynamic attribute, this is equivalent to unsetting it.
-Maria does not store dynamic columns set to SQL NULL, `COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)`
-is true.
+- Maria does not save a dynamic column that is set to SQL NULL: 
+`COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)` is true. Thus if 
+a record currently has a dynamic column 'b' and Maria recieves an update to 
+the record setting 'b' to NULL then Maria removes it from the record.
 
-- So even though DynamicActiveRecord supports `__isset()` and `issetAttribute()`, it makes
-no sense to expect applications to use them because there is no practical difference
-in DynamicActiveRecord between an an attribute that doesn't exist and one that does
-and is PHP null.
+- Hence there is no practical difference between a DynamicActiveRecord model 
+having a dynamic attribute set to PHP null and not having the attribute at all.
 
-- It therefore follows that if you read an attribute from model that isn't
+- Therefore, if you read an attribute from model that isn't
     - a declared property
     - a column attribute
     - a virtual attribute
@@ -173,6 +172,9 @@ and is PHP null.
 
     then, unlike ActiveRecord, no exception is thrown and DynamicActiveRecord returns
     PHP null.
+
+So even though DynamicActiveRecord supports `__isset()` and `issetAttribute()`, 
+there's no need for an applications to use them on dynamic attributes.
 
 
 ## Further reading
