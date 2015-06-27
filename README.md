@@ -142,41 +142,43 @@ class Product extends \spinitron\dynamicAr\DynamicActiveRecord
 
 ## Design principle
 
-The design principle of Dynamic AR is
+DynamicActiveRecord adds a fourth to the three things that reading and writing 
+AR model properties can do:
 
-> You can read, write and unset model attributes that
-aren't declared anywhere and their values may be structured, i.e. associative arrays.
+1. $model->foo accesses, if it exists, the instance variable `$foo`,
+2. otherwise it accesses the column attribute foo, if the model's table has a column 'foo',
+3. otherwise it accesses the virtual attribute 'foo', if the model's class has 
+magic `getFoo()` / `setFoo()` methods, 
+4. else $model->foo accesses a dynamic attribute named 'foo'.
 
-A little more formally
+So any attribute name that doesn't refer to one of the normal 3 kinds of 
+AR model property (instance variable, column attribute, virtual 
+attribute) is automatically a dynamic property as soon 
+as you use it. There is no way to declare a dynamic property and you can
+only define one by writing to it.
 
-- When you write to an attribute that isn't
-    - an instance variable declared in the model class
-    - a column attribute
-    - a writable virtual attribute with a setter method
+And reading an attribute that doesn't exist returns null.
 
-    then you write to a dynamic attribute, either creating or updating it.
 
-- Maria does not save a dynamic column that is set to SQL NULL: 
-`COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)` is true. Thus if 
-a record currently has a dynamic column 'b' and Maria recieves an update to 
-the record setting 'b' to NULL then Maria removes it from the record.
+#### PHP null, SQL NULL and Maria
 
-- Hence there is no practical difference between a DynamicActiveRecord model 
-having a dynamic attribute set to PHP null and not having the attribute at all.
+Maria does not encode a dynamic column set to SQL NULL: 
 
-- Therefore, if you read an attribute from model that isn't
-    - an instance variable
-    - a column attribute
-    - a readable virtual attribute
-    - and the model has no dynamic attribute by that name
+```sql
+SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1) 
+>> 1
+```
 
-    then, unlike ActiveRecord, no exception is thrown and DynamicActiveRecord returns
-    PHP null.
+Thus if a table record currently has a dynamic column 'b' and Maria executes an 
+update setting it to NULL then Maria removes 'b' from the record. (This 
+makes sense if NULL has its conventional database meaning of 'data value 
+does not exist.') So DynamicActiveRecord cannot possibly distinguish a NULL
+value from a dynamic column that doesn't exist after reading back from the DB.
 
-So even though DynamicActiveRecord supports `__isset()` and `issetAttribute()`, 
-there's no need for an applications to use them on dynamic attributes.
-
-That may *sound* intricate but in practice it makes DynamicActiveRecord easy to use.
+In order to be consistent, DynamicActiveRecord always returns null when you 
+read a dynamic attribute that hasn't been set, in contrast to
+ActiveRecord which throws an exception. But it also makes sense if
+null means 'does not exist' and given the design principle (above).
 
 
 ## Further reading
