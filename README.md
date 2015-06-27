@@ -150,9 +150,9 @@ aren't declared anywhere and their values may be structured, i.e. associative ar
 A little more formally
 
 - When you write to an attribute that isn't
-    - a property declared in the model class
+    - an instance variable declared in the model class
     - a column attribute
-    - a virtual attribute with a setter method
+    - a writable virtual attribute with a setter method
 
     then you write to a dynamic attribute, either creating or updating it.
 
@@ -165,9 +165,9 @@ the record setting 'b' to NULL then Maria removes it from the record.
 having a dynamic attribute set to PHP null and not having the attribute at all.
 
 - Therefore, if you read an attribute from model that isn't
-    - a declared property
+    - an instance variable
     - a column attribute
-    - a virtual attribute
+    - a readable virtual attribute
     - and the model has no dynamic attribute by that name
 
     then, unlike ActiveRecord, no exception is thrown and DynamicActiveRecord returns
