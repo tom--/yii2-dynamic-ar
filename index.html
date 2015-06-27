@@ -94,42 +94,34 @@ optional so <code>(!material!)</code> is fine.)</li>
 <pre><code class="language-php"><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">([<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'title'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Car'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'specs.fuel.tank.capacity'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'specs.fuel.tank.capacity.unit'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'liter'</span><span style="color: #007700">,<br />]);<br /></span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #DD0000">'specs.wheels.count'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'(!dimensions.length!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">]);<br /></span><span style="color: #0000BB">$section&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #DD0000">'CONCAT((!&nbsp;dimensions.width&nbsp;!),&nbsp;"&nbsp;x&nbsp;",&nbsp;(!&nbsp;dimensions.height&nbsp;!))'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">11</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();</span></code></pre>
 <p>The dot notation works anywhere Yii accepts an attribute name string, for example</p>
 <pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Product&nbsp;</span><span style="color: #007700">extends&nbsp;\</span><span style="color: #0000BB">spinitron</span><span style="color: #007700">\</span><span style="color: #0000BB">dynamicAr</span><span style="color: #007700">\</span><span style="color: #0000BB">DynamicActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">rules</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;[[</span><span style="color: #DD0000">'dimensions.length'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'double'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'min'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">]];<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">search</span><span style="color: #007700">(</span><span style="color: #0000BB">$params</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dataProvider&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">yii</span><span style="color: #007700">\</span><span style="color: #0000BB">data</span><span style="color: #007700">\</span><span style="color: #0000BB">ActiveDataProvider</span><span style="color: #007700">([<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'sort'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'attributes'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'dimensions.length'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'asc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'(!&nbsp;dimensions.length&nbsp;!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">SORT_DESC</span><span style="color: #007700">],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'desc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'(!&nbsp;dimensions.length&nbsp;!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">SORT_ASC</span><span style="color: #007700">],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;...<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
-<h2>Design principle <a href="#design-principle" id="design-principle" class="hashlink">&para;</a></h2><p>The design principle of Dynamic AR is</p>
-<blockquote><p>You can read, write and unset model attributes that
-aren't declared anywhere and their values may be structured, i.e. associative arrays.</p>
-</blockquote>
-<p>A little more formally</p>
-<ul>
-<li><p>When you write to an attribute that isn't</p>
-<ul>
-<li>an instance variable declared in the model class</li>
-<li>a column attribute</li>
-<li>a writable virtual attribute with a setter method</li>
-</ul>
-<p>  then you write to a dynamic attribute, either creating or updating it.</p>
-</li>
-<li><p>Maria does not save a dynamic column that is set to SQL NULL: 
-<code>COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)</code> is true. Thus if 
-a record currently has a dynamic column 'b' and Maria recieves an update to 
-the record setting 'b' to NULL then Maria removes it from the record.</p>
-</li>
-<li><p>Hence there is no practical difference between a DynamicActiveRecord model 
-having a dynamic attribute set to PHP null and not having the attribute at all.</p>
-</li>
-<li><p>Therefore, if you read an attribute from model that isn't</p>
-<ul>
-<li>an instance variable</li>
-<li>a column attribute</li>
-<li>a readable virtual attribute</li>
-<li>and the model has no dynamic attribute by that name</li>
-</ul>
-<p>  then, unlike ActiveRecord, no exception is thrown and DynamicActiveRecord returns
-  PHP null.</p>
-</li>
-</ul>
-<p>So even though DynamicActiveRecord supports <code>__isset()</code> and <code>issetAttribute()</code>, 
-there's no need for an applications to use them on dynamic attributes.</p>
-<p>That may <em>sound</em> intricate but in practice it makes DynamicActiveRecord easy to use.</p>
+<h2>Design principle <a href="#design-principle" id="design-principle" class="hashlink">&para;</a></h2><p>DynamicActiveRecord adds a fourth to the three things that reading and writing 
+AR model properties can do:</p>
+<ol>
+<li>$model-&gt;foo accesses, if it exists, the instance variable <code>$foo</code>,</li>
+<li>otherwise it accesses the column attribute foo, if the model's table has a column 'foo',</li>
+<li>otherwise it accesses the virtual attribute 'foo', if the model's class has 
+magic <code>getFoo()</code> / <code>setFoo()</code> methods, </li>
+<li>else $model-&gt;foo accesses a dynamic attribute named 'foo'.</li>
+</ol>
+<p>So any attribute name that doesn't refer to one of the normal 3 kinds of 
+AR model property (instance variable, column attribute, virtual 
+attribute) is automatically a dynamic property as soon 
+as you use it. There is no way to declare a dynamic property and you can
+only define one by writing to it.</p>
+<p>And reading an attribute that doesn't exist returns null.</p>
+<h4>PHP null, SQL NULL and Maria <a href="#php-null-sql-null-and-maria" id="php-null-sql-null-and-maria" class="hashlink">&para;</a></h4><p>Maria does not encode a dynamic column set to SQL NULL: </p>
+<pre><code class="language-sql">SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1) 
+&gt;&gt; 1
+</code></pre>
+<p>Thus if a table record currently has a dynamic column 'b' and Maria executes an 
+update setting it to NULL then Maria removes 'b' from the record. (This 
+makes sense if NULL has its conventional database meaning of 'data value 
+does not exist.') So DynamicActiveRecord cannot possibly distinguish a NULL
+value from a dynamic column that doesn't exist after reading back from the DB.</p>
+<p>In order to be consistent, DynamicActiveRecord always returns null when you 
+read a dynamic attribute that hasn't been set, in contrast to
+ActiveRecord which throws an exception. But it also makes sense if
+null means 'does not exist' and given the design principle (above).</p>
 <h2>Further reading <a href="#further-reading" id="further-reading" class="hashlink">&para;</a></h2><p>Class reference</p>
 <ul>
 <li><a href="spinitron-dynamicar-dynamicactiverecord.html">DynamciActiveRecord</a></li>
@@ -277,7 +269,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 21:07:49 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:11 -0400</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
