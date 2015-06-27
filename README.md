@@ -176,6 +176,8 @@ having a dynamic attribute set to PHP null and not having the attribute at all.
 So even though DynamicActiveRecord supports `__isset()` and `issetAttribute()`, 
 there's no need for an applications to use them on dynamic attributes.
 
+That may *sound* intricate but in practice it makes DynamicActiveRecord easy to use.
+
 
 ## Further reading
 
