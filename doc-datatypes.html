@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/406708e9/style.css" rel="stylesheet">
+<script src="./assets/b0215f92/jquery.js"></script>
+<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w87" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w87-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w87-collapse" class="collapse navbar-collapse"><ul id="w88" class="navbar-nav nav"></ul></div></nav>
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-84" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-84" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
+<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div>
+<a class="list-group-item" href="#navigation-85" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-85" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+<a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
+<a class="list-group-item" href="./yii-base-component.html">Component</a>
+<a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
+<a class="list-group-item" href="./yii-base-model.html">Model</a>
+<a class="list-group-item" href="./yii-base-object.html">Object</a></div>
+<a class="list-group-item" href="#navigation-86" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-86" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
+<a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
+<a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
+<a class="list-group-item" href="./yii-db-activerecordinterface.html">ActiveRecordInterface</a>
+<a class="list-group-item" href="./yii-db-activerelationtrait.html">ActiveRelationTrait</a>
+<a class="list-group-item" href="./yii-db-baseactiverecord.html">BaseActiveRecord</a>
+<a class="list-group-item" href="./yii-db-query.html">Query</a>
+<a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
+<a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>On datatypes <a href="#on-datatypes" id="on-datatypes" class="hashlink">&para;</a></h1><p><strong>tl;dr</strong> While you're unlikely to lose data, you might not get the same datatype back that
+you put in. Use your understanding of the attribute in the context of your app to decide
+ how to handle it after loading a model. When you want to use an attribute in a query, you
+ have to specify its datatype.</p>
+<p>Types are a bit of a muddle between DynamicActiveRecord, Maria Dyanic Columns and JSON
+and you may need to take some care. For all DBMSs except Maria, dynamic attribute
+are (will be) serialized and unserialized PHP's <code>json_encode()</code> and <code>json_decode()</code>. The same
+datatype conversion considerations and corner cases apply as in any use of JSON serialization,
+e.g. JSON has no integers, JSON arrays are different from PHP's, etc.</p>
+<p>In Maria the situation is worse. Data is saved via SQL and retrieved via JSON. This may seem
+perverse but here's the logic.</p>
+<ul>
+<li>To save dynamic attribute in a Maria dynamic column, we have to use use the
+<a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_create">COLUMN_CREATE('name', value)</a>
+ SQL function. Maria infers an SQL datatype from the value and saves it with the dynamic column.</li>
+<li>When we load a record from the table into a model, we want the datatypes and values.
+We cannot retrieve the datatypes using Maria's
+<a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_get">COLUMN_GET()</a>
+function so we instead use Maria's
+<a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/#column_json">COLUMN_JSON()</a> getter
+to fetch all the record's dynamic columns at once together with data converted
+into JSON's types.</li>
+</ul>
+<p>This is better than nothing and should be tolerable in a lot of cases but it is a bit weird
+and introduces a number of considerations regarding datatypes through the life-cycle of an
+AR model/record.</p>
+<p>So the data life-cycle with Maria is, roughly</p>
+<ol>
+<li>String values that JSON cannot represent are encoded as base64 data URIs.</li>
+<li>The Dynamic AR model with PHP types is converted to an SQL command string on save</li>
+<li>Maria infers SQL types from the values in the SQL command an saves them with the data</li>
+<li>On load, Dynamic AR requests the saved dynamic columns in JSON format from Maria</li>
+<li>(A but in Maria's JSON encoder is worked around)</li>
+<li>Dynamic AR converts the JSON to PHP</li>
+<li>Data URI values are decoded.</li>
+</ol>
+<h3>Null <a href="#null" id="null" class="hashlink">&para;</a></h3><p>Maria does not save a dynamic column with a null value, thus</p>
+<pre><code class="language-sql">SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1);
+&gt;&gt; 1
+</code></pre>
+<p>So <code>$product-&gt;foo = null; $product-&gt;save();</code> actually deletes dynamic attribute 'foo' in the
+corresponding DB record (assuming that record had a 'foo' before the save).</p>
+<p>This is perfectly reasonable. The meaning and purpose of SQL NULL makes no sense for dynamic
+fields. The correct way to represent something as not existing in dynamic columns is
+for it to not exist. It isn't so straightforward in a normal SQL table column, which is why
+it can have the NULL type/value.</p>
+<p>So, even though JSON can adequately represent a PHP null, DynamicActiveRecord does
+not (actually could not) distinguish dynamic attributes with null values
+from nonexistent ones over the save/load cycle.</p>
+<p>So consider setting a dynamic attribute to PHP null as being the same as unsetting it.
+And when you read an attribute that doesn't exist, DynamicActiveRecord returns PHP null,
+unlike ActiveRecord which throws an exception.</p>
+<h3>Boolean <a href="#boolean" id="boolean" class="hashlink">&para;</a></h3><p>SQL doesn't have bools but JSON does. Maria (SQL) converts to INT 0 or 1 on save so
+you should get integer 0 or 1 after loading from the DB.</p>
+<h3>Number types <a href="#number-types" id="number-types" class="hashlink">&para;</a></h3><p>SQL doesn't have float but has integer and decimal. JSON has only number, which is a decimal
+and usually converted from and to an IEEE floating point double without NaN on
+each end of the serialization. PHP has integer and IEEE floats.
+This can get tricky but these are old problems that have little to do with Dynamic AR.</p>
+<h3>Array <a href="#array" id="array" class="hashlink">&para;</a></h3><p>DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words,
+you may as well use string keys because they will be strings on load and they need to be strings
+when dynamic attribute names are used in queries.</p>
+<p>Empty arrays are not saved in Maria.</p>
+<h3>Object <a href="#object" id="object" class="hashlink">&para;</a></h3><p>DynamicActiveRecord casts objects to PHP array before save so may as well use arrays instead
+of objects.</p>
+<hr />
+<p>Copyright (c) 2015 Spinitron LLC</p>
+<h1>Class Reference</h1>
+
+<table class="summaryTable docIndex table table-bordered table-striped table-hover">
+    <colgroup>
+        <col class="col-package" />
+        <col class="col-class" />
+        <col class="col-description" />
+    </colgroup>
+    <tr>
+        <th>Class</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></td>
+        <td>DynamicActiveQuery represents queries on relational data with structured dynamic attributes.</td>
+    </tr>
+    <tr>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+        <td>DynamicActiveRecord represents relational data with structured dynamic attributes
+in addition to column attributes supported by ActiveRecord.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-base-arrayable.html">yii\base\Arrayable</a></td>
+        <td>Arrayable is the interface that should be implemented by classes who want to support customizable representation of their instances.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td>
+        <td>ArrayableTrait provides a common implementation of the <a href="yii-base-arrayable.html">yii\base\Arrayable</a> interface.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+        <td>Component is the base class that implements the <em>property</em>, <em>event</em> and <em>behavior</em> features.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-base-configurable.html">yii\base\Configurable</a></td>
+        <td>Configurable is the interface that should be implemented by classes who support configuring
+its properties through the last parameter to its constructor.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-base-model.html">yii\base\Model</a></td>
+        <td>Model is the base class for data models.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+        <td>Object is the base class that implements the <em>property</em> feature.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
+        <td>ActiveQuery represents a DB query associated with an Active Record class.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a></td>
+        <td>ActiveQueryInterface defines the common interface to be implemented by active record query classes.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a></td>
+        <td>ActiveQueryTrait implements the common methods and properties for active record query classes.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
+        <td>ActiveRecord is the base class for classes representing relational data in terms of objects.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-activerecordinterface.html">yii\db\ActiveRecordInterface</a></td>
+        <td>ActiveRecordInterface</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a></td>
+        <td>ActiveRelationTrait implements the common methods and properties for active record relational queries.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
+        <td>ActiveRecord is the base class for classes representing relational data in terms of objects.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+        <td>Query represents a SELECT SQL statement in a way that is independent of DBMS.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td>
+        <td>The QueryInterface defines the minimum set of methods to be implemented by a database query.</td>
+    </tr>
+    <tr>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+        <td>The BaseQuery trait represents the minimum method set of a database Query.</td>
+    </tr>
+</table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/, 'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/, 'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 19:07:21 -0400</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+});</script></body>
+</html>

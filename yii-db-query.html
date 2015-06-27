@@ -1,0 +1,2437 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/406708e9/style.css" rel="stylesheet">
+<script src="./assets/b0215f92/jquery.js"></script>
+<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Query - Dynamic Active Record</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w32" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w32-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w32-collapse" class="collapse navbar-collapse"><ul id="w33" class="navbar-nav nav"></ul></div></nav>
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-30" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-30" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+<a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
+<a class="list-group-item" href="./yii-base-component.html">Component</a>
+<a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
+<a class="list-group-item" href="./yii-base-model.html">Model</a>
+<a class="list-group-item" href="./yii-base-object.html">Object</a></div>
+<a class="list-group-item active" href="#navigation-31" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-31" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
+<a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
+<a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
+<a class="list-group-item" href="./yii-db-activerecordinterface.html">ActiveRecordInterface</a>
+<a class="list-group-item" href="./yii-db-activerelationtrait.html">ActiveRelationTrait</a>
+<a class="list-group-item" href="./yii-db-baseactiverecord.html">BaseActiveRecord</a>
+<a class="list-group-item active" href="./yii-db-query.html">Query</a>
+<a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
+<a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>Class yii\db\Query</h1>
+<div id="nav">
+    <a href="index.html">All Classes</a>
+            | <a href="#properties">Properties</a>
+                | <a href="#methods">Methods</a>
+            </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-value" />
+    </colgroup>
+            <tr><th>Inheritance</th><td><a href="yii-db-query.html">yii\db\Query</a> &raquo;
+<a href="yii-base-component.html">yii\base\Component</a> &raquo;
+<a href="yii-base-object.html">yii\base\Object</a></td></tr>
+                <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td></tr>
+                    <tr><th>Uses Traits</th><td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td></tr>
+                <tr><th>Subclasses</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td></tr>
+                        <tr><th>Available since version</th><td>2.0</td></tr>
+                    <tr>
+          <th>Source Code</th>
+          <td><a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php">https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php</a></td>
+        </tr>
+    </table>
+
+<div id="classDescription">
+    <p><strong>Query represents a SELECT SQL statement in a way that is independent of DBMS.</strong></p>
+    <p>Query provides a set of methods to facilitate the specification of different clauses
+in a SELECT statement. These methods can be chained together.</p>
+<p>By calling <a href="yii-db-query.html#createCommand()-detail">createCommand()</a>, we can get a <span class="broken-link">\yii\db\Command</span> instance which can be further
+used to perform/execute the DB query against a database.</p>
+<p>For example,</p>
+<pre><code class="language-php"><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Query</span><span style="color: #007700">;<br /></span><span style="color: #FF8000">//&nbsp;compose&nbsp;the&nbsp;query<br /></span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #DD0000">'id,&nbsp;name'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">from</span><span style="color: #007700">(</span><span style="color: #DD0000">'user'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">limit</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;build&nbsp;and&nbsp;execute&nbsp;the&nbsp;query<br /></span><span style="color: #0000BB">$rows&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;alternatively,&nbsp;you&nbsp;can&nbsp;create&nbsp;DB&nbsp;command&nbsp;and&nbsp;execute&nbsp;it<br /></span><span style="color: #0000BB">$command&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createCommand</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;$command-&gt;sql&nbsp;returns&nbsp;the&nbsp;actual&nbsp;SQL<br /></span><span style="color: #0000BB">$rows&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$command</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">queryAll</span><span style="color: #007700">();</span></code></pre>
+
+    </div>
+
+<a id="properties"></a>
+
+<div class="summary doc-property">
+<h2>Public Properties</h2>
+
+<p><a href="#" class="toggle">Hide inherited properties</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-property" />
+    <col class="col-type" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Property</th><th>Type</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr class="inherited" id="$behaviors">
+        <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
+        <td>\yii\base\Behavior</td>
+        <td>List of behaviors attached to this component</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="$distinct">
+        <td><a href="yii-db-query.html#$distinct-detail">$distinct</a></td>
+        <td><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+        <td>Whether to select distinct rows of data only.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="$from">
+        <td><a href="yii-db-query.html#$from-detail">$from</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The table(s) to be selected from.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="$groupBy">
+        <td><a href="yii-db-query.html#$groupBy-detail">$groupBy</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>How to group the query results.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="$having">
+        <td><a href="yii-db-query.html#$having-detail">$having</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The condition to be applied in the GROUP BY clause.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$indexBy">
+        <td><a href="yii-db-querytrait.html#$indexBy-detail">$indexBy</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a></td>
+        <td>The name of the column by which the query results should be indexed by.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="$join">
+        <td><a href="yii-db-query.html#$join-detail">$join</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>How to join with other tables.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$limit">
+        <td><a href="yii-db-querytrait.html#$limit-detail">$limit</a></td>
+        <td><a href="http://www.php.net/language.types.integer">integer</a></td>
+        <td>Maximum number of records to be returned.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$offset">
+        <td><a href="yii-db-querytrait.html#$offset-detail">$offset</a></td>
+        <td><a href="http://www.php.net/language.types.integer">integer</a></td>
+        <td>Zero-based offset from where the records are to be returned.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="$orderBy">
+        <td><a href="yii-db-querytrait.html#$orderBy-detail">$orderBy</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>How to sort the query results.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="$params">
+        <td><a href="yii-db-query.html#$params-detail">$params</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>List of query parameter values indexed by parameter placeholders.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="$select">
+        <td><a href="yii-db-query.html#$select-detail">$select</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>The columns being selected.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="$selectOption">
+        <td><a href="yii-db-query.html#$selectOption-detail">$selectOption</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a></td>
+        <td>Additional option that should be appended to the 'SELECT' keyword.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="$union">
+        <td><a href="yii-db-query.html#$union-detail">$union</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a></td>
+        <td>This is used to construct the UNION clause(s) in a SQL statement.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="$where">
+        <td><a href="yii-db-querytrait.html#$where-detail">$where</a></td>
+        <td><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+        <td>Query condition.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+    </table>
+</div>
+
+<a id="methods"></a>
+
+<div class="summary doc-method">
+<h2>Public Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr class="inherited" id="__call()">
+        <td><a href="yii-base-component.html#__call()-detail">__call()</a></td>
+        <td>Calls the named method which is not a class method.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__clone()">
+        <td><a href="yii-base-component.html#__clone()-detail">__clone()</a></td>
+        <td>This method is called after the object is created by cloning an existing one.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__construct()">
+        <td><a href="yii-base-object.html#__construct()-detail">__construct()</a></td>
+        <td>Constructor.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr class="inherited" id="__get()">
+        <td><a href="yii-base-component.html#__get()-detail">__get()</a></td>
+        <td>Returns the value of a component property.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__isset()">
+        <td><a href="yii-base-component.html#__isset()-detail">__isset()</a></td>
+        <td>Checks if a property is set, i.e. defined and not null.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__set()">
+        <td><a href="yii-base-component.html#__set()-detail">__set()</a></td>
+        <td>Sets the value of a component property.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="__unset()">
+        <td><a href="yii-base-component.html#__unset()-detail">__unset()</a></td>
+        <td>Sets a component property to be null.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="addGroupBy()">
+        <td><a href="yii-db-query.html#addGroupBy()-detail">addGroupBy()</a></td>
+        <td>Adds additional group-by columns to the existing ones.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="addOrderBy()">
+        <td><a href="yii-db-querytrait.html#addOrderBy()-detail">addOrderBy()</a></td>
+        <td>Adds additional ORDER BY columns to the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="addParams()">
+        <td><a href="yii-db-query.html#addParams()-detail">addParams()</a></td>
+        <td>Adds additional parameters to be bound to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="addSelect()">
+        <td><a href="yii-db-query.html#addSelect()-detail">addSelect()</a></td>
+        <td>Add more columns to the SELECT part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="all()">
+        <td><a href="yii-db-query.html#all()-detail">all()</a></td>
+        <td>Executes the query and returns all results as an array.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="andFilterWhere()">
+        <td><a href="yii-db-querytrait.html#andFilterWhere()-detail">andFilterWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="andHaving()">
+        <td><a href="yii-db-query.html#andHaving()-detail">andHaving()</a></td>
+        <td>Adds an additional HAVING condition to the existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="andWhere()">
+        <td><a href="yii-db-query.html#andWhere()-detail">andWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="attachBehavior()">
+        <td><a href="yii-base-component.html#attachBehavior()-detail">attachBehavior()</a></td>
+        <td>Attaches a behavior to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="attachBehaviors()">
+        <td><a href="yii-base-component.html#attachBehaviors()-detail">attachBehaviors()</a></td>
+        <td>Attaches a list of behaviors to the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="average()">
+        <td><a href="yii-db-query.html#average()-detail">average()</a></td>
+        <td>Returns the average of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="batch()">
+        <td><a href="yii-db-query.html#batch()-detail">batch()</a></td>
+        <td>Starts a batch query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="behaviors()">
+        <td><a href="yii-base-component.html#behaviors()-detail">behaviors()</a></td>
+        <td>Returns a list of behaviors that this component should behave as.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="canGetProperty()">
+        <td><a href="yii-base-component.html#canGetProperty()-detail">canGetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be read.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="canSetProperty()">
+        <td><a href="yii-base-component.html#canSetProperty()-detail">canSetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be set.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="className()">
+        <td><a href="yii-base-object.html#className()-detail">className()</a></td>
+        <td>Returns the fully qualified name of this class.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="column()">
+        <td><a href="yii-db-query.html#column()-detail">column()</a></td>
+        <td>Executes the query and returns the first column of the result.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="count()">
+        <td><a href="yii-db-query.html#count()-detail">count()</a></td>
+        <td>Returns the number of records.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="create()">
+        <td><a href="yii-db-query.html#create()-detail">create()</a></td>
+        <td>Creates a new Query object and copies its property values from an existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="createCommand()">
+        <td><a href="yii-db-query.html#createCommand()-detail">createCommand()</a></td>
+        <td>Creates a DB command that can be used to execute this query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="detachBehavior()">
+        <td><a href="yii-base-component.html#detachBehavior()-detail">detachBehavior()</a></td>
+        <td>Detaches a behavior from the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="detachBehaviors()">
+        <td><a href="yii-base-component.html#detachBehaviors()-detail">detachBehaviors()</a></td>
+        <td>Detaches all behaviors from the component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="distinct()">
+        <td><a href="yii-db-query.html#distinct()-detail">distinct()</a></td>
+        <td>Sets the value indicating whether to SELECT DISTINCT or not.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="each()">
+        <td><a href="yii-db-query.html#each()-detail">each()</a></td>
+        <td>Starts a batch query and retrieves data row by row.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="ensureBehaviors()">
+        <td><a href="yii-base-component.html#ensureBehaviors()-detail">ensureBehaviors()</a></td>
+        <td>Makes sure that the behaviors declared in <a href="yii-base-component.html#behaviors()-detail">behaviors()</a> are attached to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="exists()">
+        <td><a href="yii-db-query.html#exists()-detail">exists()</a></td>
+        <td>Returns a value indicating whether the query result contains any row of data.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                <tr class="inherited" id="filterWhere()">
+        <td><a href="yii-db-querytrait.html#filterWhere()-detail">filterWhere()</a></td>
+        <td>Sets the WHERE part of the query but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="from()">
+        <td><a href="yii-db-query.html#from()-detail">from()</a></td>
+        <td>Sets the FROM part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="getBehavior()">
+        <td><a href="yii-base-component.html#getBehavior()-detail">getBehavior()</a></td>
+        <td>Returns the named behavior object.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="getBehaviors()">
+        <td><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors()</a></td>
+        <td>Returns all behaviors attached to this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="groupBy()">
+        <td><a href="yii-db-query.html#groupBy()-detail">groupBy()</a></td>
+        <td>Sets the GROUP BY part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="hasEventHandlers()">
+        <td><a href="yii-base-component.html#hasEventHandlers()-detail">hasEventHandlers()</a></td>
+        <td>Returns a value indicating whether there is any handler attached to the named event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="hasMethod()">
+        <td><a href="yii-base-component.html#hasMethod()-detail">hasMethod()</a></td>
+        <td>Returns a value indicating whether a method is defined.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="hasProperty()">
+        <td><a href="yii-base-component.html#hasProperty()-detail">hasProperty()</a></td>
+        <td>Returns a value indicating whether a property is defined for this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="having()">
+        <td><a href="yii-db-query.html#having()-detail">having()</a></td>
+        <td>Sets the HAVING part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="indexBy()">
+        <td><a href="yii-db-querytrait.html#indexBy()-detail">indexBy()</a></td>
+        <td>Sets the <a href="yii-db-querytrait.html#indexBy()-detail">indexBy()</a> property.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="init()">
+        <td><a href="yii-base-object.html#init()-detail">init()</a></td>
+        <td>Initializes the object.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="innerJoin()">
+        <td><a href="yii-db-query.html#innerJoin()-detail">innerJoin()</a></td>
+        <td>Appends an INNER JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                <tr id="join()">
+        <td><a href="yii-db-query.html#join()-detail">join()</a></td>
+        <td>Appends a JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="leftJoin()">
+        <td><a href="yii-db-query.html#leftJoin()-detail">leftJoin()</a></td>
+        <td>Appends a LEFT OUTER JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="limit()">
+        <td><a href="yii-db-querytrait.html#limit()-detail">limit()</a></td>
+        <td>Sets the LIMIT part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="max()">
+        <td><a href="yii-db-query.html#max()-detail">max()</a></td>
+        <td>Returns the maximum of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="min()">
+        <td><a href="yii-db-query.html#min()-detail">min()</a></td>
+        <td>Returns the minimum of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                <tr class="inherited" id="off()">
+        <td><a href="yii-base-component.html#off()-detail">off()</a></td>
+        <td>Detaches an existing event handler from this component.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr class="inherited" id="offset()">
+        <td><a href="yii-db-querytrait.html#offset()-detail">offset()</a></td>
+        <td>Sets the OFFSET part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr class="inherited" id="on()">
+        <td><a href="yii-base-component.html#on()-detail">on()</a></td>
+        <td>Attaches an event handler to an event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="one()">
+        <td><a href="yii-db-query.html#one()-detail">one()</a></td>
+        <td>Executes the query and returns a single row of result.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="orFilterWhere()">
+        <td><a href="yii-db-querytrait.html#orFilterWhere()-detail">orFilterWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="orHaving()">
+        <td><a href="yii-db-query.html#orHaving()-detail">orHaving()</a></td>
+        <td>Adds an additional HAVING condition to the existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="orWhere()">
+        <td><a href="yii-db-query.html#orWhere()-detail">orWhere()</a></td>
+        <td>Adds an additional WHERE condition to the existing one.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="orderBy()">
+        <td><a href="yii-db-querytrait.html#orderBy()-detail">orderBy()</a></td>
+        <td>Sets the ORDER BY part of the query.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+            <tr id="params()">
+        <td><a href="yii-db-query.html#params()-detail">params()</a></td>
+        <td>Sets the parameters to be bound to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="populate()">
+        <td><a href="yii-db-query.html#populate()-detail">populate()</a></td>
+        <td>Converts the raw query results into the format as specified by this query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="prepare()">
+        <td><a href="yii-db-query.html#prepare()-detail">prepare()</a></td>
+        <td>Prepares for building SQL.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                <tr id="rightJoin()">
+        <td><a href="yii-db-query.html#rightJoin()-detail">rightJoin()</a></td>
+        <td>Appends a RIGHT OUTER JOIN part to the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="scalar()">
+        <td><a href="yii-db-query.html#scalar()-detail">scalar()</a></td>
+        <td>Returns the query result as a scalar value.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="select()">
+        <td><a href="yii-db-query.html#select()-detail">select()</a></td>
+        <td>Sets the SELECT part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="sum()">
+        <td><a href="yii-db-query.html#sum()-detail">sum()</a></td>
+        <td>Returns the sum of the specified column values.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr class="inherited" id="trigger()">
+        <td><a href="yii-base-component.html#trigger()-detail">trigger()</a></td>
+        <td>Triggers an event.</td>
+        <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="union()">
+        <td><a href="yii-db-query.html#union()-detail">union()</a></td>
+        <td>Appends a SQL statement using UNION operator.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+            <tr id="where()">
+        <td><a href="yii-db-query.html#where()-detail">where()</a></td>
+        <td>Sets the WHERE part of the query.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+    </table>
+</div>
+
+<div class="summary doc-method">
+<h2>Protected Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+                                                                                                                                            <tr class="inherited" id="filterCondition()">
+        <td><a href="yii-db-querytrait.html#filterCondition()-detail">filterCondition()</a></td>
+        <td>Removes <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a> from the given query condition.</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+                                                            <tr class="inherited" id="isEmpty()">
+        <td><a href="yii-db-querytrait.html#isEmpty()-detail">isEmpty()</a></td>
+        <td>Returns a value indicating whether the give value is "empty".</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+                                <tr class="inherited" id="normalizeOrderBy()">
+        <td><a href="yii-db-querytrait.html#normalizeOrderBy()-detail">normalizeOrderBy()</a></td>
+        <td>Normalizes format of ORDER BY data</td>
+        <td><a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td>
+    </tr>
+                                                        <tr id="queryScalar()">
+        <td><a href="yii-db-query.html#queryScalar()-detail">queryScalar()</a></td>
+        <td>Queries a scalar value by setting <a href="yii-db-query.html#select()-detail">select()</a> first.</td>
+        <td><a href="yii-db-query.html">yii\db\Query</a></td>
+    </tr>
+                                </table>
+</div>
+
+<a id="events"></a>
+
+<a id="constants"></a>
+
+<h2>Property Details</h2>
+
+<div class="property-doc">
+
+    <div class="detail-header h3" id="$distinct-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$distinct-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L61" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L61" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $distinct        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <a href="yii-db-query.html#$distinct-detail">$distinct</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>Whether to select distinct rows of data only. If this is set true,
+the SELECT clause would be changed to SELECT DISTINCT.</p>
+
+    
+
+    <div class="detail-header h3" id="$from-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$from-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L67" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L67" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $from        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$from-detail">$from</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>The table(s) to be selected from. For example, <code>['user', 'post']</code>.
+This is used to construct the FROM clause in a SQL statement.</p>
+
+    <p>See also <a href="yii-db-query.html#from()-detail">from()</a>.</p>
+
+    <div class="detail-header h3" id="$groupBy-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$groupBy-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L72" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L72" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $groupBy        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$groupBy-detail">$groupBy</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>How to group the query results. For example, <code>['company', 'department']</code>.
+This is used to construct the GROUP BY clause in a SQL statement.</p>
+
+    
+
+    <div class="detail-header h3" id="$having-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$having-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L95" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L95" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $having        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$having-detail">$having</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>The condition to be applied in the GROUP BY clause.
+It can be either a string or an array. Please refer to <a href="yii-db-query.html#where()-detail">where()</a> on how to specify the condition.</p>
+
+    
+
+    <div class="detail-header h3" id="$join-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$join-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L90" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L90" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $join        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$join-detail">$join</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>How to join with other tables. Each array element represents the specification
+of one join which has the following structure:</p>
+<pre><code>[$joinType, $tableName, $joinCondition]
+</code></pre>
+<p>For example,</p>
+<pre><code>[
+    ['INNER JOIN', 'user', 'user.id = author_id'],
+    ['LEFT JOIN', 'team', 'team.id = team_id'],
+]
+</code></pre>
+
+    
+
+    <div class="detail-header h3" id="$params-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$params-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L108" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L108" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $params        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$params-detail">$params</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;[]</span></div>
+
+    <p>List of query parameter values indexed by parameter placeholders.
+For example, <code>[':name' =&gt; 'Dan', ':age' =&gt; 31]</code>.</p>
+
+    
+
+    <div class="detail-header h3" id="$select-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$select-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L51" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L51" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $select        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$select-detail">$select</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>The columns being selected. For example, <code>['id', 'name']</code>.
+This is used to construct the SELECT clause in a SQL statement. If not set, it means selecting all columns.</p>
+
+    <p>See also <a href="yii-db-query.html#select()-detail">select()</a>.</p>
+
+    <div class="detail-header h3" id="$selectOption-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$selectOption-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L56" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L56" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $selectOption        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.string">string</a> <a href="yii-db-query.html#$selectOption-detail">$selectOption</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>Additional option that should be appended to the 'SELECT' keyword. For example,
+in MySQL, the option 'SQL_CALC_FOUND_ROWS' can be used.</p>
+
+    
+
+    <div class="detail-header h3" id="$union-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#$union-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L103" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L103" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        $union        <span class="detailHeaderTag small">
+            public                                    property
+                    </span>
+    </div>
+
+    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-query.html#$union-detail">$union</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+    <p>This is used to construct the UNION clause(s) in a SQL statement.
+Each array element is an array of the following structure:</p>
+<ul>
+<li><code>query</code>: either a string or a <a href="yii-db-query.html">yii\db\Query</a> object representing a query</li>
+<li><code>all</code>: boolean, whether it should be <code>UNION ALL</code> or <code>UNION</code></li>
+</ul>
+
+    
+</div>
+<h2>Method Details</h2>
+
+<div class="method-doc">
+
+    <div class="detail-header h3" id="addGroupBy()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#addGroupBy()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L683" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L683" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        addGroupBy()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Adds additional group-by columns to the existing ones.</strong></p>
+
+        
+        <p>See also <a href="yii-db-query.html#groupBy()-detail">groupBy()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#addGroupBy()-detail">addGroupBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Additional columns to be grouped by.
+Columns can be specified in either a string (e.g. "id, name") or an array (e.g. ['id', 'name']).
+The method will automatically quote the column names unless a column contains some parenthesis
+(which means the column contains a DB expression).</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="addParams()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#addParams()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L786" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L786" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        addParams()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Adds additional parameters to be bound to the query.</strong></p>
+
+        
+        <p>See also <a href="yii-db-query.html#params()-detail">params()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#addParams()-detail">addParams</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>List of query parameter values indexed by parameter placeholders.
+For example, <code>[':name' =&gt; 'Dan', ':age' =&gt; 31]</code>.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="addSelect()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#addSelect()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L443" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L443" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        addSelect()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Add more columns to the SELECT part of the query.</strong></p>
+
+        <p>Note, that if <a href="yii-db-query.html#select()-detail">select()</a> has not been specified before, you should include <code>*</code> explicitly
+if you want to select all remaining columns too:</p>
+<pre><code class="language-php"><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addSelect</span><span style="color: #007700">([</span><span style="color: #DD0000">"*"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"CONCAT(first_name,&nbsp;'&nbsp;',&nbsp;last_name)&nbsp;AS&nbsp;full_name"</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();</span></code></pre>
+
+        <p>See also <a href="yii-db-query.html#select()-detail">select()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#addSelect()-detail">addSelect</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The columns to add to the select.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="all()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#all()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L204" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L204" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        all()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Executes the query and returns all results as an array.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-query.html#all()-detail">all</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The query results. If the query results in nothing, an empty array will be returned.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="andHaving()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#andHaving()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L722" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L722" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        andHaving()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Adds an additional HAVING condition to the existing one.</strong></p>
+
+        <p>The new condition and the existing one will be joined using the 'AND' operator.</p>
+
+        <p>See also:</p><ul><li><a href="yii-db-query.html#having()-detail">having()</a></li><li><a href="yii-db-query.html#orHaving()-detail">orHaving()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#andHaving()-detail">andHaving</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The new HAVING condition. Please refer to <a href="yii-db-query.html#where()-detail">where()</a>
+on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="andWhere()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#andWhere()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L526" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L526" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        andWhere()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Adds an additional WHERE condition to the existing one.</strong></p>
+
+        <p>The new condition and the existing one will be joined using the 'AND' operator.</p>
+
+        <p>See also:</p><ul><li><a href="yii-db-query.html#where()-detail">where()</a></li><li><a href="yii-db-query.html#orWhere()-detail">orWhere()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#andWhere()-detail">andWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The new WHERE condition. Please refer to <a href="yii-db-query.html#where()-detail">where()</a>
+on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="average()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#average()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L320" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L320" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        average()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the average of the specified column values.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-query.html#average()-detail">average</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$q</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$q</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The column name or expression.
+Make sure you properly <a href="/guide-db-dao.html#quoting-table-and-column-names">quote</a> column names in the expression.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The average of the specified column values.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="batch()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#batch()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L160" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L160" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        batch()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Starts a batch query.</strong></p>
+
+        <p>A batch query supports fetching data in batches, which can keep the memory usage under a limit.
+This method will return a <span class="broken-link">\yii\db\BatchQueryResult</span> object which implements the <code>Iterator</code> interface
+and can be traversed to retrieve the data in batches.</p>
+<p>For example,</p>
+<pre><code class="language-php"><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;(new&nbsp;</span><span style="color: #0000BB">Query</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">from</span><span style="color: #007700">(</span><span style="color: #DD0000">'user'</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">batch</span><span style="color: #007700">()&nbsp;as&nbsp;</span><span style="color: #0000BB">$rows</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$rows&nbsp;is&nbsp;an&nbsp;array&nbsp;of&nbsp;10&nbsp;or&nbsp;fewer&nbsp;rows&nbsp;from&nbsp;user&nbsp;table<br /></span><span style="color: #007700">}</span></code></pre>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">\yii\db\BatchQueryResult <strong><a href="yii-db-query.html#batch()-detail">batch</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$batchSize&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$batchSize</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
+                  <td class="param-desc-col"><p>The number of records to be fetched in each batch.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection. If not set, the "db" application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">\yii\db\BatchQueryResult</td>
+                  <td class="param-desc-col"><p>The batch query result. It implements the <code>Iterator</code> interface
+and can be traversed to retrieve the data in batches.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="column()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#column()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L265" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L265" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        column()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Executes the query and returns the first column of the result.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-query.html#column()-detail">column</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The first column of the query result. An empty array is returned if the query results in nothing.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="count()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#count()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L294" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L294" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        count()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the number of records.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-db-query.html#count()-detail">count</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$q&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'*'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$q</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The COUNT expression. Defaults to '*'.
+Make sure you properly <a href="/guide-db-dao.html#quoting-table-and-column-names">quote</a> column names in the expression.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given (or null), the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Number of records. The result may be a string depending on the
+underlying database engine and to support integer values higher than a 32bit PHP integer can handle.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="create()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#create()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L810" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L810" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        create()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Creates a new Query object and copies its property values from an existing one.</strong></p>
+
+        <p>The properties being copies are the ones to be used by query builders.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-query.html#create()-detail">create</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$from&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$from</span></td>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The source query object</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The new Query object</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="createCommand()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#createCommand()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L117" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L117" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        createCommand()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Creates a DB command that can be used to execute this query.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">\yii\db\Command <strong><a href="yii-db-query.html#createCommand()-detail">createCommand</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">\yii\db\Command</td>
+                  <td class="param-desc-col"><p>The created DB command instance.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="distinct()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#distinct()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L461" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L461" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        distinct()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the value indicating whether to SELECT DISTINCT or not.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#distinct()-detail">distinct</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether to SELECT DISTINCT or not.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="each()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#each()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L187" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L187" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        each()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Starts a batch query and retrieves data row by row.</strong></p>
+
+        <p>This method is similar to <a href="yii-db-query.html#batch()-detail">batch()</a> except that in each iteration of the result,
+only one row of data is returned. For example,</p>
+<pre><code class="language-php"><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;(new&nbsp;</span><span style="color: #0000BB">Query</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">from</span><span style="color: #007700">(</span><span style="color: #DD0000">'user'</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">each</span><span style="color: #007700">()&nbsp;as&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">)&nbsp;{<br />}</span></code></pre>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">\yii\db\BatchQueryResult <strong><a href="yii-db-query.html#each()-detail">each</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$batchSize&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">100</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$batchSize</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
+                  <td class="param-desc-col"><p>The number of records to be fetched in each batch.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection. If not set, the "db" application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">\yii\db\BatchQueryResult</td>
+                  <td class="param-desc-col"><p>The batch query result. It implements the <code>Iterator</code> interface
+and can be traversed to retrieve the data in batches.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="exists()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#exists()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L357" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L357" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        exists()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a value indicating whether the query result contains any row of data.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-query.html#exists()-detail">exists</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the query result contains any row of data.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="from()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#from()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L483" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L483" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        from()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the FROM part of the query.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#from()-detail">from</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$tables&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$tables</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The table(s) to be selected from. This can be either a string (e.g. <code>'user'</code>)
+or an array (e.g. <code>['user', 'profile']</code>) specifying one or several table names.
+Table names can contain schema prefixes (e.g. <code>'public.user'</code>) and/or table aliases (e.g. <code>'user u'</code>).
+The method will automatically quote the table names unless it contains some parenthesis
+(which means the table is given as a sub-query or DB expression).</p>
+<p>When the tables are specified as an array, you may also use the array keys as the table aliases
+(if a table does not need alias, do not use a string key).</p>
+<p>Use a Query object to represent a sub-query. In this case, the corresponding array key will be used
+as the alias for the sub-query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="groupBy()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#groupBy()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L665" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L665" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        groupBy()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the GROUP BY part of the query.</strong></p>
+
+        
+        <p>See also <a href="yii-db-query.html#addGroupBy()-detail">addGroupBy()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#groupBy()-detail">groupBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The columns to be grouped by.
+Columns can be specified in either a string (e.g. "id, name") or an array (e.g. ['id', 'name']).
+The method will automatically quote the column names unless a column contains some parenthesis
+(which means the column contains a DB expression).</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="having()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#having()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L705" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L705" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        having()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the HAVING part of the query.</strong></p>
+
+        
+        <p>See also:</p><ul><li><a href="yii-db-query.html#andHaving()-detail">andHaving()</a></li><li><a href="yii-db-query.html#orHaving()-detail">orHaving()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#having()-detail">having</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The conditions to be put after HAVING.
+Please refer to <a href="yii-db-query.html#where()-detail">where()</a> on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="innerJoin()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#innerJoin()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L602" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L602" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        innerJoin()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Appends an INNER JOIN part to the query.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-query.html#innerJoin()-detail">innerJoin</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$table</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$on&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$table</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The table to be joined.</p>
+<p>Use string to represent the name of the table to be joined.
+Table name can contain schema prefix (e.g. 'public.user') and/or table alias (e.g. 'user u').
+The method will automatically quote the table name unless it contains some parenthesis
+(which means the table is given as a sub-query or DB expression).</p>
+<p>Use array to represent joining with a sub-query. The array must contain only one element.
+The value must be a Query object representing the sub-query while the corresponding key
+represents the alias for the sub-query.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$on</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The join condition that should appear in the ON part.
+Please refer to <a href="yii-db-query.html#where()-detail">where()</a> on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="join()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#join()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L578" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L578" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        join()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Appends a JOIN part to the query.</strong></p>
+
+        <p>The first parameter specifies what type of join it is.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-query.html#join()-detail">join</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$type</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$table</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$on&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$type</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The type of join, such as INNER JOIN, LEFT JOIN.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$table</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The table to be joined.</p>
+<p>Use string to represent the name of the table to be joined.
+Table name can contain schema prefix (e.g. 'public.user') and/or table alias (e.g. 'user u').
+The method will automatically quote the table name unless it contains some parenthesis
+(which means the table is given as a sub-query or DB expression).</p>
+<p>Use array to represent joining with a sub-query. The array must contain only one element.
+The value must be a Query object representing the sub-query while the corresponding key
+represents the alias for the sub-query.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$on</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The join condition that should appear in the ON part.
+Please refer to <a href="yii-db-query.html#where()-detail">where()</a> on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="leftJoin()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#leftJoin()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L626" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L626" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        leftJoin()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Appends a LEFT OUTER JOIN part to the query.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-query.html#leftJoin()-detail">leftJoin</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$table</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$on&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$table</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The table to be joined.</p>
+<p>Use string to represent the name of the table to be joined.
+Table name can contain schema prefix (e.g. 'public.user') and/or table alias (e.g. 'user u').
+The method will automatically quote the table name unless it contains some parenthesis
+(which means the table is given as a sub-query or DB expression).</p>
+<p>Use array to represent joining with a sub-query. The array must contain only one element.
+The value must be a Query object representing the sub-query while the corresponding key
+represents the alias for the sub-query.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$on</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The join condition that should appear in the ON part.
+Please refer to <a href="yii-db-query.html#where()-detail">where()</a> on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="max()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#max()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L346" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L346" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        max()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the maximum of the specified column values.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-query.html#max()-detail">max</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$q</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$q</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The column name or expression.
+Make sure you properly <a href="/guide-db-dao.html#quoting-table-and-column-names">quote</a> column names in the expression.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The maximum of the specified column values.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="min()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#min()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L333" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L333" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        min()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the minimum of the specified column values.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-query.html#min()-detail">min</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$q</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$q</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The column name or expression.
+Make sure you properly <a href="/guide-db-dao.html#quoting-table-and-column-names">quote</a> column names in the expression.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The minimum of the specified column values.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="one()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#one()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L241" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L241" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        one()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Executes the query and returns a single row of result.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-query.html#one()-detail">one</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>The first row (in terms of an array) of the query result. False is returned if the query
+results in nothing.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="orHaving()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#orHaving()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L743" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L743" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        orHaving()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Adds an additional HAVING condition to the existing one.</strong></p>
+
+        <p>The new condition and the existing one will be joined using the 'OR' operator.</p>
+
+        <p>See also:</p><ul><li><a href="yii-db-query.html#having()-detail">having()</a></li><li><a href="yii-db-query.html#andHaving()-detail">andHaving()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#orHaving()-detail">orHaving</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The new HAVING condition. Please refer to <a href="yii-db-query.html#where()-detail">where()</a>
+on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="orWhere()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#orWhere()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L547" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L547" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        orWhere()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Adds an additional WHERE condition to the existing one.</strong></p>
+
+        <p>The new condition and the existing one will be joined using the 'OR' operator.</p>
+
+        <p>See also:</p><ul><li><a href="yii-db-query.html#where()-detail">where()</a></li><li><a href="yii-db-query.html#andWhere()-detail">andWhere()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#orWhere()-detail">orWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The new WHERE condition. Please refer to <a href="yii-db-query.html#where()-detail">where()</a>
+on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="params()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#params()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L773" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L773" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        params()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the parameters to be bound to the query.</strong></p>
+
+        
+        <p>See also <a href="yii-db-query.html#addParams()-detail">addParams()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#params()-detail">params</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>List of query parameter values indexed by parameter placeholders.
+For example, <code>[':name' =&gt; 'Dan', ':age' =&gt; 31]</code>.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="populate()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#populate()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L217" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L217" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        populate()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Converts the raw query results into the format as specified by this query.</strong></p>
+
+        <p>This method is internally used to convert the data fetched from database
+into the format as required by this query.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-query.html#populate()-detail">populate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$rows&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$rows</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The raw query result from database</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The converted query result</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="prepare()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#prepare()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L134" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L134" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        prepare()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Prepares for building SQL.</strong></p>
+
+        <p>This method is called by <span class="broken-link">\yii\db\QueryBuilder</span> when it starts to build SQL from a query object.
+You may override this method to do some final preparation work when converting a query into a SQL statement.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-query.html#prepare()-detail">prepare</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$builder&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$builder</span></td>
+                  <td class="param-type-col">\yii\db\QueryBuilder</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>A prepared query instance which will be used by <span class="broken-link">\yii\db\QueryBuilder</span> to build the SQL</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="queryScalar()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#queryScalar()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L373" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L373" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        queryScalar()
+        <span class="detail-header-tag small">
+            protected            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Queries a scalar value by setting <a href="yii-db-query.html#select()-detail">select()</a> first.</strong></p>
+
+        <p>Restores the value of select to make this query reusable.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">bool|<a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-db-query.html#queryScalar()-detail">queryScalar</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$selectExpression</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$selectExpression</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|\yii\db\Expression</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection|<a href="http://www.php.net/language.types.null">null</a></td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="rightJoin()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#rightJoin()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L650" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L650" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        rightJoin()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Appends a RIGHT OUTER JOIN part to the query.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-query.html#rightJoin()-detail">rightJoin</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$table</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$on&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$table</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The table to be joined.</p>
+<p>Use string to represent the name of the table to be joined.
+Table name can contain schema prefix (e.g. 'public.user') and/or table alias (e.g. 'user u').
+The method will automatically quote the table name unless it contains some parenthesis
+(which means the table is given as a sub-query or DB expression).</p>
+<p>Use array to represent joining with a sub-query. The array must contain only one element.
+The value must be a Query object representing the sub-query while the corresponding key
+represents the alias for the sub-query.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$on</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The join condition that should appear in the ON part.
+Please refer to <a href="yii-db-query.html#where()-detail">where()</a> on how to specify this parameter.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="scalar()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#scalar()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L254" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L254" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        scalar()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the query result as a scalar value.</strong></p>
+
+        <p>The value returned will be the first column in the first row of the query results.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-query.html#scalar()-detail">scalar</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>The value of the first column in the first row of the query result.
+False is returned if the query result is empty.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="select()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#select()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L419" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L419" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        select()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the SELECT part of the query.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#select()-detail">select</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$option&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The columns to be selected.
+Columns can be specified in either a string (e.g. "id, name") or an array (e.g. ['id', 'name']).
+Columns can be prefixed with table names (e.g. "user.id") and/or contain column aliases (e.g. "user.id AS user_id").
+The method will automatically quote the column names unless a column contains some parenthesis
+(which means the column contains a DB expression).</p>
+<p>Note that if you are selecting an expression like <code>CONCAT(first_name, ' ', last_name)</code>, you should
+use an array to specify the columns. Otherwise, the expression may be incorrectly split into several parts.</p>
+<p>When the columns are specified as an array, you may also use array keys as the column aliases (if a column
+does not need alias, do not use a string key).</p>
+<p>Starting from version 2.0.1, you may also select sub-queries as columns by specifying each such column
+as a <code>Query</code> instance representing the sub-query.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$option</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Additional option that should be appended to the 'SELECT' keyword. For example,
+in MySQL, the option 'SQL_CALC_FOUND_ROWS' can be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="sum()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#sum()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L307" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L307" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        sum()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the sum of the specified column values.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-query.html#sum()-detail">sum</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$q</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$q</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The column name or expression.
+Make sure you properly <a href="/guide-db-dao.html#quoting-table-and-column-names">quote</a> column names in the expression.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
+                  <td class="param-type-col">\yii\db\Connection</td>
+                  <td class="param-desc-col"><p>The database connection used to generate the SQL statement.
+If this parameter is not given, the <code>db</code> application component will be used.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The sum of the specified column values.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="union()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#union()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L760" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L760" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        union()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Appends a SQL statement using UNION operator.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#union()-detail">union</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$all&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$sql</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="yii-db-query.html">yii\db\Query</a></td>
+                  <td class="param-desc-col"><p>The SQL statement to be appended using UNION</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$all</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>TRUE if using UNION ALL and FALSE if using UNION</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="where()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-db-query.html#where()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/Query.php#L509" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/Query.php#L509" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        where()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets the WHERE part of the query.</strong></p>
+
+        <p>The method requires a <code>$condition</code> parameter, and optionally a <code>$params</code> parameter
+specifying the values to be bound to the query.</p>
+<p>The <code>$condition</code> parameter should be either a string (e.g. <code>'id=1'</code>) or an array.</p>
+<p>The <code>$condition</code> specified as an array can be in one of the following two formats:</p>
+<ul>
+<li>hash format: <code>['column1' =&gt; value1, 'column2' =&gt; value2, ...]</code></li>
+<li>operator format: <code>[operator, operand1, operand2, ...]</code></li>
+</ul>
+<p>A condition in hash format represents the following SQL expression in general:
+<code>column1=value1 AND column2=value2 AND ...</code>. In case when a value is an array,
+an <code>IN</code> expression will be generated. And if a value is <code>null</code>, <code>IS NULL</code> will be used
+in the generated expression. Below are some examples:</p>
+<ul>
+<li><code>['type' =&gt; 1, 'status' =&gt; 2]</code> generates <code>(type = 1) AND (status = 2)</code>.</li>
+<li><code>['id' =&gt; [1, 2, 3], 'status' =&gt; 2]</code> generates <code>(id IN (1, 2, 3)) AND (status = 2)</code>.</li>
+<li><code>['status' =&gt; null]</code> generates <code>status IS NULL</code>.</li>
+</ul>
+<p>A condition in operator format generates the SQL expression according to the specified operator, which
+can be one of the following:</p>
+<ul>
+<li><p><strong>and</strong>: the operands should be concatenated together using <code>AND</code>. For example,
+<code>['and', 'id=1', 'id=2']</code> will generate <code>id=1 AND id=2</code>. If an operand is an array,
+it will be converted into a string using the rules described here. For example,
+<code>['and', 'type=1', ['or', 'id=1', 'id=2']]</code> will generate <code>type=1 AND (id=1 OR id=2)</code>.
+The method will <em>not</em> do any quoting or escaping.</p>
+</li>
+<li><p><strong>or</strong>: similar to the <code>and</code> operator except that the operands are concatenated using <code>OR</code>. For example,
+<code>['or', ['type' =&gt; [7, 8, 9]], ['id' =&gt; [1, 2, 3]]</code> will generate <code>(type IN (7, 8, 9) OR (id IN (1, 2, 3)))</code>.</p>
+</li>
+<li><p><strong>not</strong>: this will take only one operand and build the negation of it by prefixing the query string with <code>NOT</code>.
+For example <code>['not', ['attribute' =&gt; null]]</code> will result in the condition <code>NOT (attribute IS NULL)</code>.</p>
+</li>
+<li><p><strong>between</strong>: operand 1 should be the column name, and operand 2 and 3 should be the
+starting and ending values of the range that the column is in.
+For example, <code>['between', 'id', 1, 10]</code> will generate <code>id BETWEEN 1 AND 10</code>.</p>
+</li>
+<li><p><strong>not between</strong>: similar to <code>between</code> except the <code>BETWEEN</code> is replaced with <code>NOT BETWEEN</code>
+in the generated condition.</p>
+</li>
+<li><p><strong>in</strong>: operand 1 should be a column or DB expression, and operand 2 be an array representing
+the range of the values that the column or DB expression should be in. For example,
+<code>['in', 'id', [1, 2, 3]]</code> will generate <code>id IN (1, 2, 3)</code>.
+The method will properly quote the column name and escape values in the range.</p>
+<p>To create a composite <code>IN</code> condition you can use and array for the column name and value, where the values are indexed by the column name:
+<code>['in', ['id', 'name'], [['id' =&gt; 1, 'name' =&gt; 'foo'], ['id' =&gt; 2, 'name' =&gt; 'bar']] ]</code>.</p>
+<p>You may also specify a sub-query that is used to get the values for the <code>IN</code>-condition:
+<code>['in', 'user_id', (new Query())-&gt;select('id')-&gt;from('users')-&gt;where(['active' =&gt; 1])]</code></p>
+</li>
+<li><p><strong>not in</strong>: similar to the <code>in</code> operator except that <code>IN</code> is replaced with <code>NOT IN</code> in the generated condition.</p>
+</li>
+<li><p><strong>like</strong>: operand 1 should be a column or DB expression, and operand 2 be a string or an array representing
+the values that the column or DB expression should be like.
+For example, <code>['like', 'name', 'tester']</code> will generate <code>name LIKE '%tester%'</code>.
+When the value range is given as an array, multiple <code>LIKE</code> predicates will be generated and concatenated
+using <code>AND</code>. For example, <code>['like', 'name', ['test', 'sample']]</code> will generate
+<code>name LIKE '%test%' AND name LIKE '%sample%'</code>.
+The method will properly quote the column name and escape special characters in the values.
+Sometimes, you may want to add the percentage characters to the matching value by yourself, you may supply
+a third operand <code>false</code> to do so. For example, <code>['like', 'name', '%tester', false]</code> will generate <code>name LIKE '%tester'</code>.</p>
+</li>
+<li><p><strong>or like</strong>: similar to the <code>like</code> operator except that <code>OR</code> is used to concatenate the <code>LIKE</code>
+predicates when operand 2 is an array.</p>
+</li>
+<li><p><strong>not like</strong>: similar to the <code>like</code> operator except that <code>LIKE</code> is replaced with <code>NOT LIKE</code>
+in the generated condition.</p>
+</li>
+<li><p><strong>or not like</strong>: similar to the <code>not like</code> operator except that <code>OR</code> is used to concatenate
+the <code>NOT LIKE</code> predicates.</p>
+</li>
+<li><p><strong>exists</strong>: operand 1 is a query object that used to build an <code>EXISTS</code> condition. For example
+<code>['exists', (new Query())-&gt;select('id')-&gt;from('users')-&gt;where(['active' =&gt; 1])]</code> will result in the following SQL expression:
+<code>EXISTS (SELECT "id" FROM "users" WHERE "active"=1)</code>.</p>
+</li>
+<li><p><strong>not exists</strong>: similar to the <code>exists</code> operator except that <code>EXISTS</code> is replaced with <code>NOT EXISTS</code> in the generated condition.</p>
+</li>
+<li><p>Additionally you can specify arbitrary operators as follows: A condition of <code>['&gt;=', 'id', 10]</code> will result in the
+following SQL expression: <code>id &gt;= 10</code>.</p>
+</li>
+</ul>
+
+        <p>See also:</p><ul><li><a href="yii-db-query.html#andWhere()-detail">andWhere()</a></li><li><a href="yii-db-query.html#orWhere()-detail">orWhere()</a></li><li><a href="yii-db-queryinterface.html#where()-detail">yii\db\QueryInterface::where()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-query.html#where()-detail">where</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The conditions that should be put in the WHERE part.</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name =&gt; value) to be bound to the query.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">static</td>
+                  <td class="param-desc-col"><p>The query object itself</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+</div>
+        </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/, 'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/, 'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 19:07:18 -0400</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+});</script></body>
+</html>

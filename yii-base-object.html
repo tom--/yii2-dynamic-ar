@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/406708e9/style.css" rel="stylesheet">
+<script src="./assets/b0215f92/jquery.js"></script>
+<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Object - Dynamic Active Record</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w16" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w16-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w16-collapse" class="collapse navbar-collapse"><ul id="w17" class="navbar-nav nav"></ul></div></nav>
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-14" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-14" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+<a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
+<a class="list-group-item" href="./yii-base-component.html">Component</a>
+<a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
+<a class="list-group-item" href="./yii-base-model.html">Model</a>
+<a class="list-group-item active" href="./yii-base-object.html">Object</a></div>
+<a class="list-group-item" href="#navigation-15" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-15" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
+<a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
+<a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
+<a class="list-group-item" href="./yii-db-activerecordinterface.html">ActiveRecordInterface</a>
+<a class="list-group-item" href="./yii-db-activerelationtrait.html">ActiveRelationTrait</a>
+<a class="list-group-item" href="./yii-db-baseactiverecord.html">BaseActiveRecord</a>
+<a class="list-group-item" href="./yii-db-query.html">Query</a>
+<a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
+<a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>Class yii\base\Object</h1>
+<div id="nav">
+    <a href="index.html">All Classes</a>
+                | <a href="#methods">Methods</a>
+            </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-value" />
+    </colgroup>
+            <tr><th>Inheritance</th><td><a href="yii-base-object.html">yii\base\Object</a></td></tr>
+                <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a></td></tr>
+                        <tr><th>Subclasses</th><td>examples\shop\Product, examples\shop\ShopController, <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, yii\base\Action, yii\base\ActionEvent, yii\base\ActionFilter, yii\base\Behavior, <a href="yii-base-component.html">yii\base\Component</a>, yii\base\Controller, yii\base\DynamicModel, yii\base\ErrorHandler, yii\base\Event, yii\base\InlineAction, <a href="yii-base-model.html">yii\base\Model</a>, yii\base\ModelEvent, yii\base\Request, yii\base\Response, yii\base\Security, yii\base\Theme, yii\base\View, yii\base\ViewEvent, yii\base\ViewRenderer, yii\base\Widget, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, yii\db\AfterSaveEvent, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a>, yii\db\BatchQueryResult, yii\db\ColumnSchema, yii\db\Command, yii\db\Connection, yii\db\DataReader, yii\db\Expression, yii\db\Migration, <a href="yii-db-query.html">yii\db\Query</a>, yii\db\QueryBuilder, yii\db\Schema, yii\db\TableSchema, yii\db\Transaction, yii\db\cubrid\QueryBuilder, yii\db\cubrid\Schema, yii\db\mssql\QueryBuilder, yii\db\mssql\Schema, yii\db\mssql\TableSchema, yii\db\mysql\QueryBuilder, yii\db\mysql\Schema, yii\db\oci\QueryBuilder, yii\db\oci\Schema, yii\db\pgsql\QueryBuilder, yii\db\pgsql\Schema, yii\db\sqlite\QueryBuilder, yii\db\sqlite\Schema</td></tr>
+                        <tr><th>Available since version</th><td>2.0</td></tr>
+                    <tr>
+          <th>Source Code</th>
+          <td><a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php">https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php</a></td>
+        </tr>
+    </table>
+
+<div id="classDescription">
+    <p><strong>Object is the base class that implements the <em>property</em> feature.</strong></p>
+    <p>A property is defined by a getter method (e.g. <code>getLabel</code>), and/or a setter method (e.g. <code>setLabel</code>). For example,
+the following getter and setter methods define a property named <code>label</code>:</p>
+<pre><code>private $_label;
+
+public function getLabel()
+{
+    return $this-&gt;_label;
+}
+
+public function setLabel($value)
+{
+    $this-&gt;_label = $value;
+}
+</code></pre>
+<p>Property names are <em>case-insensitive</em>.</p>
+<p>A property can be accessed like a member variable of an object. Reading or writing a property will cause the invocation
+of the corresponding getter or setter method. For example,</p>
+<pre><code>// equivalent to $label = $object-&gt;getLabel();
+$label = $object-&gt;label;
+// equivalent to $object-&gt;setLabel('abc');
+$object-&gt;label = 'abc';
+</code></pre>
+<p>If a property has only a getter method and has no setter method, it is considered as <em>read-only</em>. In this case, trying
+to modify the property value will cause an exception.</p>
+<p>One can call <a href="yii-base-object.html#hasProperty()-detail">hasProperty()</a>, <a href="yii-base-object.html#canGetProperty()-detail">canGetProperty()</a> and/or <a href="yii-base-object.html#canSetProperty()-detail">canSetProperty()</a> to check the existence of a property.</p>
+<p>Besides the property feature, Object also introduces an important object initialization life cycle. In particular,
+creating an new instance of Object or its derived class will involve the following life cycles sequentially:</p>
+<ol>
+<li>the class constructor is invoked;</li>
+<li>object properties are initialized according to the given configuration;</li>
+<li>the <code>init()</code> method is invoked.</li>
+</ol>
+<p>In the above, both Step 2 and 3 occur at the end of the class constructor. It is recommended that
+you perform object initialization in the <code>init()</code> method because at that stage, the object configuration
+is already applied.</p>
+<p>In order to ensure the above life cycles, if a child class of Object needs to override the constructor,
+it should be done like the following:</p>
+<pre><code>public function __construct($param1, $param2, ..., $config = [])
+{
+    ...
+    parent::__construct($config);
+}
+</code></pre>
+<p>That is, a <code>$config</code> parameter (defaults to <code>[]</code>) should be declared as the last parameter
+of the constructor, and the parent implementation should be called at the end of the constructor.</p>
+
+    </div>
+
+<a id="properties"></a>
+
+<a id="methods"></a>
+
+<div class="summary doc-method">
+<h2>Public Methods</h2>
+
+<p><a href="#" class="toggle">Hide inherited methods</a></p>
+
+<table class="summary-table table table-striped table-bordered table-hover">
+<colgroup>
+    <col class="col-method" />
+    <col class="col-description" />
+    <col class="col-defined" />
+</colgroup>
+<tr>
+  <th>Method</th><th>Description</th><th>Defined By</th>
+</tr>
+        <tr id="__call()">
+        <td><a href="yii-base-object.html#__call()-detail">__call()</a></td>
+        <td>Calls the named method which is not a class method.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="__construct()">
+        <td><a href="yii-base-object.html#__construct()-detail">__construct()</a></td>
+        <td>Constructor.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="__get()">
+        <td><a href="yii-base-object.html#__get()-detail">__get()</a></td>
+        <td>Returns the value of an object property.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="__isset()">
+        <td><a href="yii-base-object.html#__isset()-detail">__isset()</a></td>
+        <td>Checks if a property is set, i.e. defined and not null.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="__set()">
+        <td><a href="yii-base-object.html#__set()-detail">__set()</a></td>
+        <td>Sets value of an object property.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="__unset()">
+        <td><a href="yii-base-object.html#__unset()-detail">__unset()</a></td>
+        <td>Sets an object property to null.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="canGetProperty()">
+        <td><a href="yii-base-object.html#canGetProperty()-detail">canGetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be read.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="canSetProperty()">
+        <td><a href="yii-base-object.html#canSetProperty()-detail">canSetProperty()</a></td>
+        <td>Returns a value indicating whether a property can be set.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="className()">
+        <td><a href="yii-base-object.html#className()-detail">className()</a></td>
+        <td>Returns the fully qualified name of this class.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="hasMethod()">
+        <td><a href="yii-base-object.html#hasMethod()-detail">hasMethod()</a></td>
+        <td>Returns a value indicating whether a method is defined.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="hasProperty()">
+        <td><a href="yii-base-object.html#hasProperty()-detail">hasProperty()</a></td>
+        <td>Returns a value indicating whether a property is defined.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+            <tr id="init()">
+        <td><a href="yii-base-object.html#init()-detail">init()</a></td>
+        <td>Initializes the object.</td>
+        <td><a href="yii-base-object.html">yii\base\Object</a></td>
+    </tr>
+    </table>
+</div>
+
+<a id="events"></a>
+
+<a id="constants"></a>
+
+<h2>Method Details</h2>
+
+<div class="method-doc">
+
+    <div class="detail-header h3" id="__call()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#__call()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L218" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L218" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        __call()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Calls the named method which is not a class method.</strong></p>
+
+        <p>Do not call this method directly as it is a PHP magic method that
+will be implicitly called when an unknown method is being invoked.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-object.html#__call()-detail">__call</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The method name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Method parameters</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The method return value</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\UnknownMethodException</td>
+                  <td class="param-desc-col"><p>when calling unknown method</p>
+</td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__construct()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#__construct()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L102" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L102" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        __construct()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Constructor.</strong></p>
+
+        <p>The default implementation does two things:</p>
+<ul>
+<li>Initializes the object with the given configuration <code>$config</code>.</li>
+<li>Call <a href="yii-base-object.html#init()-detail">init()</a>.</li>
+</ul>
+<p>If this method is overridden in a child class, it is recommended that</p>
+<ul>
+<li>the last parameter of the constructor is a configuration array, like <code>$config</code> here.</li>
+<li>call the parent implementation at the end of the constructor.</li>
+</ul>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#__construct()-detail">__construct</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$config</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Name-value pairs that will be used to initialize the object properties</p>
+</td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__get()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#__get()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L130" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L130" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        __get()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the value of an object property.</strong></p>
+
+        <p>Do not call this method directly as it is a PHP magic method that
+will be implicitly called when executing <code>$value = $object-&gt;property;</code>.</p>
+
+        <p>See also <a href="yii-base-object.html#__set()-detail">__set()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-object.html#__get()-detail">__get</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The property value</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\UnknownPropertyException</td>
+                  <td class="param-desc-col"><p>if the property is not defined</p>
+</td>
+                </tr>
+                            <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\InvalidCallException</td>
+                  <td class="param-desc-col"><p>if the property is write-only</p>
+</td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__isset()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#__isset()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L176" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L176" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        __isset()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Checks if a property is set, i.e. defined and not null.</strong></p>
+
+        <p>Do not call this method directly as it is a PHP magic method that
+will be implicitly called when executing <code>isset($object-&gt;property)</code>.</p>
+<p>Note that if the property is not defined, false will be returned.</p>
+
+        <p>See also <a href="http://php.net/manual/en/function.isset.php">http://php.net/manual/en/function.isset.php</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#__isset()-detail">__isset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name or the event name</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the named property is set (not null).</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__set()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#__set()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L153" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L153" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        __set()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets value of an object property.</strong></p>
+
+        <p>Do not call this method directly as it is a PHP magic method that
+will be implicitly called when executing <code>$object-&gt;property = $value;</code>.</p>
+
+        <p>See also <a href="yii-base-object.html#__get()-detail">__get()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#__set()-detail">__set</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name or the event name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
+                  <td class="param-type-col">mixed</td>
+                  <td class="param-desc-col"><p>The property value</p>
+</td>
+                </tr>
+                                                    <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\UnknownPropertyException</td>
+                  <td class="param-desc-col"><p>if the property is not defined</p>
+</td>
+                </tr>
+                            <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\InvalidCallException</td>
+                  <td class="param-desc-col"><p>if the property is read-only</p>
+</td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="__unset()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#__unset()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L198" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L198" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        __unset()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Sets an object property to null.</strong></p>
+
+        <p>Do not call this method directly as it is a PHP magic method that
+will be implicitly called when executing <code>unset($object-&gt;property)</code>.</p>
+<p>Note that if the property is not defined, this method will do nothing.
+If the property is read-only, it will throw an exception.</p>
+
+        <p>See also <a href="http://php.net/manual/en/function.unset.php">http://php.net/manual/en/function.unset.php</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#__unset()-detail">__unset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name</p>
+</td>
+                </tr>
+                                                    <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\InvalidCallException</td>
+                  <td class="param-desc-col"><p>if the property is read only.</p>
+</td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="canGetProperty()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#canGetProperty()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L255" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L255" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        canGetProperty()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a value indicating whether a property can be read.</strong></p>
+
+        <p>A property is readable if:</p>
+<ul>
+<li>the class has a getter method associated with the specified name
+(in this case, property name is case-insensitive);</li>
+<li>the class has a member variable with the specified name (when <code>$checkVars</code> is true);</li>
+</ul>
+
+        <p>See also <a href="yii-base-object.html#canSetProperty()-detail">canSetProperty()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#canGetProperty()-detail">canGetProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$checkVars</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether to treat member variables as properties</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the property can be read</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="canSetProperty()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#canSetProperty()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L273" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L273" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        canSetProperty()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a value indicating whether a property can be set.</strong></p>
+
+        <p>A property is writable if:</p>
+<ul>
+<li>the class has a setter method associated with the specified name
+(in this case, property name is case-insensitive);</li>
+<li>the class has a member variable with the specified name (when <code>$checkVars</code> is true);</li>
+</ul>
+
+        <p>See also <a href="yii-base-object.html#canGetProperty()-detail">canGetProperty()</a>.</p>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#canSetProperty()-detail">canSetProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$checkVars</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether to treat member variables as properties</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the property can be written</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="className()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#className()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L83" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L83" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        className()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns the fully qualified name of this class.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-object.html#className()-detail">className</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The fully qualified name of this class.</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="hasMethod()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#hasMethod()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L286" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L286" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        hasMethod()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a value indicating whether a method is defined.</strong></p>
+
+        <p>The default implementation is a call to php function <code>method_exists()</code>.
+You may override this method when you implemented the php magic method <code>__call()</code>.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#hasMethod()-detail">hasMethod</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The method name</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the method is defined</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="hasProperty()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#hasProperty()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L237" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L237" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        hasProperty()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Returns a value indicating whether a property is defined.</strong></p>
+
+        <p>A property is defined if:</p>
+<ul>
+<li>the class has a getter or setter method associated with the specified name
+(in this case, property name is case-insensitive);</li>
+<li>the class has a member variable with the specified name (when <code>$checkVars</code> is true);</li>
+</ul>
+
+        <p>See also:</p><ul><li><a href="yii-base-object.html#canGetProperty()-detail">canGetProperty()</a></li><li><a href="yii-base-object.html#canSetProperty()-detail">canSetProperty()</a></li></ul>    </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#hasProperty()-detail">hasProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>The property name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$checkVars</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether to treat member variables as properties</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"><p>Whether the property is defined</p>
+</td>
+                </tr>
+                                    </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="init()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="yii-base-object.html#init()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                    <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Object.php#L115" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Object.php#L115" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
+        
+        init()
+        <span class="detail-header-tag small">
+            public            method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Initializes the object.</strong></p>
+
+        <p>This method is invoked at the end of the constructor after the object is initialized with the
+given configuration.</p>
+
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#init()-detail">init</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+            </table>
+
+<!--	-->
+</div>
+        </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/, 'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/, 'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 19:07:17 -0400</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+});</script></body>
+</html>

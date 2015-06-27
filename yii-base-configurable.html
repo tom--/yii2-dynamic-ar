@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en" />
+        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/406708e9/style.css" rel="stylesheet">
+<script src="./assets/b0215f92/jquery.js"></script>
+<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Configurable - Dynamic Active Record</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav id="w40" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w40-collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w40-collapse" class="collapse navbar-collapse"><ul id="w41" class="navbar-nav nav"></ul></div></nav>
+    
+<div class="row">
+    <div class="col-md-3">
+                <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-38" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-38" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+<a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
+<a class="list-group-item" href="./yii-base-component.html">Component</a>
+<a class="list-group-item active" href="./yii-base-configurable.html">Configurable</a>
+<a class="list-group-item" href="./yii-base-model.html">Model</a>
+<a class="list-group-item" href="./yii-base-object.html">Object</a></div>
+<a class="list-group-item" href="#navigation-39" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-39" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
+<a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
+<a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
+<a class="list-group-item" href="./yii-db-activerecordinterface.html">ActiveRecordInterface</a>
+<a class="list-group-item" href="./yii-db-activerelationtrait.html">ActiveRelationTrait</a>
+<a class="list-group-item" href="./yii-db-baseactiverecord.html">BaseActiveRecord</a>
+<a class="list-group-item" href="./yii-db-query.html">Query</a>
+<a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
+<a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
+    <div class="col-md-9 api-content" role="main">
+        <h1>Interface yii\base\Configurable</h1>
+<div id="nav">
+    <a href="index.html">All Classes</a>
+                </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name" />
+        <col class="col-value" />
+    </colgroup>
+                                <tr><th>Implemented by</th><td>examples\shop\Product, examples\shop\ShopController, <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, yii\base\Action, yii\base\ActionEvent, yii\base\ActionFilter, yii\base\Behavior, <a href="yii-base-component.html">yii\base\Component</a>, yii\base\Controller, yii\base\DynamicModel, yii\base\ErrorHandler, yii\base\Event, yii\base\InlineAction, <a href="yii-base-model.html">yii\base\Model</a>, yii\base\ModelEvent, <a href="yii-base-object.html">yii\base\Object</a>, yii\base\Request, yii\base\Response, yii\base\Security, yii\base\Theme, yii\base\View, yii\base\ViewEvent, yii\base\ViewRenderer, yii\base\Widget, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, yii\db\AfterSaveEvent, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a>, yii\db\BatchQueryResult, yii\db\ColumnSchema, yii\db\Command, yii\db\Connection, yii\db\DataReader, yii\db\Expression, yii\db\Migration, <a href="yii-db-query.html">yii\db\Query</a>, yii\db\QueryBuilder, yii\db\Schema, yii\db\TableSchema, yii\db\Transaction, yii\db\cubrid\QueryBuilder, yii\db\cubrid\Schema, yii\db\mssql\QueryBuilder, yii\db\mssql\Schema, yii\db\mssql\TableSchema, yii\db\mysql\QueryBuilder, yii\db\mysql\Schema, yii\db\oci\QueryBuilder, yii\db\oci\Schema, yii\db\pgsql\QueryBuilder, yii\db\pgsql\Schema, yii\db\sqlite\QueryBuilder, yii\db\sqlite\Schema</td></tr>
+                    <tr><th>Available since version</th><td>2.0.3</td></tr>
+                    <tr>
+          <th>Source Code</th>
+          <td><a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Configurable.php">https://github.com/yiisoft/yii2/blob/master/framework/base/Configurable.php</a></td>
+        </tr>
+    </table>
+
+<div id="classDescription">
+    <p><strong>Configurable is the interface that should be implemented by classes who support configuring
+its properties through the last parameter to its constructor.</strong></p>
+    <p>The interface does not declare any method. Classes implementing this interface must declare their constructors
+like the following:</p>
+<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__constructor</span><span style="color: #007700">(</span><span style="color: #0000BB">$param1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$param2</span><span style="color: #007700">,&nbsp;...,&nbsp;</span><span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;[])</span></code></pre>
+<p>That is, the last parameter of the constructor must accept a configuration array.</p>
+<p>This interface is mainly used by <span class="broken-link">\yii\di\Container</span> so that it can pass object configuration as the
+last parameter to the implementing class' constructor.</p>
+
+    </div>
+
+<a id="properties"></a>
+
+<a id="methods"></a>
+
+<a id="events"></a>
+
+<a id="constants"></a>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $("a.toggle").on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/, 'Hide'));
+            $this.parents(".summary").find(".inherited").show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/, 'Show'));
+            $this.parents(".summary").find(".inherited").hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*
+     $(".sourceCode a.show").toggle(function () {
+     $(this).text($(this).text().replace(/show/,'hide'));
+     $(this).parents(".sourceCode").find("div.code").show();
+     },function () {
+     $(this).text($(this).text().replace(/hide/,'show'));
+     $(this).parents(".sourceCode").find("div.code").hide();
+     });
+     $("a.sourceLink").click(function () {
+     $(this).attr('target','_blank');
+     });
+     */
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 19:07:18 -0400</small></p>
+    Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script type="text/javascript">jQuery(document).ready(function () {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+});</script></body>
+</html>
