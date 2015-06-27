@@ -109,13 +109,9 @@ aren't declared anywhere and their values may be structured, i.e. associative ar
 <p>  then you write to a dynamic attribute, either creating or updating it.</p>
 </li>
 <li><p>If you write PHP null to a dynamic attribute, this is equivalent to unsetting it.
-Maria does not store dynamic columns set to SQL NULL.</p>
+Maria does not store dynamic columns set to SQL NULL:<br />
+<code>COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)</code></p>
 </li>
-</ul>
-<pre><code class="language-sql">SELECT COLUMN_JSON(COLUMN_CREATE('foo', NULL));
-//  →  "{}"
-</code></pre>
-<ul>
 <li><p>So even though DynamicActiveRecord supports <code>__isset()</code> and <code>issetAttribute()</code>, it makes
 no sense to expect applications to use them because there is no practical difference
 in DynamicActiveRecord between an an attribute that doesn't exist and one that does
@@ -279,7 +275,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 20:41:15 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Fri, 26 Jun 2015 20:43:09 -0400</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
