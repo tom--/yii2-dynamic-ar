@@ -383,7 +383,7 @@ class DynamicActiveRecord extends ActiveRecord
         $sql = [];
         foreach ($attrs as $key => $value) {
             if (is_object($value)) {
-                $value = (array) $value;
+                $value = method_exists($value, 'toArray') ? $value->toArray() : (array) $value;
             }
             if ($value === [] || $value === null) {
                 continue;
@@ -487,7 +487,7 @@ class DynamicActiveRecord extends ActiveRecord
     {
         $dynCol = static::dynamicColumn();
         if (isset($row[$dynCol])) {
-            $record->dynamicAttributes = static::dynColDecode($row[$dynCol]);
+            $record->_dynamicAttributes = static::dynColDecode($row[$dynCol]);
         }
         parent::populateRecord($record, $row);
     }

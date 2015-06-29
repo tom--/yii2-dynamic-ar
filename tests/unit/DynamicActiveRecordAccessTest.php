@@ -101,6 +101,29 @@ class DynamicActiveRecordAccessTest extends DatabaseTestCase
         $this->assertEquals(['boss.last'], array_keys($p->errors));
     }
 
+    public function testNested()
+    {
+        $product = new Product();
+        $product->person = new Person(['scenario' => 'all']);
+        $this->assertTrue($product->person->load(self::$postInput));
+
+        $this->assertFalse($product->person->validate());
+        $this->assertEquals(['boss.last'], array_keys($product->person->errors));
+    }
+
+    public function testNestedSave()
+    {
+        $product = new Product();
+        $product->person = new Person(['scenario' => 'all']);
+        $product->person->load(self::$postInput);
+
+        $this->assertTrue($product->save(false));
+        $product2 = Product::findOne($product->id);
+        $this->assertNotNull($product2);
+
+        $this->assertEquals(self::$postInput, $product2->person);
+    }
+
     /**
      * Also test __get()
      */
