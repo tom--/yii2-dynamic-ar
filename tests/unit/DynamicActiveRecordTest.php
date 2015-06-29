@@ -9,6 +9,7 @@ namespace tests\unit;
 
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
+use tests\unit\data\dar\Person;
 use tests\unit\data\dar\Supplier;
 use Yii;
 use spinitron\dynamicAr\DynamicActiveRecord;
@@ -78,7 +79,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testAsArray()
     {
         /** @var Product $product */
-        $product = Product::find()->one();
+        $product = Product::findOne(1);
         $expect = [
             'name' => 'product1',
             'int' => 123,
@@ -93,6 +94,13 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             ],
         ];
         $this->assertArraySubset($expect, $product->toArray(), true);
+
+        $product->save(false);
+        $product2 = Product::findOne($product->id);
+
+        $expect['float'] = (string) $expect['float'];
+        $expect['children']['float'] = (string) $expect['children']['float'];
+        $this->assertArraySubset($expect, $product2->toArray(), true);
     }
 
     public function dataProviderTestMariaArrayEncoding()
