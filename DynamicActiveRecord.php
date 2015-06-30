@@ -45,12 +45,12 @@ use yii\db\ActiveRecord;
 class DynamicActiveRecord extends ActiveRecord
 {
     /**
-     * Prefix for base64 encoded dynamic sttribute values
+     * Prefix for base64 encoded dynamic attribute values
      */
     const DATA_URI_PREFIX = 'data:application/octet-stream;base64,';
 
     /**
-     * Prefix of PDO playholders for Dynamic Column names and values
+     * Prefix of PDO placeholders for Dynamic Column names and values
      */
     const PARAM_PREFIX = ':dqp';
 
@@ -107,7 +107,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Returns a model attribute value.
      *
-     * @param string $name attribute name, use dotted notation for strucuted attributes.
+     * @param string $name attribute name, use dotted notation for structured attributes.
      *
      * @return mixed|null the attribute value or null if the attribute does not exist
      */
@@ -134,7 +134,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Sets a model attribute.
      *
-     * @param string $name attribute name, use dotted notation for strucuted attributes.
+     * @param string $name attribute name, use dotted notation for structured attributes.
      * @param mixed $value the attribute value. A value of null effectively unsets the attribute.
      */
     public function setAttribute($name, $value)
@@ -180,7 +180,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Returns if a model attribute is set.
      *
-     * @param string $name attribute name, use dotted notation for strucuted attributes.
+     * @param string $name attribute name, use dotted notation for structured attributes.
      *
      * @return bool true if the attribute is set
      */
@@ -209,7 +209,7 @@ class DynamicActiveRecord extends ActiveRecord
     /**
      * Unset a model attribute.
      *
-     * @param string $name attribute name, use dotted notation for strucuted attributes.
+     * @param string $name attribute name, use dotted notation for structured attributes.
      */
     public function unsetAttribute($name)
     {
@@ -396,6 +396,9 @@ class DynamicActiveRecord extends ActiveRecord
 
             if (is_scalar($value)) {
                 $sql[] = $phValue;
+                if (is_float($value)) {
+                    $value .= ' as DOUBLE';
+                }
                 $params[$phValue] = $value;
             } elseif (is_array($value)) {
                 $sql[] = static::dynColSqlMaria($value, $params);
