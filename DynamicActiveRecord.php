@@ -241,15 +241,16 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @return array The list of keys in dotted notation
      */
-    protected static function dotKeys($prefix, $array)
+    protected static function dotKeyValues($prefix, $array)
     {
         $fields = [];
         foreach ($array as $key => $value) {
             if (is_string($key)) {
                 $newPos = $prefix . '.' . $key;
-                $fields[] = $newPos;
                 if (is_array($value)) {
-                    $fields = array_merge($fields, static::dotKeys($newPos, $value));
+                    $fields = array_merge($fields, static::dotKeyValues($newPos, $value));
+                } else {
+                    $fields[$newPos] = $value;
                 }
             }
         }
@@ -263,11 +264,24 @@ class DynamicActiveRecord extends ActiveRecord
      * @return array an array of all attribute names in dotted notation
      * @throws Exception
      */
-    public function allAttributes()
+    public function dotAttributeNames()
     {
         return array_merge(
             array_values(parent::fields()),
-            static::dotKeys(static::dynamicColumn(), $this->_dynamicAttributes)
+            array_keys(static::dotKeyValues(static::dynamicColumn(), $this->_dynamicAttributes))
+        );
+    }
+
+    /**
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function dotAttributes()
+    {
+        return array_merge(
+            $this->attributes,
+            static::dotKeyValues(static::dynamicColumn(), $this->_dynamicAttributes)
         );
     }
 
@@ -382,7 +396,7 @@ class DynamicActiveRecord extends ActiveRecord
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
-            if (is_object($value)) {
+            if (is_object($value) && !($value instanceof DynamicValue)) {
                 $value = method_exists($value, 'toArray') ? $value->toArray() : (array) $value;
             }
             if ($value === [] || $value === null) {
@@ -394,11 +408,10 @@ class DynamicActiveRecord extends ActiveRecord
             $sql[] = $phKey;
             $params[$phKey] = $key;
 
-            if (is_scalar($value)) {
+            if ($value instanceof DynamicValue || is_float($value)) {
+                $sql[] = $value;
+            } elseif (is_scalar($value)) {
                 $sql[] = $phValue;
-                if (is_float($value)) {
-                    $value .= ' as DOUBLE';
-                }
                 $params[$phValue] = $value;
             } elseif (is_array($value)) {
                 $sql[] = static::dynColSqlMaria($value, $params);
@@ -415,8 +428,7 @@ class DynamicActiveRecord extends ActiveRecord
      *
      * @return null|\yii\db\Expression
      */
-    public static function dynColExpression($attrs)
-    {
+    public static function dynColExpression($attrs) {
         if (!$attrs) {
             return null;
         }

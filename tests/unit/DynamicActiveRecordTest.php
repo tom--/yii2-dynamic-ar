@@ -7,6 +7,7 @@
 
 namespace tests\unit;
 
+use spinitron\dynamicAr\DynamicValue;
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\Person;
@@ -95,11 +96,10 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         ];
         $this->assertArraySubset($expect, $product->toArray(), true);
 
+        $product->float = new DynamicValue(123.456);
+
         $product->save(false);
         $product2 = Product::findOne($product->id);
-
-        $expect['float'] = (string) $expect['float'];
-        $expect['children']['float'] = (string) $expect['children']['float'];
         $this->assertArraySubset($expect, $product2->toArray(), true);
     }
 
@@ -264,6 +264,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testMariaArrayEncoding($expected)
     {
         $this->markTestSkipped('cannot run with unexposed privates');
+
         self::$resetFixture = false;
         $actual = $expected;
 //        DynamicActiveRecord::encodeArrayForMaria($actual);
@@ -299,6 +300,44 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             is_float($value) ? abs($value) / 10e+12 : 0.0
         );
         unset($product);
+    }
+
+    public function testDynamicValueObects()
+    {
+        $this->markTestSkipped('Maria bugs or documentation errors');
+        $p = new Product([
+            'bin' => new DynamicValue('unhex("cafebabebada55")', 'BINARY'),
+            'binN' => new DynamicValue('unhex("cafebabebada55")', 'BINARY(10)'),
+            'str' => new DynamicValue('str'),
+            'char' => new DynamicValue('char', 'CHAR'),
+            'charN' => new DynamicValue('charN', 'CHAR(10)'),
+            'date' => new DynamicValue('1999-12-31', 'DATE'),
+            'datetime' => new DynamicValue('1999-12-31 23:59:59', 'DATETIME'),
+            'datetimeN' => new DynamicValue('1999-12-31 23:59:59.999999', 'DATETIME(6)'),
+            'float' => new DynamicValue(12.99),
+            'decimal' => new DynamicValue(12.99, 'DECIMAL'),
+            'decimalN' => new DynamicValue(12.99, 'DECIMAL(6)'),
+            'decimalND' => new DynamicValue(12.99, 'DECIMAL(6,3)'),
+            'double' => new DynamicValue(12.99E+30, 'DOUBLE'),
+            'doubleN' => new DynamicValue(12.99E+30, 'DOUBLE(6)'),
+            'doubleND' => new DynamicValue(12.99E+30, 'DOUBLE(6,3)'),
+            'int' => new DynamicValue(432),
+            'integer' => new DynamicValue(432, 'INTEGER'),
+            'signed' => new DynamicValue(-432, 'SIGNED'),
+            'signedInt' => new DynamicValue(-432, 'SIGNED INTEGER'),
+            'time' => new DynamicValue('12:30:00', 'TIME'),
+            'timeD' => new DynamicValue('12:30:00.123456', 'TIME(6)'),
+            'unsigned' => new DynamicValue(321, 'UNSIGNED'),
+            'unsignedInt' => new DynamicValue(321, 'UNSIGNED INTEGER'),
+        ]);
+        $p->save(false);
+    }
+
+    public function testDotAttributes()
+    {
+        /** @var Product $p */
+        $p = Product::findOne(1);
+        \yii\helpers\VarDumper::dump($p->dotAttributes());
     }
 
     public function testCustomColumns()
