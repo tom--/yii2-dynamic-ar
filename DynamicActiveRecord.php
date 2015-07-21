@@ -487,7 +487,7 @@ class DynamicActiveRecord extends ActiveRecord
     {
         $dynCol = static::dynamicColumn();
         if (isset($row[$dynCol])) {
-            $record->dynamicAttributes = static::dynColDecode($row[$dynCol]);
+            $record->_dynamicAttributes = static::dynColDecode($row[$dynCol]);
         }
         parent::populateRecord($record, $row);
     }
