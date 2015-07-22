@@ -10,7 +10,7 @@ namespace spinitron\dynamicAr;
  * Example:
  *
  * ```php
- * $model->width = DynamicValue(123.456);
+ * $model->width = new DynamicValue(123.456);
  * ```
  *
  * You may optionally give an
@@ -18,8 +18,8 @@ namespace spinitron\dynamicAr;
  * as second argument of the constructor, for example:
  *
  * ```php
- * $model->joined = DynamicValue('2015-06-01 12:30:00', 'DATETIME');
- * $model->price = DynamicValue(4.99, 'DECIMAL(6,2)');
+ * $model->joined = new DynamicValue('2015-06-01 12:30:00', 'DATETIME');
+ * $model->price = new DynamicValue(4.99, 'DECIMAL(6,2)');
  * ```
  *
  * > NOTE: using DynamicValue for the value of a column attribute rather than a dynamic attribute
