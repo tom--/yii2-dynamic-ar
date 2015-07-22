@@ -44,6 +44,32 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         $this->db = BaseRecord::$db = $this->getConnection(self::$resetFixture);
     }
 
+    protected static function hexDump($data, $newline = "\n")
+    {
+        static $from = '';
+        static $to = '';
+        static $width = 16; # number of bytes per line
+        static $pad = '.'; # padding for non-visible characters
+
+        if ($from === '') {
+            for ($i = 0; $i <= 0xFF; $i++) {
+                $from .= chr($i);
+                $to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
+            }
+        }
+
+        $hex = str_split(bin2hex($data), $width * 2);
+        $chars = str_split(strtr($data, $from, $to), $width);
+
+        $offset = 0;
+        foreach ($hex as $i => $line) {
+            echo sprintf('%6X', $offset) . ' : '
+                . implode(' ', str_split(str_pad($line, 2 * $width), 2))
+                . ' [' . str_pad($chars[$i], $width) . ']' . $newline;
+            $offset += $width;
+        }
+    }
+
     public function testReadBinary()
     {
         $json = $this->db->createCommand(
@@ -177,6 +203,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             ['float', 1.1234],
             ['morefloat', 1.123456789012345],
             ['evenmorefloat', 1.123456789012345678901234567890],
+            // https://mariadb.atlassian.net/browse/MDEV-8521
             ['bigfloat', 1.123456789012345e+300],
             ['bignegfloat', -1.123456789012345e+300],
             ['string1', 'this is a simple string'],
@@ -209,32 +236,6 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         }
 
         return $data;
-    }
-
-    protected static function hexDump($data, $newline = "\n")
-    {
-        static $from = '';
-        static $to = '';
-        static $width = 16; # number of bytes per line
-        static $pad = '.'; # padding for non-visible characters
-
-        if ($from === '') {
-            for ($i = 0; $i <= 0xFF; $i++) {
-                $from .= chr($i);
-                $to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
-            }
-        }
-
-        $hex = str_split(bin2hex($data), $width * 2);
-        $chars = str_split(strtr($data, $from, $to), $width);
-
-        $offset = 0;
-        foreach ($hex as $i => $line) {
-            echo sprintf('%6X', $offset) . ' : '
-                . implode(' ', str_split(str_pad($line, 2 * $width), 2))
-                . ' [' . str_pad($chars[$i], $width) . ']' . $newline;
-            $offset += $width;
-        }
     }
 
     /**
@@ -297,7 +298,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             $value,
             $product->$name,
             'data name: ' . $name,
-            is_float($value) ? abs($value) / 10e+12 : 0.0
+            is_float($value) ? abs($value) / 10e+12 : 0
         );
         unset($product);
     }
@@ -315,8 +316,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             'datetime' => new DynamicValue('1999-12-31 23:59:59', 'DATETIME'),
             'datetimeN' => new DynamicValue('1999-12-31 23:59:59.999999', 'DATETIME(6)'),
             'float' => new DynamicValue(12.99),
-            'decimal' => new DynamicValue(12.99, 'DECIMAL'),
-            'decimalN' => new DynamicValue(12.99, 'DECIMAL(6)'),
+            // https://mariadb.atlassian.net/browse/MDEV-8521
+            // 'decimal' => new DynamicValue(12.99, 'DECIMAL'),
+            // 'decimalN' => new DynamicValue(12.99, 'DECIMAL(6)'),
             'decimalND' => new DynamicValue(12.99, 'DECIMAL(6,3)'),
             'double' => new DynamicValue(12.99E+30, 'DOUBLE'),
             'doubleN' => new DynamicValue(12.99E+30, 'DOUBLE(6)'),
@@ -337,7 +339,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     {
         /** @var Product $p */
         $p = Product::findOne(1);
-        \yii\helpers\VarDumper::dump($p->dotAttributes());
+        $this->markTestIncomplete('need to write assertions');
     }
 
     public function testCustomColumns()
