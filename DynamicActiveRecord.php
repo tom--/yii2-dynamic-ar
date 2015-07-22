@@ -82,6 +82,9 @@ class DynamicActiveRecord extends ActiveRecord
 
     /**
      * @inheritdoc
+     *
+     * @param string $name
+     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -90,6 +93,8 @@ class DynamicActiveRecord extends ActiveRecord
 
     /**
      * @inheritdoc
+     *
+     * @param string $name
      */
     public function __isset($name)
     {
@@ -98,6 +103,8 @@ class DynamicActiveRecord extends ActiveRecord
 
     /**
      * @inheritdoc
+     *
+     * @param string $name
      */
     public function __unset($name)
     {
@@ -482,7 +489,10 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @param bool $insert
+     *
+     * @return bool
+     * @throws Exception
      */
     public function beforeSave($insert)
     {
@@ -496,7 +506,10 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @param DynamicActiveRecord $record
+     * @param array $row
+     *
+     * @throws Exception
      */
     public static function populateRecord($record, $row)
     {
