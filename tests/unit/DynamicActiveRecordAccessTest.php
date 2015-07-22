@@ -121,7 +121,7 @@ class DynamicActiveRecordAccessTest extends DatabaseTestCase
         $product2 = Product::findOne($product->id);
         $this->assertNotNull($product2);
 
-        $this->assertEquals(self::$postInput, $product2->person);
+        $this->assertEquals(self::$toArray, $product2->person);
     }
 
     /**
