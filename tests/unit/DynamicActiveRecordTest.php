@@ -7,7 +7,6 @@
 
 namespace tests\unit;
 
-use spinitron\dynamicAr\DynamicColumn;
 use spinitron\dynamicAr\ValueExpression;
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
