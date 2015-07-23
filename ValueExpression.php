@@ -3,14 +3,14 @@
 namespace spinitron\dynamicAr;
 
 /**
- * A DynamicValue object represents the value of a dynamic attribute that DynamicActiveRecord
+ * A ValueExpression object represents the value of a dynamic attribute that DynamicActiveRecord
  * uses directly (unescaped) in SQL instead of using
  * [PDOStatement::bindValue](http://php.net/manual/en/pdostatement.bindvalue.php).
  *
  * Example:
  *
  * ```php
- * $model->width = new DynamicValue(123.456);
+ * $model->width = new ValueExpression(123.456);
  * ```
  *
  * You may optionally give an
@@ -18,16 +18,19 @@ namespace spinitron\dynamicAr;
  * as second argument of the constructor, for example:
  *
  * ```php
- * $model->joined = new DynamicValue('2015-06-01 12:30:00', 'DATETIME');
- * $model->price = new DynamicValue(4.99, 'DECIMAL(6,2)');
+ * $model->joined = new ValueExpression('"2015-06-01 12:30:00"', 'DATETIME');
+ * $model->price = new ValueExpression(4.99, 'DECIMAL(6,2)');
  * ```
  *
- * > NOTE: using DynamicValue for the value of a column attribute rather than a dynamic attribute
+ * > NOTE: because values are not escaped or bound using PDO, for string values (including date
+ * and time types) you must provide the SQL quotes around the string in the value.
+ *
+ * > NOTE: using ValueExpression for the value of a column attribute rather than a dynamic attribute
  * will cause an error.
  *
  * @package spinitron\dynamicAr
  */
-class DynamicValue extends \yii\base\Object
+class ValueExpression extends \yii\base\Object
 {
     /**
      * @var mixed The dynamic attribute value.
