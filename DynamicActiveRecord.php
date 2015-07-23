@@ -280,8 +280,9 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
+     * Return a list of all attribute values with keys in dotted notation.
      *
-     * @return array
+     * @return array Array of attribute values with attribute names as array keys in dotted notation.
      * @throws Exception
      */
     public function dotAttributes()
@@ -290,6 +291,24 @@ class DynamicActiveRecord extends ActiveRecord
             $this->attributes,
             static::dotKeyValues(static::dynamicColumn(), $this->_dynamicAttributes)
         );
+    }
+
+    /**
+     * Generate an SQL expression referring to the given dynamic column.
+     *
+     * @param string $name Attribute name
+     * @param string $type SQL datatype type
+     *
+     * @return string a Maria COLUMN_GET expression
+     */
+    public static function columnExpression($name, $type = 'char')
+    {
+        $sql = '[[' . static::dynamicColumn() . ']]';
+        foreach (explode('.', $name) as $column) {
+            $sql = "COLUMN_GET($sql, '$column' AS $type)";
+        }
+
+        return $sql;
     }
 
     /**
@@ -403,7 +422,7 @@ class DynamicActiveRecord extends ActiveRecord
     {
         $sql = [];
         foreach ($attrs as $key => $value) {
-            if (is_object($value) && !($value instanceof DynamicValue)) {
+            if (is_object($value) && !($value instanceof ValueExpression)) {
                 $value = method_exists($value, 'toArray') ? $value->toArray() : (array) $value;
             }
             if ($value === [] || $value === null) {
@@ -415,7 +434,7 @@ class DynamicActiveRecord extends ActiveRecord
             $sql[] = $phKey;
             $params[$phKey] = $key;
 
-            if ($value instanceof DynamicValue || is_float($value)) {
+            if ($value instanceof ValueExpression || is_float($value)) {
                 $sql[] = $value;
             } elseif (is_scalar($value)) {
                 $sql[] = $phValue;
