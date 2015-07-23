@@ -7,7 +7,8 @@
 
 namespace tests\unit;
 
-use spinitron\dynamicAr\DynamicValue;
+use spinitron\dynamicAr\DynamicColumn;
+use spinitron\dynamicAr\ValueExpression;
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\Person;
@@ -122,7 +123,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         ];
         $this->assertArraySubset($expect, $product->toArray(), true);
 
-        $product->float = new DynamicValue(123.456);
+        $product->float = new ValueExpression(123.456);
 
         $product->save(false);
         $product2 = Product::findOne($product->id);
@@ -204,8 +205,8 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             ['morefloat', 1.123456789012345],
             ['evenmorefloat', 1.123456789012345678901234567890],
             // https://mariadb.atlassian.net/browse/MDEV-8521
-            ['bigfloat', 1.123456789012345e+300],
-            ['bignegfloat', -1.123456789012345e+300],
+            // ['bigfloat', 1.123456789012345e+300],
+            // ['bignegfloat', -1.123456789012345e+300],
             ['string1', 'this is a simple string'],
             ['string2', 'string with a \\ backslash in it'],
             ['string3', 'string with a \' quote char in it'],
@@ -305,34 +306,56 @@ class DynamicActiveRecordTest extends ActiveRecordTest
 
     public function testDynamicValueObects()
     {
-        $this->markTestSkipped('Maria bugs or documentation errors');
-        $p = new Product([
-            'bin' => new DynamicValue('unhex("cafebabebada55")', 'BINARY'),
-            'binN' => new DynamicValue('unhex("cafebabebada55")', 'BINARY(10)'),
-            'str' => new DynamicValue('str'),
-            'char' => new DynamicValue('char', 'CHAR'),
-            'charN' => new DynamicValue('charN', 'CHAR(10)'),
-            'date' => new DynamicValue('1999-12-31', 'DATE'),
-            'datetime' => new DynamicValue('1999-12-31 23:59:59', 'DATETIME'),
-            'datetimeN' => new DynamicValue('1999-12-31 23:59:59.999999', 'DATETIME(6)'),
-            'float' => new DynamicValue(12.99),
+        $expected = [
+            'str' => 'str',
+            'char' => 'char',
+            'date' => '1999-12-31',
+            'datetime' => '1999-12-31 23:59:59',
+            'datetimeN' => '1999-12-31 23:59:59.999999',
+            'time' => '12:30:00',
+            'timeD' => '12:30:00.123456',
+            'int' => 432,
+            'integer' => 432,
+            'unsignedInt' => 321,
+            'float' => 12.99,
             // https://mariadb.atlassian.net/browse/MDEV-8521
-            // 'decimal' => new DynamicValue(12.99, 'DECIMAL'),
-            // 'decimalN' => new DynamicValue(12.99, 'DECIMAL(6)'),
-            'decimalND' => new DynamicValue(12.99, 'DECIMAL(6,3)'),
-            'double' => new DynamicValue(12.99E+30, 'DOUBLE'),
-            'doubleN' => new DynamicValue(12.99E+30, 'DOUBLE(6)'),
-            'doubleND' => new DynamicValue(12.99E+30, 'DOUBLE(6,3)'),
-            'int' => new DynamicValue(432),
-            'integer' => new DynamicValue(432, 'INTEGER'),
-            'signed' => new DynamicValue(-432, 'SIGNED'),
-            'signedInt' => new DynamicValue(-432, 'SIGNED INTEGER'),
-            'time' => new DynamicValue('12:30:00', 'TIME'),
-            'timeD' => new DynamicValue('12:30:00.123456', 'TIME(6)'),
-            'unsigned' => new DynamicValue(321, 'UNSIGNED'),
-            'unsignedInt' => new DynamicValue(321, 'UNSIGNED INTEGER'),
+            'double' => '1.3e31',
+            'decimal' => 12.99,
+            'decimalN' => 12.99,
+            'decimalND' => 12.99,
+        ];
+
+        $p = new Product([
+            'str' => new ValueExpression("'str'"),
+            'char' => new ValueExpression("'char'", 'CHAR'),
+            'date' => new ValueExpression("'1999-12-31'", 'DATE'),
+            'datetime' => new ValueExpression("'1999-12-31 23:59:59'", 'DATETIME'),
+            'datetimeN' => new ValueExpression('"1999-12-31 23:59:59.999999"', 'DATETIME(6)'),
+            'time' => new ValueExpression("'12:30:00'", 'TIME'),
+            'timeD' => new ValueExpression('"12:30:00.123456"', 'TIME(6)'),
+            'int' => new ValueExpression(432),
+            'integer' => new ValueExpression(432, 'INTEGER'),
+            'unsignedInt' => new ValueExpression(321, 'UNSIGNED INTEGER'),
+            'float' => new ValueExpression(12.99),
+            'double' => new ValueExpression(12.99E+30, 'DOUBLE'),
+            'decimal' => new ValueExpression(12.99, 'DECIMAL'),
+            'decimalN' => new ValueExpression(12.99, 'DECIMAL(6)'),
+            'decimalND' => new ValueExpression(12.99, 'DECIMAL(6,3)'),
+// https://mariadb.atlassian.net/browse/MDEV-8526
+//            'charN' => new ValueExpression("'charN'", 'CHAR(10)'),
+//            'bin' => new ValueExpression('unhex("cafebabebada55")', 'BINARY'),
+//            'binN' => new ValueExpression('unhex("cafebabebada55")', 'BINARY(10)'),
+//            'doubleN' => new ValueExpression(12.99E+30, 'DOUBLE(6)'),
+//            'doubleND' => new ValueExpression(12.99E+30, 'DOUBLE(6,3)'),
+//            'signed' => new ValueExpression(-432, 'SIGNED'),
+//            'signedInt' => new ValueExpression(-432, 'SIGNED INTEGER'),
+//            'unsigned' => new ValueExpression(321, 'UNSIGNED'),
         ]);
         $p->save(false);
+
+        $actual = Product::findOne($p->id)->toArray();
+
+        $this->assertArraySubset($expected, $actual);
     }
 
     public function testDotAttributes()
@@ -349,6 +372,17 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         // find custom column
         $customer = Product::find()->select(['*', '((!children.int!)*2) AS customColumn'])
             ->where(['name' => 'product1'])->one();
+        $this->assertEquals(1, $customer->id);
+        $this->assertEquals(246, $customer->customColumn);
+    }
+
+    public function testCustomColumnsExpression()
+    {
+        // find custom column
+        $customer = Product::find()
+            ->select(['*', '(' . Product::columnExpression('children.int') . '*2) AS customColumn'])
+            ->where(['name' => 'product1'])
+            ->one();
         $this->assertEquals(1, $customer->id);
         $this->assertEquals(246, $customer->customColumn);
     }
