@@ -263,18 +263,18 @@ class DynamicActiveRecordTest extends ActiveRecordTest
      *
      * @param array $expected
      */
+    /*
     public function testMariaArrayEncoding($expected)
     {
-        $this->markTestSkipped('cannot run with unexposed privates');
-
         self::$resetFixture = false;
         $actual = $expected;
-//        DynamicActiveRecord::encodeArrayForMaria($actual);
+        DynamicActiveRecord::encodeArrayForMaria($actual);
         $actual = json_encode($actual);
         $actual = json_decode($actual, true);
-//        DynamicActiveRecord::decodeArrayForMaria($actual);
+        DynamicActiveRecord::decodeArrayForMaria($actual);
         $this->assertEquals($expected, $actual);
     }
+    */
 
     /**
      * @dataProvider dataProviderTestWriteRead
