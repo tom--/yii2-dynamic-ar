@@ -500,7 +500,9 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * Returns a query object for the model/class.
+     *
+     * @return DynamicActiveQuery
      */
     public static function find()
     {
