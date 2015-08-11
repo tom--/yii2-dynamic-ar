@@ -1,5 +1,5 @@
 {
-    "name": "tom--/yii2-dynamic-ar",
+    "name": "spinitron/yii2-dynamic-ar",
     "description": "Extends Yii ActiveRecord for Maria Dynamic Columns",
     "keywords": ["yii2", "Maria", "MariaDB", "Dynamic Columns", "ActiveRecord", "ar", "ORM"],
     "type": "yii2-extension",
