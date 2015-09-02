@@ -37,5 +37,17 @@ class ShopController extends \yii\base\Controller
             ->select('CONCAT((! dimensions.width !), " x ", (! dimensions.height !))')
             ->where(['id' => 11])
             ->one();
+
+    $product = new Product();
+    $product->specs = new TvSpecs(['scenario' => 'insert']);
+    $product->specs->load(Yii::$app->request->post());
+    if (!$model->validate()) {
+        // process validation errors
+    }
+
+    $product->save(false);
+    $thatTv = Product::findOne($product->id);
+    \yii\helpers\VarDumper::dump($thatTv->specs);
+    // $thatTv->specs equals $product->specs->toArray()
     }
 }

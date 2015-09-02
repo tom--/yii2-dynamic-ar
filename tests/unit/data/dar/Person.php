@@ -8,6 +8,11 @@ use tests\unit\data\BaseRecord;
 
 class Person extends Supplier
 {
+    public static function tableName()
+    {
+        return 'supplier';
+    }
+
     public static function dynamicColumn()
     {
         return 'dynamic_columns';

@@ -7,8 +7,10 @@
 
 namespace tests\unit;
 
+use spinitron\dynamicAr\ValueExpression;
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
+use tests\unit\data\dar\Person;
 use tests\unit\data\dar\Supplier;
 use Yii;
 use spinitron\dynamicAr\DynamicActiveRecord;
@@ -40,6 +42,32 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         parent::setUp();
 
         $this->db = BaseRecord::$db = $this->getConnection(self::$resetFixture);
+    }
+
+    protected static function hexDump($data, $newline = "\n")
+    {
+        static $from = '';
+        static $to = '';
+        static $width = 16; # number of bytes per line
+        static $pad = '.'; # padding for non-visible characters
+
+        if ($from === '') {
+            for ($i = 0; $i <= 0xFF; $i++) {
+                $from .= chr($i);
+                $to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
+            }
+        }
+
+        $hex = str_split(bin2hex($data), $width * 2);
+        $chars = str_split(strtr($data, $from, $to), $width);
+
+        $offset = 0;
+        foreach ($hex as $i => $line) {
+            echo sprintf('%6X', $offset) . ' : '
+                . implode(' ', str_split(str_pad($line, 2 * $width), 2))
+                . ' [' . str_pad($chars[$i], $width) . ']' . $newline;
+            $offset += $width;
+        }
     }
 
     public function testReadBinary()
@@ -78,7 +106,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testAsArray()
     {
         /** @var Product $product */
-        $product = Product::find()->one();
+        $product = Product::findOne(1);
         $expect = [
             'name' => 'product1',
             'int' => 123,
@@ -93,6 +121,12 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             ],
         ];
         $this->assertArraySubset($expect, $product->toArray(), true);
+
+        $product->float = new ValueExpression(123.456);
+
+        $product->save(false);
+        $product2 = Product::findOne($product->id);
+        $this->assertArraySubset($expect, $product2->toArray(), true);
     }
 
     public function dataProviderTestMariaArrayEncoding()
@@ -169,8 +203,9 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             ['float', 1.1234],
             ['morefloat', 1.123456789012345],
             ['evenmorefloat', 1.123456789012345678901234567890],
-            ['bigfloat', 1.123456789012345e+300],
-            ['bignegfloat', -1.123456789012345e+300],
+            // https://mariadb.atlassian.net/browse/MDEV-8521
+            // ['bigfloat', 1.123456789012345e+300],
+            // ['bignegfloat', -1.123456789012345e+300],
             ['string1', 'this is a simple string'],
             ['string2', 'string with a \\ backslash in it'],
             ['string3', 'string with a \' quote char in it'],
@@ -203,32 +238,6 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         return $data;
     }
 
-    protected static function hexDump($data, $newline = "\n")
-    {
-        static $from = '';
-        static $to = '';
-        static $width = 16; # number of bytes per line
-        static $pad = '.'; # padding for non-visible characters
-
-        if ($from === '') {
-            for ($i = 0; $i <= 0xFF; $i++) {
-                $from .= chr($i);
-                $to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
-            }
-        }
-
-        $hex = str_split(bin2hex($data), $width * 2);
-        $chars = str_split(strtr($data, $from, $to), $width);
-
-        $offset = 0;
-        foreach ($hex as $i => $line) {
-            echo sprintf('%6X', $offset) . ' : '
-                . implode(' ', str_split(str_pad($line, 2 * $width), 2))
-                . ' [' . str_pad($chars[$i], $width) . ']' . $newline;
-            $offset += $width;
-        }
-    }
-
     /**
      * @dataProvider dataProviderTestWriteRead
      *
@@ -253,17 +262,18 @@ class DynamicActiveRecordTest extends ActiveRecordTest
      *
      * @param array $expected
      */
+    /*
     public function testMariaArrayEncoding($expected)
     {
-        $this->markTestSkipped('cannot run with unexposed privates');
         self::$resetFixture = false;
         $actual = $expected;
-//        DynamicActiveRecord::encodeArrayForMaria($actual);
+        DynamicActiveRecord::encodeArrayForMaria($actual);
         $actual = json_encode($actual);
         $actual = json_decode($actual, true);
-//        DynamicActiveRecord::decodeArrayForMaria($actual);
+        DynamicActiveRecord::decodeArrayForMaria($actual);
         $this->assertEquals($expected, $actual);
     }
+    */
 
     /**
      * @dataProvider dataProviderTestWriteRead
@@ -288,9 +298,70 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             $value,
             $product->$name,
             'data name: ' . $name,
-            is_float($value) ? abs($value) / 10e+12 : 0.0
+            is_float($value) ? abs($value) / 10e+12 : 0
         );
         unset($product);
+    }
+
+    public function testDynamicValueObects()
+    {
+        $expected = [
+            'str' => 'str',
+            'char' => 'char',
+            'date' => '1999-12-31',
+            'datetime' => '1999-12-31 23:59:59',
+            'datetimeN' => '1999-12-31 23:59:59.999999',
+            'time' => '12:30:00',
+            'timeD' => '12:30:00.123456',
+            'int' => 432,
+            'integer' => 432,
+            'unsignedInt' => 321,
+            'float' => 12.99,
+            // https://mariadb.atlassian.net/browse/MDEV-8521
+            'double' => '1.3e31',
+            'decimal' => 12.99,
+            'decimalN' => 12.99,
+            'decimalND' => 12.99,
+        ];
+
+        $p = new Product([
+            'str' => new ValueExpression("'str'"),
+            'char' => new ValueExpression("'char'", 'CHAR'),
+            'date' => new ValueExpression("'1999-12-31'", 'DATE'),
+            'datetime' => new ValueExpression("'1999-12-31 23:59:59'", 'DATETIME'),
+            'datetimeN' => new ValueExpression('"1999-12-31 23:59:59.999999"', 'DATETIME(6)'),
+            'time' => new ValueExpression("'12:30:00'", 'TIME'),
+            'timeD' => new ValueExpression('"12:30:00.123456"', 'TIME(6)'),
+            'int' => new ValueExpression(432),
+            'integer' => new ValueExpression(432, 'INTEGER'),
+            'unsignedInt' => new ValueExpression(321, 'UNSIGNED INTEGER'),
+            'float' => new ValueExpression(12.99),
+            'double' => new ValueExpression(12.99E+30, 'DOUBLE'),
+            'decimal' => new ValueExpression(12.99, 'DECIMAL'),
+            'decimalN' => new ValueExpression(12.99, 'DECIMAL(6)'),
+            'decimalND' => new ValueExpression(12.99, 'DECIMAL(6,3)'),
+// https://mariadb.atlassian.net/browse/MDEV-8526
+//            'charN' => new ValueExpression("'charN'", 'CHAR(10)'),
+//            'bin' => new ValueExpression('unhex("cafebabebada55")', 'BINARY'),
+//            'binN' => new ValueExpression('unhex("cafebabebada55")', 'BINARY(10)'),
+//            'doubleN' => new ValueExpression(12.99E+30, 'DOUBLE(6)'),
+//            'doubleND' => new ValueExpression(12.99E+30, 'DOUBLE(6,3)'),
+//            'signed' => new ValueExpression(-432, 'SIGNED'),
+//            'signedInt' => new ValueExpression(-432, 'SIGNED INTEGER'),
+//            'unsigned' => new ValueExpression(321, 'UNSIGNED'),
+        ]);
+        $p->save(false);
+
+        $actual = Product::findOne($p->id)->toArray();
+
+        $this->assertArraySubset($expected, $actual);
+    }
+
+    public function testDotAttributes()
+    {
+        /** @var Product $p */
+        $p = Product::findOne(1);
+        $this->markTestIncomplete('need to write assertions');
     }
 
     public function testCustomColumns()
@@ -300,6 +371,17 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         // find custom column
         $customer = Product::find()->select(['*', '((!children.int!)*2) AS customColumn'])
             ->where(['name' => 'product1'])->one();
+        $this->assertEquals(1, $customer->id);
+        $this->assertEquals(246, $customer->customColumn);
+    }
+
+    public function testCustomColumnsExpression()
+    {
+        // find custom column
+        $customer = Product::find()
+            ->select(['*', '(' . Product::columnExpression('children.int') . '*2) AS customColumn'])
+            ->where(['name' => 'product1'])
+            ->one();
         $this->assertEquals(1, $customer->id);
         $this->assertEquals(246, $customer->customColumn);
     }
