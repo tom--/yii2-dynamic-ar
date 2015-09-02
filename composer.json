@@ -1,7 +1,7 @@
 {
     "name": "spinitron/yii2-dynamic-ar",
     "description": "Extends Yii ActiveRecord for Maria Dynamic Columns",
-    "keywords": ["yii2", "Maria", "MariaDB", "Dynamic Columns", "ActiveRecord", "ar", "ORM"],
+    "keywords": ["yii2", "Maria", "MariaDB", "Dynamic Columns", "ActiveRecord", "AR", "ORM"],
     "type": "yii2-extension",
     "license": "ISC",
     "support": {

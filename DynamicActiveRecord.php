@@ -241,12 +241,12 @@ class DynamicActiveRecord extends ActiveRecord
     }
 
     /**
-     * Return a list of an array's keys in dotted notation, recursing subarrays.
+     * Convert a nested array to a map of dot-notation keys to values.
      *
      * @param string $prefix Prefix returned array keys with this string
-     * @param array $array An array of attributeName => value pairs
+     * @param array $array Nested array of attributeName => value pairs
      *
-     * @return array The list of keys in dotted notation
+     * @return array Map of keys in dotted notation to corresponding values
      */
     protected static function dotKeyValues($prefix, $array)
     {
