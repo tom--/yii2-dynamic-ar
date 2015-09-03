@@ -75,9 +75,9 @@ class DynamicActiveRecord extends ActiveRecord
     public static function getEncoderMap()
     {
         return [
-            'pgsql' => 'spinitron\dynamicAr\encoder\PgsqlEncoder', // PostgreSQL
-            'mysqli' => 'spinitron\dynamicAr\encoder\MysqlEncoder', // MySQL
-            'mysql' => 'spinitron\dynamicAr\encoder\MysqlEncoder', // MySQL
+            'pgsql' => 'spinitron\dynamicAr\encoder\PgsqlEncoder',
+            'mysqli' => 'spinitron\dynamicAr\encoder\MariaEncoder',
+            'mysql' => 'spinitron\dynamicAr\encoder\MariaEncoder',
         ];
     }
 

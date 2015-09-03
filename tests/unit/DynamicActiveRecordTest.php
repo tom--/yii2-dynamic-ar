@@ -8,7 +8,7 @@
 namespace tests\unit;
 
 use spinitron\dynamicAr\encoder\BaseEncoder;
-use spinitron\dynamicAr\encoder\MysqlEncoder;
+use spinitron\dynamicAr\encoder\MariaEncoder;
 use spinitron\dynamicAr\ValueExpression;
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
@@ -249,13 +249,13 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testMariaEncoding($name, $value)
     {
         self::$resetFixture = false;
-        $bar = MysqlEncoder::encodeForMaria($value);
+        $bar = MariaEncoder::encodeForMaria($value);
         $bar = json_encode($bar);
         $bar = json_decode($bar);
-        $bar = MysqlEncoder::decodeForMaria($bar);
+        $bar = MariaEncoder::decodeForMaria($bar);
         $this->assertSame(
             $value,
-            MysqlEncoder::decodeForMaria(MysqlEncoder::encodeForMaria($value))
+            MariaEncoder::decodeForMaria(MariaEncoder::encodeForMaria($value))
         );
     }
 

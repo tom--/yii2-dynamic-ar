@@ -9,7 +9,7 @@ namespace spinitron\dynamicAr\encoder;
 
 use spinitron\dynamicAr\ValueExpression;
 
-class MysqlEncoder extends BaseEncoder
+class MariaEncoder extends BaseEncoder
 {
     /**
      * Generate an SQL expression referring to the given dynamic column.
