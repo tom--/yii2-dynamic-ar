@@ -19,7 +19,14 @@ interface EncoderInterface
      *
      * @return string a SQL expression
      */
-    public function columnExpression($name, $type = 'char');
+    public function dynamicAttributeExpression($name, $type = 'char');
+
+    /**
+     * Generates an SQL expression to select value of the dynamic column.
+     *
+     * @return string a SQL expression
+     */
+    public function dynamicColumnExpression();
 
     /**
      * Creates a dynamic column SQL expression representing the given attributes.

@@ -324,7 +324,7 @@ class DynamicActiveRecord extends ActiveRecord
      */
     public static function columnExpression($name, $type = 'char')
     {
-        return static::getDynamicEncoder()->columnExpression($name, $type);
+        return static::getDynamicEncoder()->dynamicAttributeExpression($name, $type);
     }
 
     /**

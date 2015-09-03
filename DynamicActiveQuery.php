@@ -112,9 +112,7 @@ class DynamicActiveQuery extends ActiveQuery
         }
 
         if (is_array($this->select) && in_array('*', $this->select)) {
-            $db = $modelClass::getDb();
-            $this->select[$this->_dynamicColumn] =
-                'COLUMN_JSON(' . $db->quoteColumnName($this->_dynamicColumn) . ')';
+            $this->select[$this->_dynamicColumn] = $modelClass::getDynamicEncoder()->dynamicColumnExpression();
         }
 
         return parent::prepare($builder);
@@ -211,14 +209,7 @@ class DynamicActiveQuery extends ActiveQuery
         $dynamicColumn = $modelClass::dynamicColumn();
         $callback = function ($matches) use (&$params, $dynamicColumn, $modelClass) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
-            $sql = $dynamicColumn;
-            foreach (explode('.', $matches[2]) as $column) {
-                $placeholder = $modelClass::getDynamicEncoder()->placeholder();
-                $params[$placeholder] = $column;
-                $sql = "COLUMN_GET($sql, $placeholder AS $type)";
-            }
-
-            return $sql;
+            return $modelClass::getDynamicEncoder()->dynamicAttributeExpression($matches[2], $type);
         };
 
         $pattern = <<<'REGEXP'
