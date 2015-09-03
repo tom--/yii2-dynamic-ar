@@ -24,11 +24,11 @@ interface EncoderInterface
     /**
      * Creates a dynamic column SQL expression representing the given attributes.
      *
-     * @param array $attrs the dynamic attributes, which may be nested
+     * @param array $attributes the dynamic attributes, which may be nested
      *
      * @return null|\yii\db\Expression
      */
-    public function dynColExpression($attrs);
+    public function encodeDynamicColumn($attributes);
 
     /**
      * Decode a serialized blob of dynamic attributes.
@@ -40,5 +40,5 @@ interface EncoderInterface
      *
      * @return array Dynamic attributes in name => value pairs (possibly nested)
      */
-    public function dynColDecode($encoded);
+    public function decodeDynamicColumn($encoded);
 }

@@ -76,7 +76,7 @@ class DynamicActiveQuery extends ActiveQuery
                 throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist - wasn't set in select");
             }
 
-            $dynamicAttributes = $modelClass::getDynamicEncoder()->dynColDecode($row[$dynamicColumn]);
+            $dynamicAttributes = $modelClass::getDynamicEncoder()->decodeDynamicColumn($row[$dynamicColumn]);
             $value = $this->getDotNotatedValue($dynamicAttributes, $column);
 
             return $value;

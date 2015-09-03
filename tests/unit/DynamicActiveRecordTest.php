@@ -246,43 +246,6 @@ class DynamicActiveRecordTest extends ActiveRecordTest
      * @param string $name
      * @param mixed $value
      */
-    public function testMariaEncoding($name, $value)
-    {
-        self::$resetFixture = false;
-        $bar = MariaEncoder::encodeForMaria($value);
-        $bar = json_encode($bar);
-        $bar = json_decode($bar);
-        $bar = MariaEncoder::decodeForMaria($bar);
-        $this->assertSame(
-            $value,
-            MariaEncoder::decodeForMaria(MariaEncoder::encodeForMaria($value))
-        );
-    }
-
-    /**
-     * @dataProvider dataProviderTestMariaArrayEncoding
-     *
-     * @param array $expected
-     */
-    /*
-    public function testMariaArrayEncoding($expected)
-    {
-        self::$resetFixture = false;
-        $actual = $expected;
-        DynamicActiveRecord::encodeArrayForMaria($actual);
-        $actual = json_encode($actual);
-        $actual = json_decode($actual, true);
-        DynamicActiveRecord::decodeArrayForMaria($actual);
-        $this->assertEquals($expected, $actual);
-    }
-    */
-
-    /**
-     * @dataProvider dataProviderTestWriteRead
-     *
-     * @param string $name
-     * @param mixed $value
-     */
     public function testWriteRead($name, $value)
     {
         self::$resetFixture = false;

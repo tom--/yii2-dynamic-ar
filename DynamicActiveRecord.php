@@ -349,7 +349,7 @@ class DynamicActiveRecord extends ActiveRecord
             return false;
         }
 
-        $this->setAttribute(static::dynamicColumn(), static::getDynamicEncoder()->dynColExpression($this->_dynamicAttributes));
+        $this->setAttribute(static::dynamicColumn(), static::getDynamicEncoder()->encodeDynamicColumn($this->_dynamicAttributes));
 
         return true;
     }
@@ -364,7 +364,7 @@ class DynamicActiveRecord extends ActiveRecord
     {
         $dynCol = static::dynamicColumn();
         if (isset($row[$dynCol])) {
-            $record->_dynamicAttributes = static::getDynamicEncoder()->dynColDecode($row[$dynCol]);
+            $record->_dynamicAttributes = static::getDynamicEncoder()->decodeDynamicColumn($row[$dynCol]);
         }
         parent::populateRecord($record, $row);
     }
@@ -380,7 +380,7 @@ class DynamicActiveRecord extends ActiveRecord
 
         $dynCol = static::dynamicColumn();
         if (isset($this->attributes[$dynCol])) {
-            $this->_dynamicAttributes = static::getDynamicEncoder()->dynColDecode($this->attributes[$dynCol]);
+            $this->_dynamicAttributes = static::getDynamicEncoder()->decodeDynamicColumn($this->attributes[$dynCol]);
         }
 
         return true;
