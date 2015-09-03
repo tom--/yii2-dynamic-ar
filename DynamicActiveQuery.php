@@ -76,7 +76,7 @@ class DynamicActiveQuery extends ActiveQuery
                 throw new UnknownPropertyException("Dynamic column {$dynamicColumn} does not exist - wasn't set in select");
             }
 
-            $dynamicAttributes = DynamicActiveRecord::dynColDecode($row[$dynamicColumn]);
+            $dynamicAttributes = $modelClass::getDynamicEncoder()->dynColDecode($row[$dynamicColumn]);
             $value = $this->getDotNotatedValue($dynamicAttributes, $column);
 
             return $value;
@@ -209,11 +209,11 @@ class DynamicActiveQuery extends ActiveQuery
         }
 
         $dynamicColumn = $modelClass::dynamicColumn();
-        $callback = function ($matches) use (&$params, $dynamicColumn) {
+        $callback = function ($matches) use (&$params, $dynamicColumn, $modelClass) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
             $sql = $dynamicColumn;
             foreach (explode('.', $matches[2]) as $column) {
-                $placeholder = DynamicActiveRecord::placeholder();
+                $placeholder = $modelClass::getDynamicEncoder()->placeholder();
                 $params[$placeholder] = $column;
                 $sql = "COLUMN_GET($sql, $placeholder AS $type)";
             }

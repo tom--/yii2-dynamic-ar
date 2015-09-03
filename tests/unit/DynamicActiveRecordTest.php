@@ -7,6 +7,8 @@
 
 namespace tests\unit;
 
+use spinitron\dynamicAr\encoder\BaseEncoder;
+use spinitron\dynamicAr\encoder\MysqlEncoder;
 use spinitron\dynamicAr\ValueExpression;
 use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
@@ -223,8 +225,8 @@ class DynamicActiveRecordTest extends ActiveRecordTest
                 strings this way as it is
                 okay to do'
             ],
-            ['fakeoctet', DynamicActiveRecord::DATA_URI_PREFIX . 'This is my string'],
-            ['octet', DynamicActiveRecord::DATA_URI_PREFIX . base64_encode('This is my string')],
+            ['fakeoctet', BaseEncoder::DATA_URI_PREFIX . 'This is my string'],
+            ['octet', BaseEncoder::DATA_URI_PREFIX . base64_encode('This is my string')],
         ];
 
         //$data = array_merge($data, include(__DIR__ . '/unicodeStrings.php'));
@@ -247,13 +249,13 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     public function testMariaEncoding($name, $value)
     {
         self::$resetFixture = false;
-        $bar = DynamicActiveRecord::encodeForMaria($value);
+        $bar = MysqlEncoder::encodeForMaria($value);
         $bar = json_encode($bar);
         $bar = json_decode($bar);
-        $bar = DynamicActiveRecord::decodeForMaria($bar);
+        $bar = MysqlEncoder::decodeForMaria($bar);
         $this->assertSame(
             $value,
-            DynamicActiveRecord::decodeForMaria(DynamicActiveRecord::encodeForMaria($value))
+            MysqlEncoder::decodeForMaria(MysqlEncoder::encodeForMaria($value))
         );
     }
 
