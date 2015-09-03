@@ -61,7 +61,7 @@ class DynamicActiveRecord extends ActiveRecord
         $driver = static::getDb()->getDriverName();
         $encoderMap = static::getEncoderMap();
         if (!isset($encoderMap[$driver])) {
-            throw new \yii\base\NotSupportedException("Connection does not support reading schema information for '$driver' DBMS.");
+            throw new \yii\base\NotSupportedException("DynamicActiveRecord does not support '$driver' DBMS.");
         }
         $config = !is_array($encoderMap[$driver]) ? ['class' => $encoderMap[$driver]] : $encoderMap[$driver];
         $config['modelClass'] = static::className();
