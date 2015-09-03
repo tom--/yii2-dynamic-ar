@@ -19,15 +19,31 @@ class MariaEncoder extends BaseEncoder
      *
      * @return string a Maria COLUMN_GET expression
      */
-    public function columnExpression($name, $type = 'char')
+    public function dynamicAttributeExpression($name, $type = 'char', $baseExpression = null)
     {
-        $modelClass = $this->modelClass;
-        $sql = '[[' . $modelClass::dynamicColumn() . ']]';
+        if ($baseExpression === null) {
+            $modelClass = $this->modelClass;
+            $sql = '[[' . $modelClass::dynamicColumn() . ']]';
+        } else {
+            $sql = $baseExpression;
+        }
         foreach (explode('.', $name) as $column) {
             $sql = "COLUMN_GET($sql, '$column' AS $type)";
         }
 
         return $sql;
+    }
+
+    /**
+     * Generates an SQL expression to select value of the dynamic column.
+     *
+     * @return string a SQL expression
+     */
+    public function dynamicColumnExpression()
+    {
+        $modelClass = $this->modelClass;
+        $sql = '[[' . $modelClass::dynamicColumn() . ']]';
+        return 'COLUMN_JSON(' . $sql . ')';
     }
 
     /**
