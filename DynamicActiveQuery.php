@@ -206,10 +206,10 @@ class DynamicActiveQuery extends ActiveQuery
             $params = $this->params;
         }
 
-        $dynamicColumn = $modelClass::dynamicColumn();
-        $callback = function ($matches) use (&$params, $dynamicColumn, $modelClass) {
+        $encoder = $modelClass::getDynamicencoder();
+        $callback = function ($matches) use ($encoder) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
-            return $modelClass::getDynamicEncoder()->dynamicAttributeExpression($matches[2], $type);
+            return $encoder->dynamicAttributeExpression($matches[2], $type);
         };
 
         $pattern = <<<'REGEXP'
