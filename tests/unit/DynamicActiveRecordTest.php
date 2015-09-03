@@ -63,14 +63,6 @@ class DynamicActiveRecordTest extends ActiveRecordTest
         }
     }
 
-    public function testReadBinary()
-    {
-        $json = $this->db->createCommand(
-            'select column_json(dynamic_columns) from product where id=10'
-        )->queryScalar();
-        // todo need an assertion
-    }
-
     public function testRead()
     {
         $query = Product::find();
@@ -758,20 +750,5 @@ class DynamicActiveRecordTest extends ActiveRecordTest
 
         $products = Product::find()->where(['IN', '(!int!)', []])->all();
         $this->assertEquals(0, count($products));
-    }
-
-    public function testCreateColumnInBeforeSave()
-    {
-        $product = new Product;
-        $product->dynamic_column = 123;
-        $product->child = [
-            'column' => 'value',
-        ];
-
-        $product->beforeSave(true);
-
-        /** @var \yii\db\Expression $expression */
-        $expression = $product->dynamic_columns;
-        $this->assertContains('COLUMN_CREATE', $expression->expression);
     }
 }

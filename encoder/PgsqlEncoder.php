@@ -19,7 +19,7 @@ class PgsqlEncoder extends BaseEncoder
      *
      * @return string a SQL expression
      */
-    public function columnExpression($name, $type = 'char')
+    public function dynamicAttributeExpression($name, $type = 'char')
     {
         $modelClass = $this->modelClass;
         $sql = '[[' . $modelClass::dynamicColumn() . ']]';
@@ -28,6 +28,17 @@ class PgsqlEncoder extends BaseEncoder
         }
 
         return $sql;
+    }
+
+    /**
+     * Generates an SQL expression to select value of the dynamic column.
+     *
+     * @return string a SQL expression
+     */
+    public function dynamicColumnExpression()
+    {
+        $modelClass = $this->modelClass;
+        return '[[' . $modelClass::dynamicColumn() . ']]';
     }
 
     /**
@@ -118,6 +129,6 @@ class PgsqlEncoder extends BaseEncoder
             }
         }
 
-        return $sql === [] ? 'null' : 'json_build_object(' . implode(',', $sql) . ')';
+        return $sql === [] ? 'null' : 'json_build_object(' . implode(',', $sql) . ')::jsonb';
     }
 }
