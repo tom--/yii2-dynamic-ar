@@ -30,6 +30,7 @@ class ApiRenderer extends \yii\apidoc\templates\bootstrap\ApiRenderer
         $keep = [
             'spinitron\\dynamicAr\\DynamicActiveQuery',
             'spinitron\\dynamicAr\\DynamicActiveRecord',
+            'spinitron\\dynamicAr\\ValueExpression',
             'yii\\db\\ActiveQuery',
             'yii\\db\\Query',
             'yii\\base\\Component',
