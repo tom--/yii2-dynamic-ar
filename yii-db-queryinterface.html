@@ -4,28 +4,29 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>QueryInterface - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>QueryInterface - Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w52" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w52-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w55" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w55-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w52-collapse" class="collapse navbar-collapse"><ul id="w53" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w55-collapse" class="collapse navbar-collapse"><ul id="w56" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-50" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-50" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-53" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-53" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item active" href="#navigation-51" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-51" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item active" href="#navigation-54" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-54" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Interface yii\db\QueryInterface</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
                 | <a href="#methods">Methods</a>
             </div>
@@ -47,7 +48,7 @@
         <col class="col-name" />
         <col class="col-value" />
     </colgroup>
-                                <tr><th>Implemented by</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>, <a href="yii-db-query.html">yii\db\Query</a></td></tr>
+                                <tr><th>Implemented by</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, tests\unit\data\CustomerQuery, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>, <a href="yii-db-query.html">yii\db\Query</a></td></tr>
                     <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -55,7 +56,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>The QueryInterface defines the minimum set of methods to be implemented by a database query.</strong></p>
     <p>The default implementation of this interface is provided by <a href="yii-db-querytrait.html">yii\db\QueryTrait</a>.</p>
 <p>It has support for getting <a href="yii-db-queryinterface.html#one()-detail">one()</a> instance or <a href="yii-db-queryinterface.html#all()-detail">all()</a>.
@@ -176,10 +177,11 @@ Sorting is supported via <a href="yii-db-queryinterface.html#orderBy()-detail">o
         
         addOrderBy()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds additional ORDER BY columns to the query.</strong></p>
 
@@ -187,7 +189,7 @@ Sorting is supported via <a href="yii-db-queryinterface.html#orderBy()-detail">o
         <p>See also <a href="yii-db-queryinterface.html#orderBy()-detail">orderBy()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#addOrderBy()-detail">addOrderBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#addOrderBy()-detail">addOrderBy</a></strong> ( <span style="color: #0000BB">$columns</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -216,10 +218,11 @@ The method will automatically quote the column names unless a column contains so
         
         all()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Executes the query and returns all results as an array.</strong></p>
 
@@ -227,7 +230,7 @@ The method will automatically quote the column names unless a column contains so
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-queryinterface.html#all()-detail">all</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-queryinterface.html#all()-detail">all</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -253,10 +256,11 @@ If this parameter is not given, the <code>db</code> application component will b
         
         andFilterWhere()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one ignoring empty parameters.</strong></p>
 
@@ -265,7 +269,7 @@ If this parameter is not given, the <code>db</code> application component will b
         <p>See also:</p><ul><li><a href="yii-db-queryinterface.html#filterWhere()-detail">filterWhere()</a></li><li><a href="yii-db-queryinterface.html#orFilterWhere()-detail">orFilterWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#andFilterWhere()-detail">andFilterWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#andFilterWhere()-detail">andFilterWhere</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -291,10 +295,11 @@ on how to specify this parameter.</p>
         
         andWhere()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one.</strong></p>
 
@@ -303,7 +308,7 @@ on how to specify this parameter.</p>
         <p>See also:</p><ul><li><a href="yii-db-queryinterface.html#where()-detail">where()</a></li><li><a href="yii-db-queryinterface.html#orWhere()-detail">orWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#andWhere()-detail">andWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#andWhere()-detail">andWhere</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -329,10 +334,11 @@ on how to specify this parameter.</p>
         
         count()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the number of records.</strong></p>
 
@@ -340,7 +346,7 @@ on how to specify this parameter.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-queryinterface.html#count()-detail">count</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$q&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'*'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-queryinterface.html#count()-detail">count</a></strong> ( <span style="color: #0000BB">$q&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'*'</span>, <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$q</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -372,10 +378,11 @@ If this parameter is not given, the <code>db</code> application component will b
         
         exists()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the query result contains any row of data.</strong></p>
 
@@ -383,7 +390,7 @@ If this parameter is not given, the <code>db</code> application component will b
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-queryinterface.html#exists()-detail">exists</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-queryinterface.html#exists()-detail">exists</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -409,10 +416,11 @@ If this parameter is not given, the <code>db</code> application component will b
         
         filterWhere()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the WHERE part of the query ignoring empty parameters.</strong></p>
 
@@ -420,7 +428,7 @@ If this parameter is not given, the <code>db</code> application component will b
         <p>See also:</p><ul><li><a href="yii-db-queryinterface.html#andFilterWhere()-detail">andFilterWhere()</a></li><li><a href="yii-db-queryinterface.html#orFilterWhere()-detail">orFilterWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#filterWhere()-detail">filterWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#filterWhere()-detail">filterWhere</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -446,10 +454,11 @@ on how to specify this parameter.</p>
         
         indexBy()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the <a href="yii-db-queryinterface.html#indexBy()-detail">indexBy()</a> property.</strong></p>
 
@@ -457,16 +466,16 @@ on how to specify this parameter.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#indexBy()-detail">indexBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#indexBy()-detail">indexBy</a></strong> ( <span style="color: #0000BB">$column</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$column</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a></td>
                   <td class="param-desc-col"><p>The name of the column by which the query results should be indexed by.
 This can also be a callable (e.g. anonymous function) that returns the index value based on the given
 row data. The signature of the callable should be:</p>
-<pre><code>function ($row)
-{
-    // return the index value corresponding to $row
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$row</span>)</span>
+</span>{
+    <span class="hljs-comment">// return the index value corresponding to $row</span>
 }
 </code></pre>
 </td>
@@ -489,10 +498,11 @@ row data. The signature of the callable should be:</p>
         
         limit()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the LIMIT part of the query.</strong></p>
 
@@ -500,7 +510,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#limit()-detail">limit</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$limit&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#limit()-detail">limit</a></strong> ( <span style="color: #0000BB">$limit</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$limit</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
@@ -525,10 +535,11 @@ row data. The signature of the callable should be:</p>
         
         offset()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the OFFSET part of the query.</strong></p>
 
@@ -536,7 +547,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#offset()-detail">offset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#offset()-detail">offset</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
@@ -561,10 +572,11 @@ row data. The signature of the callable should be:</p>
         
         one()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Executes the query and returns a single row of result.</strong></p>
 
@@ -572,7 +584,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-queryinterface.html#one()-detail">one</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-queryinterface.html#one()-detail">one</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -599,10 +611,11 @@ results in nothing.</p>
         
         orFilterWhere()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one ignoring empty parameters.</strong></p>
 
@@ -611,7 +624,7 @@ results in nothing.</p>
         <p>See also:</p><ul><li><a href="yii-db-queryinterface.html#filterWhere()-detail">filterWhere()</a></li><li><a href="yii-db-queryinterface.html#andFilterWhere()-detail">andFilterWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#orFilterWhere()-detail">orFilterWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#orFilterWhere()-detail">orFilterWhere</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -637,10 +650,11 @@ on how to specify this parameter.</p>
         
         orWhere()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one.</strong></p>
 
@@ -649,7 +663,7 @@ on how to specify this parameter.</p>
         <p>See also:</p><ul><li><a href="yii-db-queryinterface.html#where()-detail">where()</a></li><li><a href="yii-db-queryinterface.html#andWhere()-detail">andWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#orWhere()-detail">orWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#orWhere()-detail">orWhere</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -675,10 +689,11 @@ on how to specify this parameter.</p>
         
         orderBy()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the ORDER BY part of the query.</strong></p>
 
@@ -686,7 +701,7 @@ on how to specify this parameter.</p>
         <p>See also <a href="yii-db-queryinterface.html#addOrderBy()-detail">addOrderBy()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#orderBy()-detail">orderBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#orderBy()-detail">orderBy</a></strong> ( <span style="color: #0000BB">$columns</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -715,10 +730,11 @@ The method will automatically quote the column names unless a column contains so
         
         where()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the WHERE part of the query.</strong></p>
 
@@ -802,7 +818,7 @@ following SQL expression: <code>id &gt;= 10</code>.</p>
         <p>See also:</p><ul><li><a href="yii-db-queryinterface.html#andWhere()-detail">andWhere()</a></li><li><a href="yii-db-queryinterface.html#orWhere()-detail">orWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-queryinterface.html#where()-detail">where</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-queryinterface.html#where()-detail">where</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -857,7 +873,7 @@ following SQL expression: <code>id &gt;= 10</code>.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

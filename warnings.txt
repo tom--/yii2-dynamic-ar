@@ -1,0 +1,955 @@
+Array
+(
+    [0] => Array
+        (
+            [line] => 19
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No docblock for element '$indexView'
+        )
+
+    [1] => Array
+        (
+            [line] => 19
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No short description for element '$indexView'
+        )
+
+    [2] => Array
+        (
+            [line] => 21
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No docblock for element '$foobar'
+        )
+
+    [3] => Array
+        (
+            [line] => 21
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No short description for element '$foobar'
+        )
+
+    [4] => Array
+        (
+            [line] => 19
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No docblock for element '$indexView'
+        )
+
+    [5] => Array
+        (
+            [line] => 19
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No short description for element '$indexView'
+        )
+
+    [6] => Array
+        (
+            [line] => 21
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No docblock for element '$foobar'
+        )
+
+    [7] => Array
+        (
+            [line] => 21
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No short description for element '$foobar'
+        )
+
+    [8] => Array
+        (
+            [line] => 19
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No docblock for element '$indexView'
+        )
+
+    [9] => Array
+        (
+            [line] => 19
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No short description for element '$indexView'
+        )
+
+    [10] => Array
+        (
+            [line] => 21
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No docblock for element '$foobar'
+        )
+
+    [11] => Array
+        (
+            [line] => 21
+            [file] => ./doc/template/ApiRenderer.php
+            [message] => No short description for element '$foobar'
+        )
+
+    [12] => Array
+        (
+            [line] => 8
+            [file] => ./examples/shop/ShopController.php
+            [message] => No docblock for element 'examples\shop\ShopController'
+        )
+
+    [13] => Array
+        (
+            [line] => 10
+            [file] => ./examples/shop/ShopController.php
+            [message] => No docblock for element 'actionSomething'
+        )
+
+    [14] => Array
+        (
+            [line] => 24
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'setUp'
+        )
+
+    [15] => Array
+        (
+            [line] => 31
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'testDynamicSelect'
+        )
+
+    [16] => Array
+        (
+            [line] => 58
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'testWhere'
+        )
+
+    [17] => Array
+        (
+            [line] => 94
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'testNestedTypesProcessing'
+        )
+
+    [18] => Array
+        (
+            [line] => 112
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'testAttributeWithoutTypeProcessing'
+        )
+
+    [19] => Array
+        (
+            [line] => 167
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'testExceptionForMissingDynColumn'
+        )
+
+    [20] => Array
+        (
+            [line] => 175
+            [file] => ./tests/unit/DynamicActiveQueryTest.php
+            [message] => No docblock for element 'testIndexByExceptionForMissingDynColumn'
+        )
+
+    [21] => Array
+        (
+            [line] => 11
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'tests\unit\DynamicActiveRecordAccessTest'
+        )
+
+    [22] => Array
+        (
+            [line] => 14
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No short description for element '$db'
+        )
+
+    [23] => Array
+        (
+            [line] => 31
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element '$postInput'
+        )
+
+    [24] => Array
+        (
+            [line] => 31
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No short description for element '$postInput'
+        )
+
+    [25] => Array
+        (
+            [line] => 39
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element '$toArray'
+        )
+
+    [26] => Array
+        (
+            [line] => 39
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No short description for element '$toArray'
+        )
+
+    [27] => Array
+        (
+            [line] => 16
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'setUp'
+        )
+
+    [28] => Array
+        (
+            [line] => 23
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testIsset'
+        )
+
+    [29] => Array
+        (
+            [line] => 50
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testLoad'
+        )
+
+    [30] => Array
+        (
+            [line] => 58
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testMassive'
+        )
+
+    [31] => Array
+        (
+            [line] => 66
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testSafe'
+        )
+
+    [32] => Array
+        (
+            [line] => 81
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testValidationSome'
+        )
+
+    [33] => Array
+        (
+            [line] => 94
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testValidationAll'
+        )
+
+    [34] => Array
+        (
+            [line] => 104
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testNested'
+        )
+
+    [35] => Array
+        (
+            [line] => 114
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testNestedSave'
+        )
+
+    [36] => Array
+        (
+            [line] => 190
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testIssetUnsetAttribute'
+        )
+
+    [37] => Array
+        (
+            [line] => 222
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testGetNullAttribute'
+        )
+
+    [38] => Array
+        (
+            [line] => 236
+            [file] => ./tests/unit/DynamicActiveRecordAccessTest.php
+            [message] => No docblock for element 'testWonkyAttributeNames'
+        )
+
+    [39] => Array
+        (
+            [line] => 33
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No short description for element '$db'
+        )
+
+    [40] => Array
+        (
+            [line] => 37
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element '$resetFixture'
+        )
+
+    [41] => Array
+        (
+            [line] => 37
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No short description for element '$resetFixture'
+        )
+
+    [42] => Array
+        (
+            [line] => 39
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'setUp'
+        )
+
+    [43] => Array
+        (
+            [line] => 47
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'hexDump'
+        )
+
+    [44] => Array
+        (
+            [line] => 73
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testReadBinary'
+        )
+
+    [45] => Array
+        (
+            [line] => 81
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testRead'
+        )
+
+    [46] => Array
+        (
+            [line] => 90
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testTypes'
+        )
+
+    [47] => Array
+        (
+            [line] => 106
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testAsArray'
+        )
+
+    [48] => Array
+        (
+            [line] => 132
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'dataProviderTestMariaArrayEncoding'
+        )
+
+    [49] => Array
+        (
+            [line] => 192
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'dataProviderTestWriteRead'
+        )
+
+    [50] => Array
+        (
+            [line] => 306
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testDynamicValueObects'
+        )
+
+    [51] => Array
+        (
+            [line] => 360
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testDotAttributes'
+        )
+
+    [52] => Array
+        (
+            [line] => 367
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testCustomColumns'
+        )
+
+    [53] => Array
+        (
+            [line] => 378
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testCustomColumnsExpression'
+        )
+
+    [54] => Array
+        (
+            [line] => 389
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testStatisticalFind'
+        )
+
+    [55] => Array
+        (
+            [line] => 399
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindScalar'
+        )
+
+    [56] => Array
+        (
+            [line] => 414
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindColumn'
+        )
+
+    [57] => Array
+        (
+            [line] => 424
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindBySql'
+        )
+
+    [58] => Array
+        (
+            [line] => 440
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFind'
+        )
+
+    [59] => Array
+        (
+            [line] => 460
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindAsArray'
+        )
+
+    [60] => Array
+        (
+            [line] => 489
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindIndexBy'
+        )
+
+    [61] => Array
+        (
+            [line] => 510
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindIndexByAsArray'
+        )
+
+    [62] => Array
+        (
+            [line] => 546
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testRefresh'
+        )
+
+    [63] => Array
+        (
+            [line] => 561
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testEquals'
+        )
+
+    [64] => Array
+        (
+            [line] => 577
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindCount'
+        )
+
+    [65] => Array
+        (
+            [line] => 589
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindComplexCondition'
+        )
+
+    [66] => Array
+        (
+            [line] => 612
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindNullValues'
+        )
+
+    [67] => Array
+        (
+            [line] => 625
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testExists'
+        )
+
+    [68] => Array
+        (
+            [line] => 635
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindLazy'
+        )
+
+    [69] => Array
+        (
+            [line] => 655
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindEager'
+        )
+
+    [70] => Array
+        (
+            [line] => 669
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testRelationsWhereDynamicColumnMissing'
+        )
+
+    [71] => Array
+        (
+            [line] => 679
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testInsert'
+        )
+
+    [72] => Array
+        (
+            [line] => 707
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testUpdate'
+        )
+
+    [73] => Array
+        (
+            [line] => 739
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testUpdateAttributes'
+        )
+
+    [74] => Array
+        (
+            [line] => 790
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testFindEmptyInCondition'
+        )
+
+    [75] => Array
+        (
+            [line] => 807
+            [file] => ./tests/unit/DynamicActiveRecordTest.php
+            [message] => No docblock for element 'testCreateColumnInBeforeSave'
+        )
+
+    [76] => Array
+        (
+            [line] => 20
+            [file] => ./tests/unit/data/BaseRecord.php
+            [message] => No docblock for element '$db'
+        )
+
+    [77] => Array
+        (
+            [line] => 20
+            [file] => ./tests/unit/data/BaseRecord.php
+            [message] => No short description for element '$db'
+        )
+
+    [78] => Array
+        (
+            [line] => 22
+            [file] => ./tests/unit/data/BaseRecord.php
+            [message] => No docblock for element 'getDb'
+        )
+
+    [79] => Array
+        (
+            [line] => 12
+            [file] => ./tests/unit/data/CustomerQuery.php
+            [message] => No docblock for element 'active'
+        )
+
+    [80] => Array
+        (
+            [line] => 20
+            [file] => ./tests/unit/data/ar/Category.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [81] => Array
+        (
+            [line] => 25
+            [file] => ./tests/unit/data/ar/Category.php
+            [message] => No docblock for element 'getItems'
+        )
+
+    [82] => Array
+        (
+            [line] => 30
+            [file] => ./tests/unit/data/ar/Category.php
+            [message] => No docblock for element 'getLimitedItems'
+        )
+
+    [83] => Array
+        (
+            [line] => 36
+            [file] => ./tests/unit/data/ar/Category.php
+            [message] => No docblock for element 'getOrderItems'
+        )
+
+    [84] => Array
+        (
+            [line] => 41
+            [file] => ./tests/unit/data/ar/Category.php
+            [message] => No docblock for element 'getOrders'
+        )
+
+    [85] => Array
+        (
+            [line] => 25
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element '$status2'
+        )
+
+    [86] => Array
+        (
+            [line] => 25
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No short description for element '$status2'
+        )
+
+    [87] => Array
+        (
+            [line] => 27
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [88] => Array
+        (
+            [line] => 32
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getProfile'
+        )
+
+    [89] => Array
+        (
+            [line] => 37
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getOrders'
+        )
+
+    [90] => Array
+        (
+            [line] => 42
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getExpensiveOrders'
+        )
+
+    [91] => Array
+        (
+            [line] => 47
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getExpensiveOrdersWithNullFK'
+        )
+
+    [92] => Array
+        (
+            [line] => 52
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getOrdersWithNullFK'
+        )
+
+    [93] => Array
+        (
+            [line] => 57
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getOrders2'
+        )
+
+    [94] => Array
+        (
+            [line] => 63
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'getOrderItems'
+        )
+
+    [95] => Array
+        (
+            [line] => 74
+            [file] => ./tests/unit/data/ar/Customer.php
+            [message] => No docblock for element 'afterSave'
+        )
+
+    [96] => Array
+        (
+            [line] => 16
+            [file] => ./tests/unit/data/ar/Item.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [97] => Array
+        (
+            [line] => 21
+            [file] => ./tests/unit/data/ar/Item.php
+            [message] => No docblock for element 'getCategory'
+        )
+
+    [98] => Array
+        (
+            [line] => 18
+            [file] => ./tests/unit/data/ar/NullValues.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [99] => Array
+        (
+            [line] => 17
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [100] => Array
+        (
+            [line] => 22
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getCustomer'
+        )
+
+    [101] => Array
+        (
+            [line] => 27
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getCustomer2'
+        )
+
+    [102] => Array
+        (
+            [line] => 32
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getOrderItems'
+        )
+
+    [103] => Array
+        (
+            [line] => 37
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getOrderItemsWithNullFK'
+        )
+
+    [104] => Array
+        (
+            [line] => 42
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getItems'
+        )
+
+    [105] => Array
+        (
+            [line] => 50
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getItemsIndexed'
+        )
+
+    [106] => Array
+        (
+            [line] => 56
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getItemsWithNullFK'
+        )
+
+    [107] => Array
+        (
+            [line] => 62
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getItemsInOrder1'
+        )
+
+    [108] => Array
+        (
+            [line] => 70
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getItemsInOrder2'
+        )
+
+    [109] => Array
+        (
+            [line] => 78
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getBooks'
+        )
+
+    [110] => Array
+        (
+            [line] => 85
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getBooksWithNullFK'
+        )
+
+    [111] => Array
+        (
+            [line] => 92
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getBooksViaTable'
+        )
+
+    [112] => Array
+        (
+            [line] => 99
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getBooksWithNullFKViaTable'
+        )
+
+    [113] => Array
+        (
+            [line] => 106
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'getBooks2'
+        )
+
+    [114] => Array
+        (
+            [line] => 113
+            [file] => ./tests/unit/data/ar/Order.php
+            [message] => No docblock for element 'beforeSave'
+        )
+
+    [115] => Array
+        (
+            [line] => 17
+            [file] => ./tests/unit/data/ar/OrderItem.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [116] => Array
+        (
+            [line] => 22
+            [file] => ./tests/unit/data/ar/OrderItem.php
+            [message] => No docblock for element 'getOrder'
+        )
+
+    [117] => Array
+        (
+            [line] => 27
+            [file] => ./tests/unit/data/ar/OrderItem.php
+            [message] => No docblock for element 'getItem'
+        )
+
+    [118] => Array
+        (
+            [line] => 17
+            [file] => ./tests/unit/data/ar/OrderItemWithNullFK.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [119] => Array
+        (
+            [line] => 17
+            [file] => ./tests/unit/data/ar/OrderWithNullFK.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [120] => Array
+        (
+            [line] => 21
+            [file] => ./tests/unit/data/ar/Profile.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [121] => Array
+        (
+            [line] => 11
+            [file] => ./tests/unit/data/dar/MissingDynColumn.php
+            [message] => No docblock for element 'tests\unit\data\dar\MissingDynColumn'
+        )
+
+    [122] => Array
+        (
+            [line] => 14
+            [file] => ./tests/unit/data/dar/MissingDynColumn.php
+            [message] => No docblock for element '$customColumn'
+        )
+
+    [123] => Array
+        (
+            [line] => 14
+            [file] => ./tests/unit/data/dar/MissingDynColumn.php
+            [message] => No short description for element '$customColumn'
+        )
+
+    [124] => Array
+        (
+            [line] => 16
+            [file] => ./tests/unit/data/dar/MissingDynColumn.php
+            [message] => No docblock for element 'dynamicColumn'
+        )
+
+    [125] => Array
+        (
+            [line] => 9
+            [file] => ./tests/unit/data/dar/Person.php
+            [message] => No docblock for element 'tests\unit\data\dar\Person'
+        )
+
+    [126] => Array
+        (
+            [line] => 11
+            [file] => ./tests/unit/data/dar/Person.php
+            [message] => No docblock for element 'tableName'
+        )
+
+    [127] => Array
+        (
+            [line] => 16
+            [file] => ./tests/unit/data/dar/Person.php
+            [message] => No docblock for element 'dynamicColumn'
+        )
+
+    [128] => Array
+        (
+            [line] => 21
+            [file] => ./tests/unit/data/dar/Person.php
+            [message] => No docblock for element 'scenarios'
+        )
+
+    [129] => Array
+        (
+            [line] => 30
+            [file] => ./tests/unit/data/dar/Person.php
+            [message] => No docblock for element 'rules'
+        )
+
+    [130] => Array
+        (
+            [line] => 8
+            [file] => ./tests/unit/data/dar/Product.php
+            [message] => No docblock for element 'tests\unit\data\dar\Product'
+        )
+
+    [131] => Array
+        (
+            [line] => 11
+            [file] => ./tests/unit/data/dar/Product.php
+            [message] => No docblock for element '$customColumn'
+        )
+
+    [132] => Array
+        (
+            [line] => 11
+            [file] => ./tests/unit/data/dar/Product.php
+            [message] => No short description for element '$customColumn'
+        )
+
+    [133] => Array
+        (
+            [line] => 13
+            [file] => ./tests/unit/data/dar/Product.php
+            [message] => No docblock for element 'dynamicColumn'
+        )
+
+    [134] => Array
+        (
+            [line] => 8
+            [file] => ./tests/unit/data/dar/Supplier.php
+            [message] => No docblock for element 'tests\unit\data\dar\Supplier'
+        )
+
+    [135] => Array
+        (
+            [line] => 11
+            [file] => ./tests/unit/data/dar/Supplier.php
+            [message] => No docblock for element 'dynamicColumn'
+        )
+
+)

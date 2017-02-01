@@ -4,28 +4,29 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>QueryTrait - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>QueryTrait - Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w68" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w68-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w71" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w71-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w68-collapse" class="collapse navbar-collapse"><ul id="w69" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w71-collapse" class="collapse navbar-collapse"><ul id="w72" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-66" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-66" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-69" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-69" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item active" href="#navigation-67" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-67" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item active" href="#navigation-70" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-70" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -37,7 +38,7 @@
 <a class="list-group-item active" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Trait yii\db\QueryTrait</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -48,7 +49,7 @@
         <col class="col-name" />
         <col class="col-value" />
     </colgroup>
-                                    <tr><th>Implemented by</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-query.html">yii\db\Query</a></td></tr>
+                                    <tr><th>Implemented by</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, tests\unit\data\CustomerQuery, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-query.html">yii\db\Query</a></td></tr>
                 <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -56,7 +57,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>The BaseQuery trait represents the minimum method set of a database Query.</strong></p>
     <p>It is supposed to be used in a class that implements the <a href="yii-db-queryinterface.html">yii\db\QueryInterface</a>.</p>
 
@@ -232,18 +233,21 @@
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/QueryTrait.php#L52" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/QueryTrait.php#L52" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $indexBy        <span class="detailHeaderTag small">
-            public                                    property
+        $indexBy        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a> <a href="yii-db-querytrait.html#$indexBy-detail">$indexBy</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>The name of the column by which the query results should be indexed by.
+    
+    <div class="doc-description">
+        <p>The name of the column by which the query results should be indexed by.
 This can also be a callable (e.g. anonymous function) that returns the index value based on the given
 row data. For more details, see <a href="yii-db-querytrait.html#indexBy()-detail">indexBy()</a>. This property is only used by <a href="yii-db-queryinterface.html#all()-detail">all()</a>.</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a></span> <a href="yii-db-querytrait.html#$indexBy-detail">$indexBy</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$limit-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -251,16 +255,19 @@ row data. For more details, see <a href="yii-db-querytrait.html#indexBy()-detail
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/QueryTrait.php#L32" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/QueryTrait.php#L32" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $limit        <span class="detailHeaderTag small">
-            public                                    property
+        $limit        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <a href="yii-db-querytrait.html#$limit-detail">$limit</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>Maximum number of records to be returned. If not set or less than 0, it means no limit.</p>
-
     
+    <div class="doc-description">
+        <p>Maximum number of records to be returned. If not set or less than 0, it means no limit.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <a href="yii-db-querytrait.html#$limit-detail">$limit</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$offset-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -268,17 +275,20 @@ row data. For more details, see <a href="yii-db-querytrait.html#indexBy()-detail
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/QueryTrait.php#L37" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/QueryTrait.php#L37" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $offset        <span class="detailHeaderTag small">
-            public                                    property
+        $offset        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <a href="yii-db-querytrait.html#$offset-detail">$offset</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>Zero-based offset from where the records are to be returned. If not set or
+    
+    <div class="doc-description">
+        <p>Zero-based offset from where the records are to be returned. If not set or
 less than 0, it means starting from the beginning.</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <a href="yii-db-querytrait.html#$offset-detail">$offset</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$orderBy-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -286,21 +296,24 @@ less than 0, it means starting from the beginning.</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/QueryTrait.php#L46" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/QueryTrait.php#L46" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $orderBy        <span class="detailHeaderTag small">
-            public                                    property
+        $orderBy        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-querytrait.html#$orderBy-detail">$orderBy</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>How to sort the query results. This is used to construct the ORDER BY clause in a SQL statement.
+    
+    <div class="doc-description">
+        <p>How to sort the query results. This is used to construct the ORDER BY clause in a SQL statement.
 The array keys are the columns to be sorted by, and the array values are the corresponding sort directions which
 can be either <a href="http://php.net/manual/en/array.constants.php#constant.sort-asc">SORT_ASC</a>
 or <a href="http://php.net/manual/en/array.constants.php#constant.sort-desc">SORT_DESC</a>.
 The array may also contain <span class="broken-link">\yii\db\Expression</span> objects. If that is the case, the expressions
 will be converted into strings without any change.</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <a href="yii-db-querytrait.html#$orderBy-detail">$orderBy</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$where-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -308,17 +321,20 @@ will be converted into strings without any change.</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/QueryTrait.php#L28" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/QueryTrait.php#L28" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $where        <span class="detailHeaderTag small">
-            public                                    property
+        $where        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-querytrait.html#$where-detail">$where</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>Query condition. This refers to the WHERE clause in a SQL statement.
+    
+    <div class="doc-description">
+        <p>Query condition. This refers to the WHERE clause in a SQL statement.
 For example, <code>['age' =&gt; 31, 'team' =&gt; 1]</code>.</p>
 
-    <p>See also <a href="yii-db-querytrait.html#where()-detail">where()</a> for valid syntax on specifying this value.</p>
+        <p>See also <a href="yii-db-querytrait.html#where()-detail">where()</a> for valid syntax on specifying this value.</p>    </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></span> <a href="yii-db-querytrait.html#$where-detail">$where</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -332,10 +348,11 @@ For example, <code>['age' =&gt; 31, 'team' =&gt; 1]</code>.</p>
         
         addOrderBy()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds additional ORDER BY columns to the query.</strong></p>
 
@@ -343,7 +360,7 @@ For example, <code>['age' =&gt; 31, 'team' =&gt; 1]</code>.</p>
         <p>See also <a href="yii-db-querytrait.html#orderBy()-detail">orderBy()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#addOrderBy()-detail">addOrderBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#addOrderBy()-detail">addOrderBy</a></strong> ( <span style="color: #0000BB">$columns</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -372,10 +389,11 @@ The method will automatically quote the column names unless a column contains so
         
         andFilterWhere()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</strong></p>
 
@@ -387,7 +405,7 @@ for building query conditions based on filter values entered by users.</p>
         <p>See also:</p><ul><li><a href="yii-db-querytrait.html#filterWhere()-detail">filterWhere()</a></li><li><a href="yii-db-querytrait.html#orFilterWhere()-detail">orFilterWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#andFilterWhere()-detail">andFilterWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#andFilterWhere()-detail">andFilterWhere</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -413,10 +431,11 @@ on how to specify this parameter.</p>
         
         andWhere()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one.</strong></p>
 
@@ -425,7 +444,7 @@ on how to specify this parameter.</p>
         <p>See also:</p><ul><li><a href="yii-db-querytrait.html#where()-detail">where()</a></li><li><a href="yii-db-querytrait.html#orWhere()-detail">orWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#andWhere()-detail">andWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#andWhere()-detail">andWhere</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -451,10 +470,11 @@ on how to specify this parameter.</p>
         
         filterCondition()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Removes <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a> from the given query condition.</strong></p>
 
@@ -462,7 +482,7 @@ on how to specify this parameter.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-querytrait.html#filterCondition()-detail">filterCondition</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-querytrait.html#filterCondition()-detail">filterCondition</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -493,10 +513,11 @@ on how to specify this parameter.</p>
         
         filterWhere()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the WHERE part of the query but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</strong></p>
 
@@ -504,13 +525,19 @@ on how to specify this parameter.</p>
 remove <a href="yii-db-querytrait.html#isEmpty()-detail">empty query operands</a>. As a result, this method is best suited
 for building query conditions based on filter values entered by users.</p>
 <p>The following code shows the difference between this method and <a href="yii-db-querytrait.html#where()-detail">where()</a>:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;WHERE&nbsp;`age`=:age<br /></span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">filterWhere</span><span style="color: #007700">([</span><span style="color: #DD0000">'name'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">]);<br /></span><span style="color: #FF8000">//&nbsp;WHERE&nbsp;`age`=:age<br /></span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">]);<br /></span><span style="color: #FF8000">//&nbsp;WHERE&nbsp;`name`&nbsp;IS&nbsp;NULL&nbsp;AND&nbsp;`age`=:age<br /></span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'name'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">]);</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-comment">// WHERE `age`=:age</span>
+<span class="hljs-variable">$query</span>-&gt;filterWhere([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-keyword">null</span>, <span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">20</span>]);
+<span class="hljs-comment">// WHERE `age`=:age</span>
+<span class="hljs-variable">$query</span>-&gt;where([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">20</span>]);
+<span class="hljs-comment">// WHERE `name` IS NULL AND `age`=:age</span>
+<span class="hljs-variable">$query</span>-&gt;where([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-keyword">null</span>, <span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">20</span>]);
+</code></pre>
 <p>Note that unlike <a href="yii-db-querytrait.html#where()-detail">where()</a>, you cannot pass binding parameters to this method.</p>
 
         <p>See also:</p><ul><li><a href="yii-db-querytrait.html#where()-detail">where()</a></li><li><a href="yii-db-querytrait.html#andFilterWhere()-detail">andFilterWhere()</a></li><li><a href="yii-db-querytrait.html#orFilterWhere()-detail">orFilterWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#filterWhere()-detail">filterWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#filterWhere()-detail">filterWhere</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -536,10 +563,11 @@ See <a href="yii-db-querytrait.html#where()-detail">where()</a> on how to specif
         
         indexBy()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the <a href="yii-db-querytrait.html#indexBy()-detail">indexBy()</a> property.</strong></p>
 
@@ -547,16 +575,16 @@ See <a href="yii-db-querytrait.html#where()-detail">where()</a> on how to specif
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#indexBy()-detail">indexBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#indexBy()-detail">indexBy</a></strong> ( <span style="color: #0000BB">$column</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$column</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a></td>
                   <td class="param-desc-col"><p>The name of the column by which the query results should be indexed by.
 This can also be a callable (e.g. anonymous function) that returns the index value based on the given
 row data. The signature of the callable should be:</p>
-<pre><code>function ($row)
-{
-    // return the index value corresponding to $row
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$row</span>)</span>
+</span>{
+    <span class="hljs-comment">// return the index value corresponding to $row</span>
 }
 </code></pre>
 </td>
@@ -579,10 +607,11 @@ row data. The signature of the callable should be:</p>
         
         isEmpty()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the give value is "empty".</strong></p>
 
@@ -597,7 +626,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-querytrait.html#isEmpty()-detail">isEmpty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-querytrait.html#isEmpty()-detail">isEmpty</a></strong> ( <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
                   <td class="param-type-col">mixed</td>
@@ -621,10 +650,11 @@ row data. The signature of the callable should be:</p>
         
         limit()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the LIMIT part of the query.</strong></p>
 
@@ -632,7 +662,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#limit()-detail">limit</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$limit&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#limit()-detail">limit</a></strong> ( <span style="color: #0000BB">$limit</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$limit</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
@@ -657,10 +687,11 @@ row data. The signature of the callable should be:</p>
         
         normalizeOrderBy()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Normalizes format of ORDER BY data</strong></p>
 
@@ -668,7 +699,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-querytrait.html#normalizeOrderBy()-detail">normalizeOrderBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-querytrait.html#normalizeOrderBy()-detail">normalizeOrderBy</a></strong> ( <span style="color: #0000BB">$columns</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.string">string</a></td>
@@ -686,10 +717,11 @@ row data. The signature of the callable should be:</p>
         
         offset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the OFFSET part of the query.</strong></p>
 
@@ -697,7 +729,7 @@ row data. The signature of the callable should be:</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#offset()-detail">offset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#offset()-detail">offset</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
@@ -722,10 +754,11 @@ row data. The signature of the callable should be:</p>
         
         orFilterWhere()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one but ignores <a href="yii-db-querytrait.html#isEmpty()-detail">empty operands</a>.</strong></p>
 
@@ -737,7 +770,7 @@ for building query conditions based on filter values entered by users.</p>
         <p>See also:</p><ul><li><a href="yii-db-querytrait.html#filterWhere()-detail">filterWhere()</a></li><li><a href="yii-db-querytrait.html#andFilterWhere()-detail">andFilterWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#orFilterWhere()-detail">orFilterWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#orFilterWhere()-detail">orFilterWhere</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -763,10 +796,11 @@ on how to specify this parameter.</p>
         
         orWhere()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional WHERE condition to the existing one.</strong></p>
 
@@ -775,7 +809,7 @@ on how to specify this parameter.</p>
         <p>See also:</p><ul><li><a href="yii-db-querytrait.html#where()-detail">where()</a></li><li><a href="yii-db-querytrait.html#andWhere()-detail">andWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#orWhere()-detail">orWhere</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#orWhere()-detail">orWhere</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -801,10 +835,11 @@ on how to specify this parameter.</p>
         
         orderBy()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the ORDER BY part of the query.</strong></p>
 
@@ -812,7 +847,7 @@ on how to specify this parameter.</p>
         <p>See also <a href="yii-db-querytrait.html#addOrderBy()-detail">addOrderBy()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#orderBy()-detail">orderBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$columns&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#orderBy()-detail">orderBy</a></strong> ( <span style="color: #0000BB">$columns</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$columns</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -844,10 +879,11 @@ the order-by columns.</p>
         
         where()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the WHERE part of the query.</strong></p>
 
@@ -856,7 +892,7 @@ the order-by columns.</p>
         <p>See also:</p><ul><li><a href="yii-db-querytrait.html#andWhere()-detail">andWhere()</a></li><li><a href="yii-db-querytrait.html#orWhere()-detail">orWhere()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-querytrait.html#where()-detail">where</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-querytrait.html#where()-detail">where</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -911,7 +947,7 @@ the order-by columns.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

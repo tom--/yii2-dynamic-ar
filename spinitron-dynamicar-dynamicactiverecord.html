@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>DynamicActiveRecord - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>DynamicActiveRecord - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -20,10 +21,11 @@
 <div class="row">
     <div class="col-md-3">
                 <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-3" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-3" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
-<a class="list-group-item active" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div></div>    </div>
+<a class="list-group-item active" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a>
+<a class="list-group-item" href="./spinitron-dynamicar-valueexpression.html">ValueExpression</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class spinitron\dynamicAr\DynamicActiveRecord</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -44,10 +46,10 @@
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="http://www.php.net/class.arrayaccess">ArrayAccess</a>, <a href="http://www.php.net/class.iteratoraggregate">IteratorAggregate</a>, <a href="yii-base-arrayable.html">yii\base\Arrayable</a>, <a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activerecordinterface.html">yii\db\ActiveRecordInterface</a></td></tr>
                     <tr><th>Uses Traits</th><td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td></tr>
-                <tr><th>Subclasses</th><td>examples\shop\Product</td></tr>
+                <tr><th>Subclasses</th><td>examples\shop\Product, tests\unit\data\BaseRecord, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier</td></tr>
                         </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>DynamicActiveRecord represents relational data with structured dynamic attributes
 in addition to column attributes supported by ActiveRecord.</strong></p>
     <p>DynamicActiveRecord adds structured dynamic attributes to Yii 2 ActiveRecord a bit
@@ -60,7 +62,12 @@ up attribute names on-the-fly, assign values and they are stored in the database
 then involve these dynamic attributes in queries using <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>.</p>
 <p>Dynamic attributes may also be data structures in the form of PHP arrays, elements of
 which can be accessed through dotted attribute notation.</p>
-<pre><code class="language-php"><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">specs&nbsp;</span><span style="color: #007700">=&nbsp;[</span><span style="color: #DD0000">'dimensions'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'length'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">]];<br /></span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #DD0000">'specs.dimensions.width'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #DD0000">'specs.color'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'blue'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$model-&gt;specs&nbsp;now&nbsp;has&nbsp;the&nbsp;value<br />//&nbsp;['dimensions'&nbsp;=&gt;&nbsp;['length'&nbsp;=&gt;&nbsp;20,&nbsp;'width'&nbsp;=&gt;&nbsp;4],&nbsp;'color'&nbsp;=&gt;&nbsp;'blue']</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$model</span>-&gt;specs = [<span class="hljs-string">'dimensions'</span> =&gt; [<span class="hljs-string">'length'</span> =&gt; <span class="hljs-number">20</span>]];
+<span class="hljs-variable">$model</span>-&gt;setAttribute(<span class="hljs-string">'specs.dimensions.width'</span>, <span class="hljs-number">4</span>);
+<span class="hljs-variable">$model</span>-&gt;setAttribute(<span class="hljs-string">'specs.color'</span>, <span class="hljs-string">'blue'</span>);
+<span class="hljs-comment">// $model-&gt;specs now has the value</span>
+<span class="hljs-comment">// ['dimensions' =&gt; ['length' =&gt; 20, 'width' =&gt; 4], 'color' =&gt; 'blue']</span>
+</code></pre>
 <p>Model classes must implement the <a href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail">dynamicColumn()</a> method to specify the name of the
 table column containing the serialized dynamic attributes.</p>
 
@@ -85,7 +92,7 @@ table column containing the serialized dynamic attributes.</p>
 </tr>
         <tr class="inherited" id="$activeValidators">
         <td><a href="yii-base-model.html#$activeValidators-detail">$activeValidators</a></td>
-        <td>\yii\validators\Validator</td>
+        <td>\yii\validators\Validator[]</td>
         <td>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -97,7 +104,7 @@ table column containing the serialized dynamic attributes.</p>
     </tr>
             <tr class="inherited" id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -163,7 +170,7 @@ table column containing the serialized dynamic attributes.</p>
     </tr>
             <tr class="inherited" id="$validators">
         <td><a href="yii-base-model.html#$validators-detail">$validators</a></td>
-        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator</td>
+        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</td>
         <td>All the validators declared in the model.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -187,7 +194,7 @@ table column containing the serialized dynamic attributes.</p>
 </tr>
                                                 <tr id="$placeholderCounter">
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail">$placeholderCounter</a></td>
-        <td>int</td>
+        <td><a href="http://www.php.net/language.types.integer">integer</a></td>
         <td>Counter of PDO placeholders used in a query.</td>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
     </tr>
@@ -280,11 +287,6 @@ table column containing the serialized dynamic attributes.</p>
         <td>This method is invoked after validation ends.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
-            <tr id="allAttributes()">
-        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#allAttributes()-detail">allAttributes()</a></td>
-        <td>Return a list of all model attribute names recursing structured dynamic attributes.</td>
-        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
-    </tr>
             <tr class="inherited" id="attachBehavior()">
         <td><a href="yii-base-component.html#attachBehavior()-detail">attachBehavior()</a></td>
         <td>Attaches a behavior to this component.</td>
@@ -317,7 +319,7 @@ table column containing the serialized dynamic attributes.</p>
     </tr>
             <tr id="beforeSave()">
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail">beforeSave()</a></td>
-        <td>This method is called at the beginning of inserting or updating a record.</td>
+        <td></td>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
     </tr>
             <tr class="inherited" id="beforeValidate()">
@@ -350,6 +352,11 @@ table column containing the serialized dynamic attributes.</p>
         <td>Removes errors for all attributes or a single attribute.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
+            <tr id="columnExpression()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#columnExpression()-detail">columnExpression()</a></td>
+        <td>Generate an SQL expression referring to the given dynamic column.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
             <tr class="inherited" id="createValidators()">
         <td><a href="yii-base-model.html#createValidators()-detail">createValidators()</a></td>
         <td>Creates validator objects based on the validation rules specified in <a href="yii-base-model.html#rules()-detail">rules()</a>.</td>
@@ -379,6 +386,16 @@ table column containing the serialized dynamic attributes.</p>
         <td><a href="yii-base-component.html#detachBehaviors()-detail">detachBehaviors()</a></td>
         <td>Detaches all behaviors from the component.</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
+    </tr>
+            <tr id="dotAttributeNames()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dotAttributeNames()-detail">dotAttributeNames()</a></td>
+        <td>Return a list of all model attribute names recursing structured dynamic attributes.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+    </tr>
+            <tr id="dotAttributes()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dotAttributes()-detail">dotAttributes()</a></td>
+        <td>Return a list of all attribute values with keys in dotted notation.</td>
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
     </tr>
                 <tr id="dynColDecode()">
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColDecode()-detail">dynColDecode()</a></td>
@@ -422,7 +439,7 @@ table column containing the serialized dynamic attributes.</p>
     </tr>
             <tr id="find()">
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html#find()-detail">find()</a></td>
-        <td>Creates an <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> instance for query purpose.</td>
+        <td>Returns a query object for the model/class.</td>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
     </tr>
             <tr class="inherited" id="findAll()">
@@ -727,7 +744,7 @@ table column containing the serialized dynamic attributes.</p>
     </tr>
             <tr id="populateRecord()">
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html#populateRecord()-detail">populateRecord()</a></td>
-        <td>Populates an active record object using a row of data from the database/storage.</td>
+        <td></td>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
     </tr>
             <tr class="inherited" id="populateRelation()">
@@ -892,9 +909,9 @@ table column containing the serialized dynamic attributes.</p>
         <td>Deletes an ActiveRecord without considering transaction.</td>
         <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
     </tr>
-                    <tr id="dotKeys()">
-        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dotKeys()-detail">dotKeys()</a></td>
-        <td>Return a list of an array's keys in dotted notation, recursing subarrays.</td>
+                            <tr id="dotKeyValues()">
+        <td><a href="spinitron-dynamicar-dynamicactiverecord.html#dotKeyValues()-detail">dotKeyValues()</a></td>
+        <td>Convert a nested array to a map of dot-notation keys to values.</td>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
     </tr>
                     <tr id="dynColSqlMaria()">
@@ -1044,50 +1061,50 @@ in a DB record as Dynamic Columns in Maria.</td>
             <tr id="DATA_URI_PREFIX">
           <td id="DATA_URI_PREFIX-detail">DATA_URI_PREFIX</td>
           <td>'data:application/octet-stream;base64,'</td>
-          <td>Prefix for base64 encoded dynamic sttribute values
-</td>
+          <td>Prefix for base64 encoded dynamic attribute values
+                        </td>
           <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
         </tr>
             <tr class="inherited" id="OP_ALL">
           <td id="OP_ALL-detail">OP_ALL</td>
           <td>7</td>
           <td>All three operations: insert, update, delete.
-This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
+This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr class="inherited" id="OP_DELETE">
           <td id="OP_DELETE-detail">OP_DELETE</td>
           <td>4</td>
           <td>The delete operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
-</td>
+                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr class="inherited" id="OP_INSERT">
           <td id="OP_INSERT-detail">OP_INSERT</td>
           <td>1</td>
           <td>The insert operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
-</td>
+                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr class="inherited" id="OP_UPDATE">
           <td id="OP_UPDATE-detail">OP_UPDATE</td>
           <td>2</td>
           <td>The update operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
-</td>
+                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr id="PARAM_PREFIX">
           <td id="PARAM_PREFIX-detail">PARAM_PREFIX</td>
           <td>':dqp'</td>
-          <td>Prefix of PDO playholders for Dynamic Column names and values
-</td>
+          <td>Prefix of PDO placeholders for Dynamic Column names and values
+                        </td>
           <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
         </tr>
             <tr class="inherited" id="SCENARIO_DEFAULT">
           <td id="SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</td>
           <td>'default'</td>
           <td>The name of the default scenario.
-</td>
+                        </td>
           <td><a href="yii-base-model.html">yii\base\Model</a></td>
         </tr>
         </table>
@@ -1101,16 +1118,19 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $placeholderCounter        <span class="detailHeaderTag small">
-            protected                                    property
+        $placeholderCounter        <span class="detail-header-tag small">
+            protected            static                                    property
                     </span>
     </div>
 
-    <div class="signature">int <a href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail">$placeholderCounter</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>Counter of PDO placeholders used in a query.</p>
-
     
+    <div class="doc-description">
+        <p>Counter of PDO placeholders used in a query.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">protected static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <a href="spinitron-dynamicar-dynamicactiverecord.html#$placeholderCounter-detail">$placeholderCounter</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -1122,10 +1142,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         
         __get()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>PHP getter magic method.</strong></p>
 
@@ -1134,7 +1155,7 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__get()-detail">__get</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__get()-detail">__get</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1163,10 +1184,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         
         __isset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Checks if a property value is null.</strong></p>
 
@@ -1175,7 +1197,7 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__isset()-detail">__isset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__isset()-detail">__isset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1198,10 +1220,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         
         __set()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>PHP setter magic method.</strong></p>
 
@@ -1210,7 +1233,7 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__set()-detail">__set</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__set()-detail">__set</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1233,10 +1256,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         
         __unset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets a component property to be null.</strong></p>
 
@@ -1246,7 +1270,7 @@ the specified attribute value.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__unset()-detail">__unset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#__unset()-detail">__unset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1257,31 +1281,31 @@ the specified attribute value.</p>
 
 <!--	-->
 
-    <div class="detail-header h3" id="allAttributes()-detail">
+    <div class="detail-header h3" id="beforeSave()-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#allAttributes()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        allAttributes()
+        beforeSave()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
-        <p><strong>Return a list of all model attribute names recursing structured dynamic attributes.</strong></p>
+        <p><strong></strong></p>
 
         
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#allAttributes()-detail">allAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
-                                                <tr>
-                  <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
-                  <td class="param-desc-col"><p>An array of all attribute names in dotted notation</p>
-</td>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail">beforeSave</a></strong> ( <span style="color: #0000BB">$insert</span> )</td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$insert</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
+                  <td class="param-desc-col"></td>
                 </tr>
-                                        <tr>
+                                                    <tr>
                   <th class="param-name-col">throws</th>
                   <td class="param-type-col">\yii\base\Exception</td>
                   <td class="param-desc-col"></td>
@@ -1290,49 +1314,41 @@ the specified attribute value.</p>
 
 <!--	-->
 
-    <div class="detail-header h3" id="beforeSave()-detail">
+    <div class="detail-header h3" id="columnExpression()-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#columnExpression()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        beforeSave()
+        columnExpression()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
-        <p><strong>This method is called at the beginning of inserting or updating a record.</strong></p>
+        <p><strong>Generate an SQL expression referring to the given dynamic column.</strong></p>
 
-        <p>The default implementation will trigger an <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_INSERT-detail">EVENT_BEFORE_INSERT</a> event when <code>$insert</code> is true,
-or an <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_UPDATE-detail">EVENT_BEFORE_UPDATE</a> event if <code>$insert</code> is false.
-When overriding this method, make sure you call the parent implementation like the following:</p>
-<pre><code>public function beforeSave($insert)
-{
-    if (parent::beforeSave($insert)) {
-        // ...custom code here...
-        return true;
-    } else {
-        return false;
-    }
-}
-</code></pre>
-
+        
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#beforeSave()-detail">beforeSave</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$insert&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#columnExpression()-detail">columnExpression</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$type&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'char'</span> )</td></tr>
                                     <tr>
-                  <td class="param-name-col"><span style="color: #0000BB">$insert</span></td>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
-                  <td class="param-desc-col"><p>Whether this method called while inserting a record.
-If false, it means the method is called while updating a record.</p>
+                  <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Attribute name</p>
+</td>
+                </tr>
+                            <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$type</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>SQL datatype type</p>
 </td>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
-                  <td class="param-desc-col"><p>Whether the insertion or updating should continue.
-If false, the insertion or updating will be cancelled.</p>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>A Maria COLUMN_GET expression</p>
 </td>
                 </tr>
                                     </table>
@@ -1345,10 +1361,11 @@ If false, the insertion or updating will be cancelled.</p>
         
         decodeArrayForMaria()
         <span class="detail-header-tag small">
-            protected            method
+            protected                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Decodes any data URI strings in an array.</strong></p>
 
@@ -1356,7 +1373,7 @@ If false, the insertion or updating will be cancelled.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeArrayForMaria()-detail">decodeArrayForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeArrayForMaria()-detail">decodeArrayForMaria</a></strong> ( <b>&</b><span style="color: #0000BB">$array</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1373,10 +1390,11 @@ If false, the insertion or updating will be cancelled.</p>
         
         decodeForMaria()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Decode strings encoded as data URIs.</strong></p>
 
@@ -1384,7 +1402,7 @@ If false, the insertion or updating will be cancelled.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeForMaria()-detail">decodeForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#decodeForMaria()-detail">decodeForMaria</a></strong> ( <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1401,24 +1419,93 @@ If false, the insertion or updating will be cancelled.</p>
 
 <!--	-->
 
-    <div class="detail-header h3" id="dotKeys()-detail">
+    <div class="detail-header h3" id="dotAttributeNames()-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dotKeys()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dotAttributeNames()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        dotKeys()
+        dotAttributeNames()
         <span class="detail-header-tag small">
-            protected            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
-        <p><strong>Return a list of an array's keys in dotted notation, recursing subarrays.</strong></p>
+        <p><strong>Return a list of all model attribute names recursing structured dynamic attributes.</strong></p>
 
         
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dotKeys()-detail">dotKeys</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$prefix</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dotAttributeNames()-detail">dotAttributeNames</a></strong> ( )</td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>An array of all attribute names in dotted notation</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dotAttributes()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dotAttributes()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dotAttributes()
+        <span class="detail-header-tag small">
+            public                                    method
+                    </span>
+    </div>
+
+    
+    <div class="doc-description">
+        <p><strong>Return a list of all attribute values with keys in dotted notation.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dotAttributes()-detail">dotAttributes</a></strong> ( )</td></tr>
+                                                <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>Array of attribute values with attribute names as array keys in dotted notation.</p>
+</td>
+                </tr>
+                                        <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                        </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="dotKeyValues()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="spinitron-dynamicar-dynamicactiverecord.html#dotKeyValues()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        dotKeyValues()
+        <span class="detail-header-tag small">
+            protected                        static            method
+                    </span>
+    </div>
+
+    
+    <div class="doc-description">
+        <p><strong>Convert a nested array to a map of dot-notation keys to values.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dotKeyValues()-detail">dotKeyValues</a></strong> ( <span style="color: #0000BB">$prefix</span>, <span style="color: #0000BB">$array</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$prefix</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1428,13 +1515,13 @@ If false, the insertion or updating will be cancelled.</p>
                             <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
-                  <td class="param-desc-col"><p>An array of attributeName =&gt; value pairs</p>
+                  <td class="param-desc-col"><p>Nested array of attributeName =&gt; value pairs</p>
 </td>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
-                  <td class="param-desc-col"><p>The list of keys in dotted notation</p>
+                  <td class="param-desc-col"><p>Map of keys in dotted notation to corresponding values</p>
 </td>
                 </tr>
                                     </table>
@@ -1447,10 +1534,11 @@ If false, the insertion or updating will be cancelled.</p>
         
         dynColDecode()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Decode a serialized blob of dynamic attributes.</strong></p>
 
@@ -1460,7 +1548,7 @@ also for PostgreSQL.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColDecode()-detail">dynColDecode</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$encoded&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColDecode()-detail">dynColDecode</a></strong> ( <span style="color: #0000BB">$encoded</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$encoded</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1483,10 +1571,11 @@ also for PostgreSQL.</p>
         
         dynColExpression()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates a dynamic column SQL expression representing the given attributes.</strong></p>
 
@@ -1494,7 +1583,7 @@ also for PostgreSQL.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.null">null</a>|\yii\db\Expression <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColExpression()-detail">dynColExpression</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attrs&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.null">null</a>|\yii\db\Expression</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColExpression()-detail">dynColExpression</a></strong> ( <span style="color: #0000BB">$attrs</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attrs</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1511,10 +1600,11 @@ also for PostgreSQL.</p>
         
         dynColSqlMaria()
         <span class="detail-header-tag small">
-            protected            method
+            protected                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates the SQL and parameter bindings for setting dynamic attributes
 in a DB record as Dynamic Columns in Maria.</strong></p>
@@ -1523,7 +1613,7 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColSqlMaria()-detail">dynColSqlMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$attrs</span><span style="color: #007700">,&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynColSqlMaria()-detail">dynColSqlMaria</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$attrs</span>, <b>&</b><span style="color: #0000BB">$params</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attrs</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1557,10 +1647,11 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
         
         dynamicColumn()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Specifies the name of the table column containing dynamic attributes.</strong></p>
 
@@ -1568,7 +1659,7 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail">dynamicColumn</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#dynamicColumn()-detail">dynamicColumn</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1591,10 +1682,11 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
         
         encodeArrayForMaria()
         <span class="detail-header-tag small">
-            protected            method
+            protected                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Encodes as data URIs any "binary" strings in an array.</strong></p>
 
@@ -1602,7 +1694,7 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeArrayForMaria()-detail">encodeArrayForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeArrayForMaria()-detail">encodeArrayForMaria</a></strong> ( <b>&</b><span style="color: #0000BB">$array</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1619,10 +1711,11 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
         
         encodeForMaria()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Encode as data URIs strings that JSON cannot express.</strong></p>
 
@@ -1630,7 +1723,7 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeForMaria()-detail">encodeForMaria</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#encodeForMaria()-detail">encodeForMaria</a></strong> ( <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1653,10 +1746,11 @@ in a DB record as Dynamic Columns in Maria.</strong></p>
         
         fields()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of fields that should be returned by default by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a> when no specific fields are specified.</strong></p>
 
@@ -1666,7 +1760,10 @@ If the former, the field name will be treated as an object property name whose v
 as the field value. If the latter, the array key should be the field name while the array value should be
 the corresponding field definition which can be either an object property name or a PHP callable
 returning the corresponding field value. The signature of the callable should be:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">function&nbsp;(</span><span style="color: #0000BB">$model</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$field</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;return&nbsp;field&nbsp;value<br /></span><span style="color: #007700">}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$model</span>, <span class="hljs-variable">$field</span>)</span> </span>{
+    <span class="hljs-comment">// return field value</span>
+}
+</code></pre>
 <p>For example, the following code declares four fields:</p>
 <ul>
 <li><code>email</code>: the field name is the same as the property name <code>email</code>;</li>
@@ -1675,7 +1772,15 @@ values are obtained from the <code>first_name</code> and <code>last_name</code> 
 <li><code>fullName</code>: the field name is <code>fullName</code>. Its value is obtained by concatenating <code>first_name</code>
 and <code>last_name</code>.</li>
 </ul>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">return&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'email'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'firstName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'first_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'lastName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'last_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'fullName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;function&nbsp;()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">first_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">last_name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />];</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'email'</span>,
+    <span class="hljs-string">'firstName'</span> =&gt; <span class="hljs-string">'first_name'</span>,
+    <span class="hljs-string">'lastName'</span> =&gt; <span class="hljs-string">'last_name'</span>,
+    <span class="hljs-string">'fullName'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;first_name . <span class="hljs-string">' '</span> . <span class="hljs-variable">$this</span>-&gt;last_name;
+    },
+];
+</code></pre>
 <p>In this method, you may also want to return different lists of fields based on some context
 information. For example, depending on the privilege of the current application user,
 you may return different sets of visible fields or filter out some fields.</p>
@@ -1684,7 +1789,7 @@ you may return different sets of visible fields or filter out some fields.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#fields()-detail">fields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#fields()-detail">fields</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1701,35 +1806,20 @@ you may return different sets of visible fields or filter out some fields.</p>
         
         find()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
-        <p><strong>Creates an <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> instance for query purpose.</strong></p>
+        <p><strong>Returns a query object for the model/class.</strong></p>
 
-        <p>The returned <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> instance can be further customized by calling
-methods defined in <span class="broken-link">\spinitron\dynamicAr\ActiveQueryInterface</span> before <code>one()</code> or <code>all()</code> is called to return
-populated ActiveRecord instances. For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;find&nbsp;the&nbsp;customer&nbsp;whose&nbsp;ID&nbsp;is&nbsp;1<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;all&nbsp;active&nbsp;customers&nbsp;and&nbsp;order&nbsp;them&nbsp;by&nbsp;their&nbsp;age:<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">orderBy</span><span style="color: #007700">(</span><span style="color: #DD0000">'age'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
-<p>This method is also called by <span class="broken-link">\spinitron\dynamicAr\BaseActiveRecord::hasOne()</span> and <span class="broken-link">\spinitron\dynamicAr\BaseActiveRecord::hasMany()</span> to
-create a relational query.</p>
-<p>You may override this method to return a customized query. For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;use&nbsp;CustomerQuery&nbsp;instead&nbsp;of&nbsp;the&nbsp;default&nbsp;ActiveQuery<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;new&nbsp;</span><span style="color: #0000BB">CustomerQuery</span><span style="color: #007700">(</span><span style="color: #0000BB">get_called_class</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
-<p>The following code shows how to apply a default condition for all queries:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'deleted'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;Use&nbsp;andWhere()/orWhere()&nbsp;to&nbsp;apply&nbsp;the&nbsp;default&nbsp;condition<br />//&nbsp;SELECT&nbsp;FROM&nbsp;customer&nbsp;WHERE&nbsp;`deleted`=:deleted&nbsp;AND&nbsp;age&gt;30<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">andWhere</span><span style="color: #007700">(</span><span style="color: #DD0000">'age&gt;30'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;Use&nbsp;where()&nbsp;to&nbsp;ignore&nbsp;the&nbsp;default&nbsp;condition<br />//&nbsp;SELECT&nbsp;FROM&nbsp;customer&nbsp;WHERE&nbsp;age&gt;30<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">(</span><span style="color: #DD0000">'age&gt;30'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
-
+        
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#find()-detail">find</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
-                                                <tr>
-                  <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
-                  <td class="param-desc-col"><p>The newly created <span class="broken-link">\spinitron\dynamicAr\ActiveQuery</span> instance.</p>
-</td>
-                </tr>
-                                    </table>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#find()-detail">find</a></strong> ( )</td></tr>
+            </table>
 
 <!--	-->
 
@@ -1739,10 +1829,11 @@ create a relational query.</p>
         
         getAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a model attribute value.</strong></p>
 
@@ -1750,11 +1841,11 @@ create a relational query.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed|<a href="http://www.php.net/language.types.null">null</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#getAttribute()-detail">getAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed|<a href="http://www.php.net/language.types.null">null</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#getAttribute()-detail">getAttribute</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
-                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for structured attributes.</p>
 </td>
                 </tr>
                                         <tr>
@@ -1773,10 +1864,11 @@ create a relational query.</p>
         
         issetAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns if a model attribute is set.</strong></p>
 
@@ -1784,16 +1876,16 @@ create a relational query.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">bool <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#issetAttribute()-detail">issetAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#issetAttribute()-detail">issetAttribute</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
-                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for structured attributes.</p>
 </td>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">bool</td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
                   <td class="param-desc-col"><p>True if the attribute is set</p>
 </td>
                 </tr>
@@ -1807,10 +1899,11 @@ create a relational query.</p>
         
         placeholder()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a PDO parameter placeholder string, incrementing the placeholder counter.</strong></p>
 
@@ -1818,7 +1911,7 @@ create a relational query.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#placeholder()-detail">placeholder</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#placeholder()-detail">placeholder</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1835,37 +1928,35 @@ create a relational query.</p>
         
         populateRecord()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
-        <p><strong>Populates an active record object using a row of data from the database/storage.</strong></p>
+        <p><strong></strong></p>
 
-        <p>This is an internal method meant to be called to create active record objects after
-fetching data from the database. It is mainly used by <span class="broken-link">\spinitron\dynamicAr\ActiveQuery</span> to populate
-the query results into active records.</p>
-<p>When calling this method manually you should call <a href="yii-db-baseactiverecord.html#afterFind()-detail">afterFind()</a> on the created
-record to trigger the <a href="yii-db-baseactiverecord.html#EVENT_AFTER_FIND-detail">afterFind Event</a>.</p>
-
+        
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#populateRecord()-detail">populateRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$record</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#populateRecord()-detail">populateRecord</a></strong> ( <span style="color: #0000BB">$record</span>, <span style="color: #0000BB">$row</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$record</span></td>
-                  <td class="param-type-col"><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
-                  <td class="param-desc-col"><p>The record to be populated. In most cases this will be an instance
-created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantiate()</a> beforehand.</p>
-</td>
+                  <td class="param-type-col"><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
+                  <td class="param-desc-col"></td>
                 </tr>
                             <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$row</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
-                  <td class="param-desc-col"><p>Attribute values (name =&gt; value)</p>
-</td>
+                  <td class="param-desc-col"></td>
                 </tr>
-                                                </table>
+                                                    <tr>
+                  <th class="param-name-col">throws</th>
+                  <td class="param-type-col">\yii\base\Exception</td>
+                  <td class="param-desc-col"></td>
+                </tr>
+                        </table>
 
 <!--	-->
 
@@ -1875,10 +1966,11 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
         
         refresh()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Repopulates this active record with the latest data.</strong></p>
 
@@ -1886,7 +1978,7 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#refresh()-detail">refresh</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#refresh()-detail">refresh</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1904,10 +1996,11 @@ will be populated to this active record. Otherwise, this record will remain unch
         
         setAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets a model attribute.</strong></p>
 
@@ -1915,11 +2008,11 @@ will be populated to this active record. Otherwise, this record will remain unch
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#setAttribute()-detail">setAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#setAttribute()-detail">setAttribute</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
-                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for structured attributes.</p>
 </td>
                 </tr>
                             <tr>
@@ -1938,10 +2031,11 @@ will be populated to this active record. Otherwise, this record will remain unch
         
         unsetAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Unset a model attribute.</strong></p>
 
@@ -1949,11 +2043,11 @@ will be populated to this active record. Otherwise, this record will remain unch
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#unsetAttribute()-detail">unsetAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#unsetAttribute()-detail">unsetAttribute</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
-                  <td class="param-desc-col"><p>Attribute name, use dotted notation for strucuted attributes.</p>
+                  <td class="param-desc-col"><p>Attribute name, use dotted notation for structured attributes.</p>
 </td>
                 </tr>
                                                 </table>
@@ -1966,10 +2060,11 @@ will be populated to this active record. Otherwise, this record will remain unch
         
         walk()
         <span class="detail-header-tag small">
-            protected            method
+            protected                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Replacement for PHP's array walk and map builtins.</strong></p>
 
@@ -1977,7 +2072,7 @@ will be populated to this active record. Otherwise, this record will remain unch
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#walk()-detail">walk</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;&lt;</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;&amp;&lt;/</span><span style="color: #0000BB">b</span><span style="color: #007700">&gt;</span><span style="color: #0000BB">$array</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$method&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type">void</span> <strong><a href="spinitron-dynamicar-dynamicactiverecord.html#walk()-detail">walk</a></strong> ( <b>&</b><span style="color: #0000BB">$array</span>, <span style="color: #0000BB">$method</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2032,7 +2127,7 @@ will be populated to this active record. Otherwise, this record will remain unch
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

@@ -4,30 +4,32 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w87" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w87-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w90" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w90-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w87-collapse" class="collapse navbar-collapse"><ul id="w88" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w90-collapse" class="collapse navbar-collapse"><ul id="w91" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-84" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-84" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
-<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div>
-<a class="list-group-item" href="#navigation-85" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-85" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-87" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-87" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
+<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a>
+<a class="list-group-item" href="./spinitron-dynamicar-valueexpression.html">ValueExpression</a></div>
+<a class="list-group-item" href="#navigation-88" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-88" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item" href="#navigation-86" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-86" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="#navigation-89" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-89" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -38,7 +40,7 @@
 <a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
-        <h1>On datatypes <a href="#on-datatypes" id="on-datatypes" class="hashlink">&para;</a></h1><p><strong>tl;dr</strong> While you're unlikely to lose data, you might not get the same datatype back that
+        <h1>On datatypes <span id="on-datatypes"></span><a href="#on-datatypes" class="hashlink">&para;</a></h1><p><strong>tl;dr</strong> While you're unlikely to lose data, you might not get the same datatype back that
 you put in. Use your understanding of the attribute in the context of your app to decide
  how to handle it after loading a model. When you want to use an attribute in a query, you
  have to specify its datatype.</p>
@@ -74,8 +76,8 @@ AR model/record.</p>
 <li>Dynamic AR converts the JSON to PHP</li>
 <li>Data URI values are decoded.</li>
 </ol>
-<h3>Null <a href="#null" id="null" class="hashlink">&para;</a></h3><p>Maria does not save a dynamic column with a null value, thus</p>
-<pre><code class="language-sql">SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1);
+<h3>Null <span id="null"></span><a href="#null" class="hashlink">&para;</a></h3><p>Maria does not save a dynamic column with a null value, thus</p>
+<pre><code class="hljs sql language-sql"><span class="hljs-operator"><span class="hljs-keyword">SELECT</span> COLUMN_CREATE(<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>, <span class="hljs-literal">null</span>) = COLUMN_CREATE(<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>);</span>
 &gt;&gt; 1
 </code></pre>
 <p>So <code>$product-&gt;foo = null; $product-&gt;save();</code> actually deletes dynamic attribute 'foo' in the
@@ -90,17 +92,17 @@ from nonexistent ones over the save/load cycle.</p>
 <p>So consider setting a dynamic attribute to PHP null as being the same as unsetting it.
 And when you read an attribute that doesn't exist, DynamicActiveRecord returns PHP null,
 unlike ActiveRecord which throws an exception.</p>
-<h3>Boolean <a href="#boolean" id="boolean" class="hashlink">&para;</a></h3><p>SQL doesn't have bools but JSON does. Maria (SQL) converts to INT 0 or 1 on save so
+<h3>Boolean <span id="boolean"></span><a href="#boolean" class="hashlink">&para;</a></h3><p>SQL doesn't have bools but JSON does. Maria (SQL) converts to INT 0 or 1 on save so
 you should get integer 0 or 1 after loading from the DB.</p>
-<h3>Number types <a href="#number-types" id="number-types" class="hashlink">&para;</a></h3><p>SQL doesn't have float but has integer and decimal. JSON has only number, which is a decimal
+<h3>Number types <span id="number-types"></span><a href="#number-types" class="hashlink">&para;</a></h3><p>SQL doesn't have float but has integer and decimal. JSON has only number, which is a decimal
 and usually converted from and to an IEEE floating point double without NaN on
 each end of the serialization. PHP has integer and IEEE floats.
 This can get tricky but these are old problems that have little to do with Dynamic AR.</p>
-<h3>Array <a href="#array" id="array" class="hashlink">&para;</a></h3><p>DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words,
+<h3>Array <span id="array"></span><a href="#array" class="hashlink">&para;</a></h3><p>DynamicActiveRecord saves PHP arrays such that they are associative on load. In other words,
 you may as well use string keys because they will be strings on load and they need to be strings
 when dynamic attribute names are used in queries.</p>
 <p>Empty arrays are not saved in Maria.</p>
-<h3>Object <a href="#object" id="object" class="hashlink">&para;</a></h3><p>DynamicActiveRecord casts objects to PHP array before save so may as well use arrays instead
+<h3>Object <span id="object"></span><a href="#object" class="hashlink">&para;</a></h3><p>DynamicActiveRecord casts objects to PHP array before save so may as well use arrays instead
 of objects.</p>
 <hr />
 <p>Copyright (c) 2015 Spinitron LLC</p>
@@ -124,6 +126,12 @@ of objects.</p>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
         <td>DynamicActiveRecord represents relational data with structured dynamic attributes
 in addition to column attributes supported by ActiveRecord.</td>
+    </tr>
+    <tr>
+        <td><a href="spinitron-dynamicar-valueexpression.html">spinitron\dynamicAr\ValueExpression</a></td>
+        <td>A ValueExpression object represents the value of a dynamic attribute that DynamicActiveRecord
+uses directly (unescaped) in SQL instead of using
+<a href="http://php.net/manual/en/pdostatement.bindvalue.php">PDOStatement::bindValue</a>.</td>
     </tr>
     <tr>
         <td><a href="yii-base-arrayable.html">yii\base\Arrayable</a></td>
@@ -229,7 +237,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:11 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:19 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

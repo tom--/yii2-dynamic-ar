@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>BaseActiveRecord - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>BaseActiveRecord - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Abstract Class yii\db\BaseActiveRecord</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -56,7 +57,7 @@
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="http://www.php.net/class.arrayaccess">ArrayAccess</a>, <a href="http://www.php.net/class.iteratoraggregate">IteratorAggregate</a>, <a href="yii-base-arrayable.html">yii\base\Arrayable</a>, <a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activerecordinterface.html">yii\db\ActiveRecordInterface</a></td></tr>
                     <tr><th>Uses Traits</th><td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td></tr>
-                <tr><th>Subclasses</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td></tr>
+                <tr><th>Subclasses</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, tests\unit\data\BaseRecord, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td></tr>
                         <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -64,7 +65,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>ActiveRecord is the base class for classes representing relational data in terms of objects.</strong></p>
     <p>See <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a> for a concrete implementation.</p>
 
@@ -89,7 +90,7 @@
 </tr>
         <tr class="inherited" id="$activeValidators">
         <td><a href="yii-base-model.html#$activeValidators-detail">$activeValidators</a></td>
-        <td>\yii\validators\Validator</td>
+        <td>\yii\validators\Validator[]</td>
         <td>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -101,7 +102,7 @@
     </tr>
             <tr class="inherited" id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -167,7 +168,7 @@
     </tr>
             <tr class="inherited" id="$validators">
         <td><a href="yii-base-model.html#$validators-detail">$validators</a></td>
-        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator</td>
+        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</td>
         <td>All the validators declared in the model.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -914,7 +915,7 @@
           <td id="SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</td>
           <td>'default'</td>
           <td>The name of the default scenario.
-</td>
+                        </td>
           <td><a href="yii-base-model.html">yii\base\Model</a></td>
         </tr>
         </table>
@@ -930,16 +931,19 @@
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/BaseActiveRecord.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/BaseActiveRecord.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $dirtyAttributes        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $dirtyAttributes        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#getDirtyAttributes()-detail">getDirtyAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>The changed attribute values (name-value pairs)</p>
-
     
+    <div class="doc-description">
+        <p>The changed attribute values (name-value pairs)</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#getDirtyAttributes()-detail">getDirtyAttributes</a></strong> ( <span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</div>
+
 
     <div class="detail-header h3" id="$isNewRecord-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -947,16 +951,19 @@
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/BaseActiveRecord.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/BaseActiveRecord.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $isNewRecord        <span class="detailHeaderTag small">
-            public                                    property
+        $isNewRecord        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#getIsNewRecord()-detail">getIsNewRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span><br />void <strong><a href="yii-db-baseactiverecord.html#setIsNewRecord()-detail">setIsNewRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>Whether the record is new and should be inserted when calling <a href="yii-db-baseactiverecord.html#save()-detail">save()</a>.</p>
-
     
+    <div class="doc-description">
+        <p>Whether the record is new and should be inserted when calling <a href="yii-db-baseactiverecord.html#save()-detail">save()</a>.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#getIsNewRecord()-detail">getIsNewRecord</a></strong> ( )<br /><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#setIsNewRecord()-detail">setIsNewRecord</a></strong> ( <span style="color: #0000BB">$value</span> )</div>
+
 
     <div class="detail-header h3" id="$oldAttributes-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -964,16 +971,19 @@
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/BaseActiveRecord.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/BaseActiveRecord.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $oldAttributes        <span class="detailHeaderTag small">
-            public                                    property
+        $oldAttributes        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#getOldAttributes()-detail">getOldAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span><br />void <strong><a href="yii-db-baseactiverecord.html#setOldAttributes()-detail">setOldAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$values&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>The old attribute values (name-value pairs)</p>
-
     
+    <div class="doc-description">
+        <p>The old attribute values (name-value pairs)</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#getOldAttributes()-detail">getOldAttributes</a></strong> ( )<br /><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#setOldAttributes()-detail">setOldAttributes</a></strong> ( <span style="color: #0000BB">$values</span> )</div>
+
 
     <div class="detail-header h3" id="$oldPrimaryKey-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -981,18 +991,21 @@
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/BaseActiveRecord.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/BaseActiveRecord.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $oldPrimaryKey        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $oldPrimaryKey        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#getOldPrimaryKey()-detail">getOldPrimaryKey</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>The old primary key value. An array (column name =&gt; column value) is returned if the primary key
+    
+    <div class="doc-description">
+        <p>The old primary key value. An array (column name =&gt; column value) is returned if the primary key
 is composite or <code>$asArray</code> is true. A string is returned otherwise (null will be returned if
 the key value is null).</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#getOldPrimaryKey()-detail">getOldPrimaryKey</a></strong> ( <span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span> )</div>
+
 
     <div class="detail-header h3" id="$primaryKey-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -1000,18 +1013,21 @@ the key value is null).</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/BaseActiveRecord.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/BaseActiveRecord.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $primaryKey        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $primaryKey        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#getPrimaryKey()-detail">getPrimaryKey</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>The primary key value. An array (column name =&gt; column value) is returned if the primary key
+    
+    <div class="doc-description">
+        <p>The primary key value. An array (column name =&gt; column value) is returned if the primary key
 is composite or <code>$asArray</code> is true. A string is returned otherwise (null will be returned if
 the key value is null).</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#getPrimaryKey()-detail">getPrimaryKey</a></strong> ( <span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span> )</div>
+
 
     <div class="detail-header h3" id="$relatedRecords-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -1019,16 +1035,19 @@ the key value is null).</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/BaseActiveRecord.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/BaseActiveRecord.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $relatedRecords        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $relatedRecords        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#getRelatedRecords()-detail">getRelatedRecords</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></div>
-
-    <p>An array of related records indexed by relation names.</p>
-
     
+    <div class="doc-description">
+        <p>An array of related records indexed by relation names.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#getRelatedRecords()-detail">getRelatedRecords</a></strong> ( )</div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -1042,10 +1061,11 @@ the key value is null).</p>
         
         __get()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>PHP getter magic method.</strong></p>
 
@@ -1054,7 +1074,7 @@ the key value is null).</p>
         <p>See also <a href="yii-db-baseactiverecord.html#getAttribute()-detail">getAttribute()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#__get()-detail">__get</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#__get()-detail">__get</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1085,10 +1105,11 @@ the key value is null).</p>
         
         __isset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Checks if a property value is null.</strong></p>
 
@@ -1097,7 +1118,7 @@ the key value is null).</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#__isset()-detail">__isset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#__isset()-detail">__isset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1122,10 +1143,11 @@ the key value is null).</p>
         
         __set()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>PHP setter magic method.</strong></p>
 
@@ -1134,7 +1156,7 @@ the key value is null).</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#__set()-detail">__set</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#__set()-detail">__set</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1159,10 +1181,11 @@ the key value is null).</p>
         
         __unset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets a component property to be null.</strong></p>
 
@@ -1172,7 +1195,7 @@ the specified attribute value.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#__unset()-detail">__unset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#__unset()-detail">__unset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1191,10 +1214,11 @@ the specified attribute value.</p>
         
         afterDelete()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is invoked after deleting a record.</strong></p>
 
@@ -1205,7 +1229,7 @@ Make sure you call the parent implementation so that the event is raised properl
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#afterDelete()-detail">afterDelete</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#afterDelete()-detail">afterDelete</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -1218,10 +1242,11 @@ Make sure you call the parent implementation so that the event is raised properl
         
         afterFind()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is called when the AR object is created and populated with the query result.</strong></p>
 
@@ -1232,7 +1257,7 @@ event is triggered.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#afterFind()-detail">afterFind</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#afterFind()-detail">afterFind</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -1245,10 +1270,11 @@ event is triggered.</p>
         
         afterSave()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is called at the end of inserting or updating a record.</strong></p>
 
@@ -1260,7 +1286,7 @@ the event is triggered.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#afterSave()-detail">afterSave</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$insert</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$changedAttributes&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#afterSave()-detail">afterSave</a></strong> ( <span style="color: #0000BB">$insert</span>, <span style="color: #0000BB">$changedAttributes</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$insert</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1290,22 +1316,23 @@ already the new, updated values.</p>
         
         beforeDelete()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is invoked before deleting a record.</strong></p>
 
         <p>The default implementation raises the <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_DELETE-detail">EVENT_BEFORE_DELETE</a> event.
 When overriding this method, make sure you call the parent implementation like the following:</p>
-<pre><code>public function beforeDelete()
-{
-    if (parent::beforeDelete()) {
-        // ...custom code here...
-        return true;
-    } else {
-        return false;
+<pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">beforeDelete</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">parent</span>::beforeDelete()) {
+        <span class="hljs-comment">// ...custom code here...</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
     }
 }
 </code></pre>
@@ -1313,7 +1340,7 @@ When overriding this method, make sure you call the parent implementation like t
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#beforeDelete()-detail">beforeDelete</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#beforeDelete()-detail">beforeDelete</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1332,23 +1359,24 @@ When overriding this method, make sure you call the parent implementation like t
         
         beforeSave()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is called at the beginning of inserting or updating a record.</strong></p>
 
         <p>The default implementation will trigger an <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_INSERT-detail">EVENT_BEFORE_INSERT</a> event when <code>$insert</code> is true,
 or an <a href="yii-db-baseactiverecord.html#EVENT_BEFORE_UPDATE-detail">EVENT_BEFORE_UPDATE</a> event if <code>$insert</code> is false.
 When overriding this method, make sure you call the parent implementation like the following:</p>
-<pre><code>public function beforeSave($insert)
-{
-    if (parent::beforeSave($insert)) {
-        // ...custom code here...
-        return true;
-    } else {
-        return false;
+<pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">beforeSave</span><span class="hljs-params">(<span class="hljs-variable">$insert</span>)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">parent</span>::beforeSave(<span class="hljs-variable">$insert</span>)) {
+        <span class="hljs-comment">// ...custom code here...</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
     }
 }
 </code></pre>
@@ -1356,7 +1384,7 @@ When overriding this method, make sure you call the parent implementation like t
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#beforeSave()-detail">beforeSave</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$insert&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#beforeSave()-detail">beforeSave</a></strong> ( <span style="color: #0000BB">$insert</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$insert</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1383,10 +1411,11 @@ If false, the insertion or updating will be cancelled.</p>
         
         delete()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Deletes the table row corresponding to this active record.</strong></p>
 
@@ -1403,10 +1432,10 @@ will be raised by the corresponding methods.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a>|false <strong><a href="yii-db-baseactiverecord.html#delete()-detail">delete</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">false</a></span> <strong><a href="yii-db-baseactiverecord.html#delete()-detail">delete</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|false</td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">false</a></td>
                   <td class="param-desc-col"><p>The number of rows deleted, or false if the deletion is unsuccessful for some reason.
 Note that it is possible the number of rows deleted is 0, even though the deletion execution is successful.</p>
 </td>
@@ -1436,22 +1465,23 @@ being deleted is outdated.</p>
         
         deleteAll()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Deletes rows in the table using the provided conditions.</strong></p>
 
         <p>WARNING: If you do not specify any condition, this method will delete ALL rows in the table.</p>
 <p>For example, to delete all customers whose status is 3:</p>
-<pre><code>Customer::deleteAll('status = 3');
+<pre><code class="hljs less"><span class="hljs-attribute">Customer</span>::<span class="hljs-function">deleteAll</span>(<span class="hljs-string">'status = 3'</span>);
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-baseactiverecord.html#deleteAll()-detail">deleteAll</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-baseactiverecord.html#deleteAll()-detail">deleteAll</a></strong> ( <span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1489,10 +1519,11 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
         
         equals()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the given active record is the same as the current one.</strong></p>
 
@@ -1502,7 +1533,7 @@ If one of the records <a href="yii-db-baseactiverecord.html#$isNewRecord-detail"
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#equals()-detail">equals</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$record&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#equals()-detail">equals</a></strong> ( <span style="color: #0000BB">$record</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$record</span></td>
                   <td class="param-type-col"><a href="yii-db-activerecordinterface.html">yii\db\ActiveRecordInterface</a></td>
@@ -1527,10 +1558,11 @@ If one of the records <a href="yii-db-baseactiverecord.html#$isNewRecord-detail"
         
         extraFields()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of fields that can be expanded further and returned by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a>.</strong></p>
 
@@ -1541,11 +1573,12 @@ be exported.</p>
 <p>The default implementation returns an empty array.</p>
 <p>You may override this method to return a list of expandable fields based on some context information
 (e.g. the current application user).</p>
+<p>The default implementation returns the names of the relations that have been populated into this record.</p>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#extraFields()-detail">extraFields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#extraFields()-detail">extraFields</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1565,10 +1598,11 @@ to <a href="yii-db-baseactiverecord.html#fields()-detail">fields()</a> on the fo
         
         fields()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of fields that should be returned by default by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a> when no specific fields are specified.</strong></p>
 
@@ -1578,7 +1612,10 @@ If the former, the field name will be treated as an object property name whose v
 as the field value. If the latter, the array key should be the field name while the array value should be
 the corresponding field definition which can be either an object property name or a PHP callable
 returning the corresponding field value. The signature of the callable should be:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">function&nbsp;(</span><span style="color: #0000BB">$field</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;return&nbsp;field&nbsp;value<br /></span><span style="color: #007700">}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$field</span>, <span class="hljs-variable">$model</span>)</span> </span>{
+    <span class="hljs-comment">// return field value</span>
+}
+</code></pre>
 <p>For example, the following code declares four fields:</p>
 <ul>
 <li><code>email</code>: the field name is the same as the property name <code>email</code>;</li>
@@ -1587,16 +1624,25 @@ values are obtained from the <code>first_name</code> and <code>last_name</code> 
 <li><code>fullName</code>: the field name is <code>fullName</code>. Its value is obtained by concatenating <code>first_name</code>
 and <code>last_name</code>.</li>
 </ul>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">return&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'email'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'firstName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'first_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'lastName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'last_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'fullName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;function&nbsp;(</span><span style="color: #0000BB">$model</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">first_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">last_name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />];</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'email'</span>,
+    <span class="hljs-string">'firstName'</span> =&gt; <span class="hljs-string">'first_name'</span>,
+    <span class="hljs-string">'lastName'</span> =&gt; <span class="hljs-string">'last_name'</span>,
+    <span class="hljs-string">'fullName'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$model</span>)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$model</span>-&gt;first_name . <span class="hljs-string">' '</span> . <span class="hljs-variable">$model</span>-&gt;last_name;
+    },
+];
+</code></pre>
 <p>In this method, you may also want to return different lists of fields based on some context
 information. For example, depending on <a href="yii-base-model.html#$scenario-detail">$scenario</a> or the privilege of the current application user,
 you may return different sets of visible fields or filter out some fields.</p>
 <p>The default implementation of this method returns <a href="yii-db-activerecordinterface.html#attributes()-detail">attributes()</a> indexed by the same attribute names.</p>
+<p>The default implementation returns the names of the columns whose values have been populated into this record.</p>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#fields()-detail">fields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#fields()-detail">fields</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1615,10 +1661,11 @@ you may return different sets of visible fields or filter out some fields.</p>
         
         findAll()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a list of active record models that match the specified primary key value(s) or a set of column values.</strong></p>
 
@@ -1636,12 +1683,29 @@ a non-associative array.</li>
 </ul>
 <p>This method will automatically call the <code>all()</code> method and return an array of <a href="yii-db-activerecordinterface.html">ActiveRecord</a>
 instances. For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;find&nbsp;the&nbsp;customers&nbsp;whose&nbsp;primary&nbsp;key&nbsp;value&nbsp;is&nbsp;10<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">findAll</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;the&nbsp;above&nbsp;code&nbsp;is&nbsp;equivalent&nbsp;to:<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;the&nbsp;customers&nbsp;whose&nbsp;primary&nbsp;key&nbsp;value&nbsp;is&nbsp;10,&nbsp;11&nbsp;or&nbsp;12.<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">findAll</span><span style="color: #007700">([</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">]);<br /><br /></span><span style="color: #FF8000">//&nbsp;the&nbsp;above&nbsp;code&nbsp;is&nbsp;equivalent&nbsp;to:<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">]])-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;customers&nbsp;whose&nbsp;age&nbsp;is&nbsp;30&nbsp;and&nbsp;whose&nbsp;status&nbsp;is&nbsp;1<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">findAll</span><span style="color: #007700">([</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">]);<br /><br /></span><span style="color: #FF8000">//&nbsp;the&nbsp;above&nbsp;code&nbsp;is&nbsp;equivalent&nbsp;to:<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-comment">// find the customers whose primary key value is 10</span>
+<span class="hljs-variable">$customers</span> = Customer::findAll(<span class="hljs-number">10</span>);
+
+<span class="hljs-comment">// the above code is equivalent to:</span>
+<span class="hljs-variable">$customers</span> = Customer::find()-&gt;where([<span class="hljs-string">'id'</span> =&gt; <span class="hljs-number">10</span>])-&gt;all();
+
+<span class="hljs-comment">// find the customers whose primary key value is 10, 11 or 12.</span>
+<span class="hljs-variable">$customers</span> = Customer::findAll([<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>]);
+
+<span class="hljs-comment">// the above code is equivalent to:</span>
+<span class="hljs-variable">$customers</span> = Customer::find()-&gt;where([<span class="hljs-string">'id'</span> =&gt; [<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>]])-&gt;all();
+
+<span class="hljs-comment">// find customers whose age is 30 and whose status is 1</span>
+<span class="hljs-variable">$customers</span> = Customer::findAll([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">30</span>, <span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>]);
+
+<span class="hljs-comment">// the above code is equivalent to:</span>
+<span class="hljs-variable">$customers</span> = Customer::find()-&gt;where([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">30</span>, <span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>])-&gt;all();
+</code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-baseactiverecord.html#findAll()-detail">findAll</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">static[]</span> <strong><a href="yii-db-baseactiverecord.html#findAll()-detail">findAll</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1650,7 +1714,7 @@ instances. For example,</p>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">static</td>
+                  <td class="param-type-col">static[]</td>
                   <td class="param-desc-col"><p>An array of ActiveRecord instances, or an empty array if nothing matches.</p>
 </td>
                 </tr>
@@ -1666,10 +1730,11 @@ instances. For example,</p>
         
         findByCondition()
         <span class="detail-header-tag small">
-            protected            method
+            protected                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Finds ActiveRecord instance(s) by the given condition.</strong></p>
 
@@ -1678,7 +1743,7 @@ instances. For example,</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> <strong><a href="yii-db-baseactiverecord.html#findByCondition()-detail">findByCondition</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a></span> <strong><a href="yii-db-baseactiverecord.html#findByCondition()-detail">findByCondition</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1709,10 +1774,11 @@ instances. For example,</p>
         
         findOne()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a single active record model instance by a primary key or an array of column values.</strong></p>
 
@@ -1727,12 +1793,23 @@ matching all of them (or null if not found). Note that <code>['id' =&gt; 1, 2]</
 </ul>
 <p>That this method will automatically call the <code>one()</code> method and return an <a href="yii-db-activerecordinterface.html">ActiveRecord</a>
 instance. For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;find&nbsp;a&nbsp;single&nbsp;customer&nbsp;whose&nbsp;primary&nbsp;key&nbsp;value&nbsp;is&nbsp;10<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">findOne</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;the&nbsp;above&nbsp;code&nbsp;is&nbsp;equivalent&nbsp;to:<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;the&nbsp;first&nbsp;customer&nbsp;whose&nbsp;age&nbsp;is&nbsp;30&nbsp;and&nbsp;whose&nbsp;status&nbsp;is&nbsp;1<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">findOne</span><span style="color: #007700">([</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">]);<br /><br /></span><span style="color: #FF8000">//&nbsp;the&nbsp;above&nbsp;code&nbsp;is&nbsp;equivalent&nbsp;to:<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'age'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-comment">// find a single customer whose primary key value is 10</span>
+<span class="hljs-variable">$customer</span> = Customer::findOne(<span class="hljs-number">10</span>);
+
+<span class="hljs-comment">// the above code is equivalent to:</span>
+<span class="hljs-variable">$customer</span> = Customer::find()-&gt;where([<span class="hljs-string">'id'</span> =&gt; <span class="hljs-number">10</span>])-&gt;one();
+
+<span class="hljs-comment">// find the first customer whose age is 30 and whose status is 1</span>
+<span class="hljs-variable">$customer</span> = Customer::findOne([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">30</span>, <span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>]);
+
+<span class="hljs-comment">// the above code is equivalent to:</span>
+<span class="hljs-variable">$customer</span> = Customer::find()-&gt;where([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">30</span>, <span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>])-&gt;one();
+</code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static|<a href="http://www.php.net/language.types.null">null</a> <strong><a href="yii-db-baseactiverecord.html#findOne()-detail">findOne</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">static|<a href="http://www.php.net/language.types.null">null</a></span> <strong><a href="yii-db-baseactiverecord.html#findOne()-detail">findOne</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1757,10 +1834,11 @@ instance. For example,</p>
         
         getAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the named attribute value.</strong></p>
 
@@ -1770,7 +1848,7 @@ null will be returned.</p>
         <p>See also <a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#getAttribute()-detail">getAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#getAttribute()-detail">getAttribute</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1795,11 +1873,12 @@ null will be returned.</p>
         
         getAttributeHint()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                             (available since version 2.0.4)
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the text hint for the specified attribute.</strong></p>
 
@@ -1808,7 +1887,7 @@ null will be returned.</p>
         <p>See also <a href="yii-base-model.html#attributeHints()-detail">attributeHints()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-db-baseactiverecord.html#getAttributeHint()-detail">getAttributeHint</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-db-baseactiverecord.html#getAttributeHint()-detail">getAttributeHint</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1833,10 +1912,11 @@ null will be returned.</p>
         
         getAttributeLabel()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the text label for the specified attribute.</strong></p>
 
@@ -1845,7 +1925,7 @@ null will be returned.</p>
         <p>See also:</p><ul><li><a href="yii-base-model.html#generateAttributeLabel()-detail">generateAttributeLabel()</a></li><li><a href="yii-base-model.html#attributeLabels()-detail">attributeLabels()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-db-baseactiverecord.html#getAttributeLabel()-detail">getAttributeLabel</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-db-baseactiverecord.html#getAttributeLabel()-detail">getAttributeLabel</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1870,10 +1950,11 @@ null will be returned.</p>
         
         getDirtyAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the attribute values that have been modified since they are loaded or saved most recently.</strong></p>
 
@@ -1881,7 +1962,7 @@ null will be returned.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#getDirtyAttributes()-detail">getDirtyAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#getDirtyAttributes()-detail">getDirtyAttributes</a></strong> ( <span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$names</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>[]|<a href="http://www.php.net/language.types.null">null</a></td>
@@ -1907,10 +1988,11 @@ changed recently. If null, <a href="yii-db-activerecordinterface.html#attributes
         
         getIsNewRecord()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the current record is new.</strong></p>
 
@@ -1918,7 +2000,7 @@ changed recently. If null, <a href="yii-db-activerecordinterface.html#attributes
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#getIsNewRecord()-detail">getIsNewRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#getIsNewRecord()-detail">getIsNewRecord</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1937,10 +2019,11 @@ changed recently. If null, <a href="yii-db-activerecordinterface.html#attributes
         
         getOldAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the old value of the named attribute.</strong></p>
 
@@ -1950,7 +2033,7 @@ null will be returned.</p>
         <p>See also <a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#getOldAttribute()-detail">getOldAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#getOldAttribute()-detail">getOldAttribute</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1976,10 +2059,11 @@ or does not exist.</p>
         
         getOldAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the old attribute values.</strong></p>
 
@@ -1987,7 +2071,7 @@ or does not exist.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#getOldAttributes()-detail">getOldAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#getOldAttributes()-detail">getOldAttributes</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2006,10 +2090,11 @@ or does not exist.</p>
         
         getOldPrimaryKey()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the old primary key value(s).</strong></p>
 
@@ -2020,7 +2105,7 @@ The value remains unchanged even if the primary key attribute is manually assign
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#getOldPrimaryKey()-detail">getOldPrimaryKey</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#getOldPrimaryKey()-detail">getOldPrimaryKey</a></strong> ( <span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$asArray</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -2055,10 +2140,11 @@ the key value is null).</p>
         
         getPrimaryKey()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the primary key value(s).</strong></p>
 
@@ -2066,7 +2152,7 @@ the key value is null).</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-baseactiverecord.html#getPrimaryKey()-detail">getPrimaryKey</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-baseactiverecord.html#getPrimaryKey()-detail">getPrimaryKey</a></strong> ( <span style="color: #0000BB">$asArray&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$asArray</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -2095,10 +2181,11 @@ the key value is null).</p>
         
         getRelatedRecords()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns all populated related records.</strong></p>
 
@@ -2106,7 +2193,7 @@ the key value is null).</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-baseactiverecord.html#getRelatedRecords()-detail">getRelatedRecords</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-baseactiverecord.html#getRelatedRecords()-detail">getRelatedRecords</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2125,10 +2212,11 @@ the key value is null).</p>
         
         getRelation()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the relation object with the specified name.</strong></p>
 
@@ -2138,7 +2226,7 @@ It can be declared in either the Active Record class itself or one of its behavi
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>|<a href="yii-db-activequery.html">yii\db\ActiveQuery</a> <strong><a href="yii-db-baseactiverecord.html#getRelation()-detail">getRelation</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$throwException&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>|<a href="yii-db-activequery.html">yii\db\ActiveQuery</a></span> <strong><a href="yii-db-baseactiverecord.html#getRelation()-detail">getRelation</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$throwException&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2176,10 +2264,11 @@ and <code>$throwException</code> is false, null will be returned.</p>
         
         hasAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the model has an attribute with the specified name.</strong></p>
 
@@ -2187,7 +2276,7 @@ and <code>$throwException</code> is false, null will be returned.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2212,10 +2301,11 @@ and <code>$throwException</code> is false, null will be returned.</p>
         
         hasMany()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Declares a <code>has-many</code> relation.</strong></p>
 
@@ -2225,9 +2315,9 @@ through which the related record can be queried and retrieved back.</p>
 the criteria set by this relation, e.g., a customer has many orders.</p>
 <p>For example, to declare the <code>orders</code> relation for <code>Customer</code> class, we can write
 the following code in the <code>Customer</code> class:</p>
-<pre><code>public function getOrders()
-{
-    return $this-&gt;hasMany(Order::className(), ['customer_id' =&gt; 'id']);
+<pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getOrders</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;hasMany(Order::className(), [<span class="hljs-string">'customer_id'</span> =&gt; <span class="hljs-string">'id'</span>]);
 }
 </code></pre>
 <p>Note that in the above, the 'customer_id' key in the <code>$link</code> parameter refers to
@@ -2238,7 +2328,7 @@ an attribute name in the current AR class.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> <strong><a href="yii-db-baseactiverecord.html#hasMany()-detail">hasMany</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$class</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a></span> <strong><a href="yii-db-baseactiverecord.html#hasMany()-detail">hasMany</a></strong> ( <span style="color: #0000BB">$class</span>, <span style="color: #0000BB">$link</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$class</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2271,10 +2361,11 @@ array refer to the corresponding attributes in <strong>this</strong> AR class.</
         
         hasOne()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Declares a <code>has-one</code> relation.</strong></p>
 
@@ -2284,9 +2375,9 @@ through which the related record can be queried and retrieved back.</p>
 the criteria set by this relation, e.g., a customer has one country.</p>
 <p>For example, to declare the <code>country</code> relation for <code>Customer</code> class, we can write
 the following code in the <code>Customer</code> class:</p>
-<pre><code>public function getCountry()
-{
-    return $this-&gt;hasOne(Country::className(), ['id' =&gt; 'country_id']);
+<pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCountry</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;hasOne(Country::className(), [<span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'country_id'</span>]);
 }
 </code></pre>
 <p>Note that in the above, the 'id' key in the <code>$link</code> parameter refers to an attribute name
@@ -2297,7 +2388,7 @@ in the current AR class.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> <strong><a href="yii-db-baseactiverecord.html#hasOne()-detail">hasOne</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$class</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a></span> <strong><a href="yii-db-baseactiverecord.html#hasOne()-detail">hasOne</a></strong> ( <span style="color: #0000BB">$class</span>, <span style="color: #0000BB">$link</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$class</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2330,10 +2421,11 @@ array refer to the corresponding attributes in <strong>this</strong> AR class.</
         
         init()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Initializes the object.</strong></p>
 
@@ -2345,7 +2437,7 @@ to ensure triggering of the event.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#init()-detail">init</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#init()-detail">init</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -2358,10 +2450,11 @@ to ensure triggering of the event.</p>
         
         instantiate()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates an active record instance.</strong></p>
 
@@ -2375,7 +2468,7 @@ you may implement the so-called single-table inheritance mapping.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-baseactiverecord.html#instantiate()-detail">instantiate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">static</span> <strong><a href="yii-db-baseactiverecord.html#instantiate()-detail">instantiate</a></strong> ( <span style="color: #0000BB">$row</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$row</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2400,10 +2493,11 @@ you may implement the so-called single-table inheritance mapping.</p>
         
         isAttributeChanged()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the named attribute has been changed.</strong></p>
 
@@ -2411,7 +2505,7 @@ you may implement the so-called single-table inheritance mapping.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">bool <strong><a href="yii-db-baseactiverecord.html#isAttributeChanged()-detail">isAttributeChanged</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$identical&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#isAttributeChanged()-detail">isAttributeChanged</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$identical&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2420,7 +2514,7 @@ you may implement the so-called single-table inheritance mapping.</p>
                 </tr>
                             <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$identical</span></td>
-                  <td class="param-type-col">bool</td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
                   <td class="param-desc-col"><p>Whether the comparison of new and old value is made for
 identical values using <code>===</code>, defaults to <code>true</code>. Otherwise <code>==</code> is used for comparison.
 This parameter is available since version 2.0.4.</p>
@@ -2428,7 +2522,7 @@ This parameter is available since version 2.0.4.</p>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">bool</td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
                   <td class="param-desc-col"><p>Whether the attribute has been changed</p>
 </td>
                 </tr>
@@ -2444,10 +2538,11 @@ This parameter is available since version 2.0.4.</p>
         
         isPrimaryKey()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the given set of attributes represents the primary key for this model</strong></p>
 
@@ -2455,7 +2550,7 @@ This parameter is available since version 2.0.4.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#isPrimaryKey()-detail">isPrimaryKey</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$keys&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#isPrimaryKey()-detail">isPrimaryKey</a></strong> ( <span style="color: #0000BB">$keys</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$keys</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2480,10 +2575,11 @@ This parameter is available since version 2.0.4.</p>
         
         isRelationPopulated()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Check whether the named relation has been populated with records.</strong></p>
 
@@ -2491,7 +2587,7 @@ This parameter is available since version 2.0.4.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#isRelationPopulated()-detail">isRelationPopulated</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#isRelationPopulated()-detail">isRelationPopulated</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2516,10 +2612,11 @@ This parameter is available since version 2.0.4.</p>
         
         link()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Establishes the relationship between two models.</strong></p>
 
@@ -2533,7 +2630,7 @@ junction table which contains the primary key values from both models.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#link()-detail">link</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$extraColumns&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#link()-detail">link</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$model</span>, <span style="color: #0000BB">$extraColumns&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2572,10 +2669,11 @@ This parameter is only meaningful for a relationship involving a junction table
         
         markAttributeDirty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Marks an attribute dirty.</strong></p>
 
@@ -2585,7 +2683,7 @@ even if there is no change being made to the record.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#markAttributeDirty()-detail">markAttributeDirty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#markAttributeDirty()-detail">markAttributeDirty</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2604,10 +2702,11 @@ even if there is no change being made to the record.</p>
         
         offsetExists()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns whether there is an element at the specified offset.</strong></p>
 
@@ -2616,7 +2715,7 @@ even if there is no change being made to the record.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#offsetExists()-detail">offsetExists</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#offsetExists()-detail">offsetExists</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col">mixed</td>
@@ -2641,10 +2740,11 @@ even if there is no change being made to the record.</p>
         
         offsetUnset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the element value at the specified offset to null.</strong></p>
 
@@ -2654,7 +2754,7 @@ It is implicitly called when you use something like <code>unset($model[$offset])
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#offsetUnset()-detail">offsetUnset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#offsetUnset()-detail">offsetUnset</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col">mixed</td>
@@ -2673,10 +2773,11 @@ It is implicitly called when you use something like <code>unset($model[$offset])
         
         optimisticLock()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the name of the column that stores the lock version for implementing optimistic locking.</strong></p>
 
@@ -2700,7 +2801,7 @@ to resolve the conflict.</li>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-db-baseactiverecord.html#optimisticLock()-detail">optimisticLock</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-db-baseactiverecord.html#optimisticLock()-detail">optimisticLock</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2720,10 +2821,11 @@ If null is returned (default implemented), optimistic locking will not be suppor
         
         populateRecord()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Populates an active record object using a row of data from the database/storage.</strong></p>
 
@@ -2736,7 +2838,7 @@ record to trigger the <a href="yii-db-baseactiverecord.html#EVENT_AFTER_FIND-det
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#populateRecord()-detail">populateRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$record</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#populateRecord()-detail">populateRecord</a></strong> ( <span style="color: #0000BB">$record</span>, <span style="color: #0000BB">$row</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$record</span></td>
                   <td class="param-type-col"><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
@@ -2762,10 +2864,11 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
         
         populateRelation()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Populates the named relation with the related records.</strong></p>
 
@@ -2774,7 +2877,7 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#populateRelation()-detail">populateRelation</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$records&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#populateRelation()-detail">populateRelation</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$records</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2799,10 +2902,11 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
         
         refresh()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Repopulates this active record with the latest data.</strong></p>
 
@@ -2810,7 +2914,7 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#refresh()-detail">refresh</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#refresh()-detail">refresh</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -2830,26 +2934,27 @@ will be populated to this active record. Otherwise, this record will remain unch
         
         save()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Saves the current record.</strong></p>
 
         <p>This method will call <a href="yii-db-activerecordinterface.html#insert()-detail">insert()</a> when <a href="yii-db-baseactiverecord.html#$isNewRecord-detail">$isNewRecord</a> is true, or <a href="yii-db-baseactiverecord.html#update()-detail">update()</a>
 when <a href="yii-db-baseactiverecord.html#$isNewRecord-detail">$isNewRecord</a> is false.</p>
 <p>For example, to save a customer record:</p>
-<pre><code>$customer = new Customer;  // or $customer = Customer::findOne($id);
-$customer-&gt;name = $name;
-$customer-&gt;email = $email;
-$customer-&gt;save();
+<pre><code class="hljs php"><span class="hljs-variable">$customer</span> = <span class="hljs-keyword">new</span> Customer;  <span class="hljs-comment">// or $customer = Customer::findOne($id);</span>
+<span class="hljs-variable">$customer</span>-&gt;name = <span class="hljs-variable">$name</span>;
+<span class="hljs-variable">$customer</span>-&gt;email = <span class="hljs-variable">$email</span>;
+<span class="hljs-variable">$customer</span>-&gt;save();
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#save()-detail">save</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#save()-detail">save</a></strong> ( <span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$runValidation</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -2882,10 +2987,11 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         setAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the named attribute value.</strong></p>
 
@@ -2893,7 +2999,7 @@ meaning all attributes that are loaded from DB will be saved.</p>
         <p>See also <a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#setAttribute()-detail">setAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#setAttribute()-detail">setAttribute</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2924,10 +3030,11 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         setIsNewRecord()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the value indicating whether the record is new.</strong></p>
 
@@ -2935,7 +3042,7 @@ meaning all attributes that are loaded from DB will be saved.</p>
         <p>See also <a href="yii-db-baseactiverecord.html#getIsNewRecord()-detail">getIsNewRecord()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#setIsNewRecord()-detail">setIsNewRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#setIsNewRecord()-detail">setIsNewRecord</a></strong> ( <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -2954,10 +3061,11 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         setOldAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the old value of the named attribute.</strong></p>
 
@@ -2965,7 +3073,7 @@ meaning all attributes that are loaded from DB will be saved.</p>
         <p>See also <a href="yii-db-baseactiverecord.html#hasAttribute()-detail">hasAttribute()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#setOldAttribute()-detail">setOldAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#setOldAttribute()-detail">setOldAttribute</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2996,10 +3104,11 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         setOldAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the old attribute values.</strong></p>
 
@@ -3008,7 +3117,7 @@ meaning all attributes that are loaded from DB will be saved.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#setOldAttributes()-detail">setOldAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$values&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#setOldAttributes()-detail">setOldAttributes</a></strong> ( <span style="color: #0000BB">$values</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$values</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.null">null</a></td>
@@ -3028,10 +3137,11 @@ If set to <code>null</code> this record is considered to be <a href="yii-db-base
         
         unlink()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Destroys the relationship between two models.</strong></p>
 
@@ -3041,7 +3151,7 @@ Otherwise, the foreign key will be set null and the model will be saved without 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#unlink()-detail">unlink</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$delete&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#unlink()-detail">unlink</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$model</span>, <span style="color: #0000BB">$delete&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -3082,10 +3192,11 @@ If true, the model containing the foreign key will be deleted.</p>
         
         unlinkAll()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Destroys the relationship in current model.</strong></p>
 
@@ -3096,7 +3207,7 @@ Otherwise, the foreign key will be set null and the model will be saved without 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-baseactiverecord.html#unlinkAll()-detail">unlinkAll</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$delete&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-baseactiverecord.html#unlinkAll()-detail">unlinkAll</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$delete&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -3121,10 +3232,11 @@ Otherwise, the foreign key will be set null and the model will be saved without 
         
         update()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Saves the changes to this active record into the associated database table.</strong></p>
 
@@ -3143,25 +3255,25 @@ rest of the steps;</li>
 will be raised by the corresponding methods.</p>
 <p>Only the <a href="yii-db-baseactiverecord.html#$dirtyAttributes-detail">changed attribute values</a> will be saved into database.</p>
 <p>For example, to update a customer record:</p>
-<pre><code>$customer = Customer::findOne($id);
-$customer-&gt;name = $name;
-$customer-&gt;email = $email;
-$customer-&gt;update();
+<pre><code class="hljs php"><span class="hljs-variable">$customer</span> = Customer::findOne(<span class="hljs-variable">$id</span>);
+<span class="hljs-variable">$customer</span>-&gt;name = <span class="hljs-variable">$name</span>;
+<span class="hljs-variable">$customer</span>-&gt;email = <span class="hljs-variable">$email</span>;
+<span class="hljs-variable">$customer</span>-&gt;update();
 </code></pre>
 <p>Note that it is possible the update does not affect any row in the table.
 In this case, this method will return 0. For this reason, you should use the following
 code to check if update() is successful or not:</p>
-<pre><code>if ($this-&gt;update() !== false) {
-    // update successful
-} else {
-    // update failed
+<pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;update() !== <span class="hljs-keyword">false</span>) {
+    <span class="hljs-comment">// update successful</span>
+} <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// update failed</span>
 }
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#update()-detail">update</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#update()-detail">update</a></strong> ( <span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$runValidation</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -3208,21 +3320,22 @@ being updated is outdated.</p>
         
         updateAll()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Updates the whole table using the provided attribute values and conditions.</strong></p>
 
         <p>For example, to change the status to be 1 for all customers whose status is 2:</p>
-<pre><code>Customer::updateAll(['status' =&gt; 1], 'status = 2');
+<pre><code class="hljs scss">Customer<span class="hljs-value">::<span class="hljs-function">updateAll</span>([<span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>], <span class="hljs-string">'status = 2'</span>);</span>
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-baseactiverecord.html#updateAll()-detail">updateAll</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attributes</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-baseactiverecord.html#updateAll()-detail">updateAll</a></strong> ( <span style="color: #0000BB">$attributes</span>, <span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attributes</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -3260,21 +3373,22 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
         
         updateAllCounters()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Updates the whole table using the provided counter changes and conditions.</strong></p>
 
         <p>For example, to increment all customers' age by 1,</p>
-<pre><code>Customer::updateAllCounters(['age' =&gt; 1]);
+<pre><code class="hljs scss">Customer<span class="hljs-value">::<span class="hljs-function">updateAllCounters</span>([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">1</span>]);</span>
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-baseactiverecord.html#updateAllCounters()-detail">updateAllCounters</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$counters</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-baseactiverecord.html#updateAllCounters()-detail">updateAllCounters</a></strong> ( <span style="color: #0000BB">$counters</span>, <span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$counters</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -3313,10 +3427,11 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
         
         updateAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Updates the specified attributes.</strong></p>
 
@@ -3330,7 +3445,7 @@ The method will then save the specified attributes into database.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-baseactiverecord.html#updateAttributes()-detail">updateAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-baseactiverecord.html#updateAttributes()-detail">updateAttributes</a></strong> ( <span style="color: #0000BB">$attributes</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attributes</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -3355,24 +3470,25 @@ The method will then save the specified attributes into database.</p>
         
         updateCounters()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Updates one or several counter columns for the current AR object.</strong></p>
 
         <p>Note that this method differs from <a href="yii-db-baseactiverecord.html#updateAllCounters()-detail">updateAllCounters()</a> in that it only
 saves counters for the current AR object.</p>
 <p>An example usage is as follows:</p>
-<pre><code>$post = Post::findOne($id);
-$post-&gt;updateCounters(['view_count' =&gt; 1]);
+<pre><code class="hljs php"><span class="hljs-variable">$post</span> = Post::findOne(<span class="hljs-variable">$id</span>);
+<span class="hljs-variable">$post</span>-&gt;updateCounters([<span class="hljs-string">'view_count'</span> =&gt; <span class="hljs-number">1</span>]);
 </code></pre>
 
         <p>See also <a href="yii-db-baseactiverecord.html#updateAllCounters()-detail">updateAllCounters()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-baseactiverecord.html#updateCounters()-detail">updateCounters</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$counters&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-baseactiverecord.html#updateCounters()-detail">updateCounters</a></strong> ( <span style="color: #0000BB">$counters</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$counters</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -3398,10 +3514,11 @@ Use negative values if you want to decrement the counters.</p>
         
         updateInternal()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong></strong></p>
 
@@ -3409,7 +3526,7 @@ Use negative values if you want to decrement the counters.</p>
         <p>See also <a href="yii-db-baseactiverecord.html#update()-detail">update()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-baseactiverecord.html#updateInternal()-detail">updateInternal</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-baseactiverecord.html#updateInternal()-detail">updateInternal</a></strong> ( <span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attributes</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -3442,9 +3559,10 @@ Use negative values if you want to decrement the counters.</p>
         
         EVENT_AFTER_DELETE        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\db\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered after a record is deleted.</p>
 
@@ -3458,9 +3576,10 @@ Use negative values if you want to decrement the counters.</p>
         
         EVENT_AFTER_FIND        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\db\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered after the record is created and populated with query result.</p>
 
@@ -3474,9 +3593,10 @@ Use negative values if you want to decrement the counters.</p>
         
         EVENT_AFTER_INSERT        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\db\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered after a record is inserted.</p>
 
@@ -3490,9 +3610,10 @@ Use negative values if you want to decrement the counters.</p>
         
         EVENT_AFTER_UPDATE        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\db\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered after a record is updated.</p>
 
@@ -3506,9 +3627,10 @@ Use negative values if you want to decrement the counters.</p>
         
         EVENT_BEFORE_DELETE        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\base\ModelEvent                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered before deleting a record.
 You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be false to stop the deletion.</p>
@@ -3523,9 +3645,10 @@ You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be
         
         EVENT_BEFORE_INSERT        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\base\ModelEvent                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered before inserting a record.
 You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be false to stop the insertion.</p>
@@ -3540,9 +3663,10 @@ You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be
         
         EVENT_BEFORE_UPDATE        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\base\ModelEvent                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered before updating a record.
 You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be false to stop the update.</p>
@@ -3557,9 +3681,10 @@ You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be
         
         EVENT_INIT        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\db\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered when the record is initialized via <a href="yii-db-baseactiverecord.html#init()-detail">init()</a>.</p>
 
@@ -3604,7 +3729,7 @@ You may set <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

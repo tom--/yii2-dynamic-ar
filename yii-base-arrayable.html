@@ -4,28 +4,29 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Arrayable - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Arrayable - Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w36" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w36-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w39" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w39-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w36-collapse" class="collapse navbar-collapse"><ul id="w37" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w39-collapse" class="collapse navbar-collapse"><ul id="w40" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-34" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-34" class="submenu panel-collapse collapse in"><a class="list-group-item active" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-37" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-37" class="submenu panel-collapse collapse in"><a class="list-group-item active" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item" href="#navigation-35" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-35" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="#navigation-38" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-38" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Interface yii\base\Arrayable</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
                 | <a href="#methods">Methods</a>
             </div>
@@ -47,7 +48,7 @@
         <col class="col-name" />
         <col class="col-value" />
     </colgroup>
-                                <tr><th>Implemented by</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, yii\base\DynamicModel, <a href="yii-base-model.html">yii\base\Model</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td></tr>
+                                <tr><th>Implemented by</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, tests\unit\data\BaseRecord, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier, yii\base\DynamicModel, <a href="yii-base-model.html">yii\base\Model</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td></tr>
                     <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -55,7 +56,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>Arrayable is the interface that should be implemented by classes who want to support customizable representation of their instances.</strong></p>
     <p>For example, if a class implements Arrayable, by calling <a href="yii-base-arrayable.html#toArray()-detail">toArray()</a>, an instance of this class
 can be turned into an array (including all its embedded objects) which can then be further transformed easily
@@ -117,10 +118,11 @@ should be formatted and put into the result of <a href="yii-base-arrayable.html#
         
         extraFields()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of additional fields that can be returned by <a href="yii-base-arrayable.html#toArray()-detail">toArray()</a> in addition to those listed in <a href="yii-base-arrayable.html#fields()-detail">fields()</a>.</strong></p>
 
@@ -131,7 +133,7 @@ is explicitly requested, will it be included in the result of <a href="yii-base-
         <p>See also:</p><ul><li><a href="yii-base-arrayable.html#toArray()-detail">toArray()</a></li><li><a href="yii-base-arrayable.html#fields()-detail">fields()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-arrayable.html#extraFields()-detail">extraFields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-arrayable.html#extraFields()-detail">extraFields</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -151,10 +153,11 @@ to <a href="yii-base-arrayable.html#fields()-detail">fields()</a> on the format 
         
         fields()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of fields that should be returned by default by <a href="yii-base-arrayable.html#toArray()-detail">toArray()</a> when no specific fields are specified.</strong></p>
 
@@ -164,7 +167,10 @@ If the former, the field name will be treated as an object property name whose v
 as the field value. If the latter, the array key should be the field name while the array value should be
 the corresponding field definition which can be either an object property name or a PHP callable
 returning the corresponding field value. The signature of the callable should be:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">function&nbsp;(</span><span style="color: #0000BB">$field</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;return&nbsp;field&nbsp;value<br /></span><span style="color: #007700">}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$field</span>, <span class="hljs-variable">$model</span>)</span> </span>{
+    <span class="hljs-comment">// return field value</span>
+}
+</code></pre>
 <p>For example, the following code declares four fields:</p>
 <ul>
 <li><code>email</code>: the field name is the same as the property name <code>email</code>;</li>
@@ -173,12 +179,20 @@ values are obtained from the <code>first_name</code> and <code>last_name</code> 
 <li><code>fullName</code>: the field name is <code>fullName</code>. Its value is obtained by concatenating <code>first_name</code>
 and <code>last_name</code>.</li>
 </ul>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">return&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'email'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'firstName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'first_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'lastName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'last_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'fullName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;function&nbsp;(</span><span style="color: #0000BB">$model</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">first_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">last_name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />];</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'email'</span>,
+    <span class="hljs-string">'firstName'</span> =&gt; <span class="hljs-string">'first_name'</span>,
+    <span class="hljs-string">'lastName'</span> =&gt; <span class="hljs-string">'last_name'</span>,
+    <span class="hljs-string">'fullName'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$model</span>)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$model</span>-&gt;first_name . <span class="hljs-string">' '</span> . <span class="hljs-variable">$model</span>-&gt;last_name;
+    },
+];
+</code></pre>
 
         <p>See also <a href="yii-base-arrayable.html#toArray()-detail">toArray()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-arrayable.html#fields()-detail">fields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-arrayable.html#fields()-detail">fields</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -197,10 +211,11 @@ and <code>last_name</code>.</li>
         
         toArray()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Converts the object into an array.</strong></p>
 
@@ -208,7 +223,7 @@ and <code>last_name</code>.</li>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-arrayable.html#toArray()-detail">toArray</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$fields&nbsp;</span><span style="color: #007700">=&nbsp;[],&nbsp;array&nbsp;</span><span style="color: #0000BB">$expand&nbsp;</span><span style="color: #007700">=&nbsp;[],&nbsp;</span><span style="color: #0000BB">$recursive&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-arrayable.html#toArray()-detail">toArray</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$fields&nbsp;</span><span style="color: #007700">=&nbsp;[]</span>, <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$expand&nbsp;</span><span style="color: #007700">=&nbsp;[]</span>, <span style="color: #0000BB">$recursive&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$fields</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -278,7 +293,7 @@ will be returned.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

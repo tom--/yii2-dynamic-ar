@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Component - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Component - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class yii\base\Component</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -51,7 +52,7 @@
             <tr><th>Inheritance</th><td><a href="yii-base-component.html">yii\base\Component</a> &raquo;
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a></td></tr>
-                        <tr><th>Subclasses</th><td>examples\shop\Product, examples\shop\ShopController, <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, yii\base\Action, yii\base\Controller, yii\base\DynamicModel, yii\base\ErrorHandler, yii\base\InlineAction, <a href="yii-base-model.html">yii\base\Model</a>, yii\base\Request, yii\base\Response, yii\base\Security, yii\base\Theme, yii\base\View, yii\base\ViewRenderer, yii\base\Widget, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a>, yii\db\Command, yii\db\Connection, yii\db\Migration, <a href="yii-db-query.html">yii\db\Query</a></td></tr>
+                        <tr><th>Subclasses</th><td>examples\shop\Product, examples\shop\ShopController, <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, tests\unit\data\BaseRecord, tests\unit\data\CustomerQuery, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier, yii\base\Action, yii\base\Controller, yii\base\DynamicModel, yii\base\ErrorHandler, yii\base\InlineAction, <a href="yii-base-model.html">yii\base\Model</a>, yii\base\Request, yii\base\Response, yii\base\Security, yii\base\Theme, yii\base\View, yii\base\ViewRenderer, yii\base\Widget, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a>, yii\db\Command, yii\db\Connection, yii\db\Migration, <a href="yii-db-query.html">yii\db\Query</a></td></tr>
                         <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -59,7 +60,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>Component is the base class that implements the <em>property</em>, <em>event</em> and <em>behavior</em> features.</strong></p>
     <p>Component provides the <em>event</em> and <em>behavior</em> features, in addition to the <em>property</em> feature which is implemented in
 its parent class <span class="broken-link">Object</span>.</p>
@@ -71,8 +72,8 @@ is triggered (i.e. comment will be added), our custom code will be executed.</p>
 raise an event. When an event is raised, the event handlers will be invoked automatically in the order they were
 attached.</p>
 <p>To attach an event handler to an event, call <a href="yii-base-component.html#on()-detail">on()</a>:</p>
-<pre><code>$post-&gt;on('update', function ($event) {
-    // send email notification
+<pre><code class="hljs php"><span class="hljs-variable">$post</span>-&gt;on(<span class="hljs-string">'update'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$event</span>)</span> </span>{
+    <span class="hljs-comment">// send email notification</span>
 });
 </code></pre>
 <p>In the above, an anonymous function is attached to the "update" event of the post. You may attach
@@ -84,21 +85,21 @@ the following types of event handlers:</p>
 <li>global function: <code>'handleAdd'</code></li>
 </ul>
 <p>The signature of an event handler should be like the following:</p>
-<pre><code>function foo($event)
-</code></pre>
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span><span class="hljs-params">(<span class="hljs-variable">$event</span>)</span>
+</span></code></pre>
 <p>where <code>$event</code> is an <span class="broken-link">\yii\base\Event</span> object which includes parameters associated with the event.</p>
 <p>You can also attach a handler to an event when configuring a component with a configuration array.
 The syntax is like the following:</p>
-<pre><code>[
-    'on add' =&gt; function ($event) { ... }
+<pre><code class="hljs php">[
+    <span class="hljs-string">'on add'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$event</span>)</span> </span>{ ... }
 ]
 </code></pre>
 <p>where <code>on add</code> stands for attaching an event to the <code>add</code> event.</p>
 <p>Sometimes, you may want to associate extra data with an event handler when you attach it to an event
 and then access it when the handler is invoked. You may do so by</p>
-<pre><code>$post-&gt;on('update', function ($event) {
-    // the data can be accessed via $event-&gt;data
-}, $data);
+<pre><code class="hljs php"><span class="hljs-variable">$post</span>-&gt;on(<span class="hljs-string">'update'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$event</span>)</span> </span>{
+    <span class="hljs-comment">// the data can be accessed via $event-&gt;data</span>
+}, <span class="hljs-variable">$data</span>);
 </code></pre>
 <p>A behavior is an instance of <span class="broken-link">\yii\base\Behavior</span> or its child class. A component can be attached with one or multiple
 behaviors. When a behavior is attached to a component, its public properties and methods can be accessed via the
@@ -107,7 +108,7 @@ component directly, as if the component owns those properties and methods.</p>
 declared in <a href="yii-base-component.html#behaviors()-detail">behaviors()</a> are automatically attached to the corresponding component.</p>
 <p>One can also attach a behavior to a component when configuring it with a configuration array. The syntax is like the
 following:</p>
-<pre><code>[
+<pre><code class="hljs json">[
     'as tree' =&gt; [
         'class' =&gt; 'Tree',
     ],
@@ -137,7 +138,7 @@ to create the behavior object.</p>
 </tr>
         <tr id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -302,16 +303,19 @@ to create the behavior object.</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Component.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Component.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $behaviors        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $behaviors        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature">\yii\base\Behavior <strong><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></div>
-
-    <p>List of behaviors attached to this component</p>
-
     
+    <div class="doc-description">
+        <p>List of behaviors attached to this component</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\base\Behavior[]</span> <strong><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors</a></strong> ( )</div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -325,10 +329,11 @@ to create the behavior object.</p>
         
         __call()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Calls the named method which is not a class method.</strong></p>
 
@@ -340,7 +345,7 @@ will be implicitly called when an unknown method is being invoked.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-component.html#__call()-detail">__call</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-base-component.html#__call()-detail">__call</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$params</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -377,10 +382,11 @@ will be implicitly called when an unknown method is being invoked.</p>
         
         __clone()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is called after the object is created by cloning an existing one.</strong></p>
 
@@ -389,7 +395,7 @@ will be implicitly called when an unknown method is being invoked.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#__clone()-detail">__clone</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#__clone()-detail">__clone</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -402,10 +408,11 @@ will be implicitly called when an unknown method is being invoked.</p>
         
         __get()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the value of a component property.</strong></p>
 
@@ -420,7 +427,7 @@ will be implicitly called when executing <code>$value = $component-&gt;property;
         <p>See also <a href="yii-base-component.html#__set()-detail">__set()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-component.html#__get()-detail">__get</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-base-component.html#__get()-detail">__get</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -457,10 +464,11 @@ will be implicitly called when executing <code>$value = $component-&gt;property;
         
         __isset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Checks if a property is set, i.e. defined and not null.</strong></p>
 
@@ -476,7 +484,7 @@ will be implicitly called when executing <code>isset($component-&gt;property)</c
         <p>See also <a href="http://php.net/manual/en/function.isset.php">http://php.net/manual/en/function.isset.php</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#__isset()-detail">__isset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#__isset()-detail">__isset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -501,10 +509,11 @@ will be implicitly called when executing <code>isset($component-&gt;property)</c
         
         __set()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the value of a component property.</strong></p>
 
@@ -521,7 +530,7 @@ will be implicitly called when executing <code>$component-&gt;property = $value;
         <p>See also <a href="yii-base-component.html#__get()-detail">__get()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#__set()-detail">__set</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#__set()-detail">__set</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -558,10 +567,11 @@ will be implicitly called when executing <code>$component-&gt;property = $value;
         
         __unset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets a component property to be null.</strong></p>
 
@@ -576,7 +586,7 @@ will be implicitly called when executing <code>unset($component-&gt;property)</c
         <p>See also <a href="http://php.net/manual/en/function.unset.php">http://php.net/manual/en/function.unset.php</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#__unset()-detail">__unset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#__unset()-detail">__unset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -601,10 +611,11 @@ will be implicitly called when executing <code>unset($component-&gt;property)</c
         
         attachBehavior()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Attaches a behavior to this component.</strong></p>
 
@@ -615,7 +626,7 @@ this component by calling the <span class="broken-link">\yii\base\Behavior::atta
         <p>See also <a href="yii-base-component.html#detachBehavior()-detail">detachBehavior()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\base\Behavior <strong><a href="yii-base-component.html#attachBehavior()-detail">attachBehavior</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$behavior&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\base\Behavior</span> <strong><a href="yii-base-component.html#attachBehavior()-detail">attachBehavior</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$behavior</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -651,10 +662,11 @@ this component by calling the <span class="broken-link">\yii\base\Behavior::atta
         
         attachBehaviors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Attaches a list of behaviors to the component.</strong></p>
 
@@ -664,7 +676,7 @@ a string specifying the behavior class, or an configuration array for creating t
         <p>See also <a href="yii-base-component.html#attachBehavior()-detail">attachBehavior()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#attachBehaviors()-detail">attachBehaviors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$behaviors&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#attachBehaviors()-detail">attachBehaviors</a></strong> ( <span style="color: #0000BB">$behaviors</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$behaviors</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -683,10 +695,11 @@ a string specifying the behavior class, or an configuration array for creating t
         
         behaviors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a list of behaviors that this component should behave as.</strong></p>
 
@@ -694,10 +707,10 @@ a string specifying the behavior class, or an configuration array for creating t
 <p>The return value of this method should be an array of behavior objects or configurations
 indexed by behavior names. A behavior configuration can be either a string specifying
 the behavior class or an array of the following structure:</p>
-<pre><code>'behaviorName' =&gt; [
-    'class' =&gt; 'BehaviorClass',
-    'property1' =&gt; 'value1',
-    'property2' =&gt; 'value2',
+<pre><code class="hljs php"><span class="hljs-string">'behaviorName'</span> =&gt; [
+    <span class="hljs-string">'class'</span> =&gt; <span class="hljs-string">'BehaviorClass'</span>,
+    <span class="hljs-string">'property1'</span> =&gt; <span class="hljs-string">'value1'</span>,
+    <span class="hljs-string">'property2'</span> =&gt; <span class="hljs-string">'value2'</span>,
 ]
 </code></pre>
 <p>Note that a behavior class must extend from <span class="broken-link">\yii\base\Behavior</span>. Behavior names can be strings
@@ -709,7 +722,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-component.html#behaviors()-detail">behaviors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-component.html#behaviors()-detail">behaviors</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -728,10 +741,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         canGetProperty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a property can be read.</strong></p>
 
@@ -746,7 +760,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         <p>See also <a href="yii-base-component.html#canSetProperty()-detail">canSetProperty()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#canGetProperty()-detail">canGetProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#canGetProperty()-detail">canGetProperty</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -783,10 +797,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         canSetProperty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a property can be set.</strong></p>
 
@@ -801,7 +816,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         <p>See also <a href="yii-base-component.html#canGetProperty()-detail">canGetProperty()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#canSetProperty()-detail">canSetProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#canSetProperty()-detail">canSetProperty</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -838,10 +853,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         detachBehavior()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Detaches a behavior from the component.</strong></p>
 
@@ -850,7 +866,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\base\Behavior <strong><a href="yii-base-component.html#detachBehavior()-detail">detachBehavior</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\base\Behavior</span> <strong><a href="yii-base-component.html#detachBehavior()-detail">detachBehavior</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -875,10 +891,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         detachBehaviors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Detaches all behaviors from the component.</strong></p>
 
@@ -886,7 +903,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#detachBehaviors()-detail">detachBehaviors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#detachBehaviors()-detail">detachBehaviors</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -899,10 +916,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         ensureBehaviors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Makes sure that the behaviors declared in <a href="yii-base-component.html#behaviors()-detail">behaviors()</a> are attached to this component.</strong></p>
 
@@ -910,7 +928,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#ensureBehaviors()-detail">ensureBehaviors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#ensureBehaviors()-detail">ensureBehaviors</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -923,10 +941,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         getBehavior()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the named behavior object.</strong></p>
 
@@ -934,7 +953,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\base\Behavior <strong><a href="yii-base-component.html#getBehavior()-detail">getBehavior</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\base\Behavior</span> <strong><a href="yii-base-component.html#getBehavior()-detail">getBehavior</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -959,10 +978,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         getBehaviors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns all behaviors attached to this component.</strong></p>
 
@@ -970,10 +990,10 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\base\Behavior <strong><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\base\Behavior[]</span> <strong><a href="yii-base-component.html#getBehaviors()-detail">getBehaviors</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">\yii\base\Behavior</td>
+                  <td class="param-type-col">\yii\base\Behavior[]</td>
                   <td class="param-desc-col"><p>List of behaviors attached to this component</p>
 </td>
                 </tr>
@@ -989,10 +1009,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         hasEventHandlers()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether there is any handler attached to the named event.</strong></p>
 
@@ -1000,7 +1021,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#hasEventHandlers()-detail">hasEventHandlers</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#hasEventHandlers()-detail">hasEventHandlers</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1025,10 +1046,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         hasMethod()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a method is defined.</strong></p>
 
@@ -1041,7 +1063,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#hasMethod()-detail">hasMethod</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#hasMethod()-detail">hasMethod</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1072,10 +1094,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         hasProperty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a property is defined for this component.</strong></p>
 
@@ -1090,7 +1113,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         <p>See also:</p><ul><li><a href="yii-base-component.html#canGetProperty()-detail">canGetProperty()</a></li><li><a href="yii-base-component.html#canSetProperty()-detail">canSetProperty()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#hasProperty()-detail">hasProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#hasProperty()-detail">hasProperty</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$checkBehaviors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1127,10 +1150,11 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         
         off()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Detaches an existing event handler from this component.</strong></p>
 
@@ -1139,7 +1163,7 @@ behaviors are anonymous and their properties and methods will NOT be made availa
         <p>See also <a href="yii-base-component.html#on()-detail">on()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-component.html#off()-detail">off</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$handler&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-component.html#off()-detail">off</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$handler&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1171,29 +1195,30 @@ If it is null, all handlers attached to the named event will be removed.</p>
         
         on()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Attaches an event handler to an event.</strong></p>
 
         <p>The event handler must be a valid PHP callback. The following are
 some examples:</p>
-<pre><code>function ($event) { ... }         // anonymous function
-[$object, 'handleClick']          // $object-&gt;handleClick()
-['Page', 'handleClick']           // Page::handleClick()
-'handleClick'                     // global function handleClick()
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$event</span>)</span> </span>{ ... }         <span class="hljs-comment">// anonymous function</span>
+[<span class="hljs-variable">$object</span>, <span class="hljs-string">'handleClick'</span>]          <span class="hljs-comment">// $object-&gt;handleClick()</span>
+[<span class="hljs-string">'Page'</span>, <span class="hljs-string">'handleClick'</span>]           <span class="hljs-comment">// Page::handleClick()</span>
+<span class="hljs-string">'handleClick'</span>                     <span class="hljs-comment">// global function handleClick()</span>
 </code></pre>
 <p>The event handler must be defined with the following signature,</p>
-<pre><code>function ($event)
-</code></pre>
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$event</span>)</span>
+</span></code></pre>
 <p>where <code>$event</code> is an <span class="broken-link">\yii\base\Event</span> object which includes parameters associated with the event.</p>
 
         <p>See also <a href="yii-base-component.html#off()-detail">off()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#on()-detail">on</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$handler</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$append&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#on()-detail">on</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$handler</span>, <span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span>, <span style="color: #0000BB">$append&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1233,10 +1258,11 @@ handler list.</p>
         
         trigger()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Triggers an event.</strong></p>
 
@@ -1246,7 +1272,7 @@ all attached handlers for the event including class-level handlers.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-component.html#trigger()-detail">trigger</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;\</span><span style="color: #0000BB">yii</span><span style="color: #007700">\</span><span style="color: #0000BB">base</span><span style="color: #007700">\</span><span style="color: #0000BB">Event&nbsp;$event&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-component.html#trigger()-detail">trigger</a></strong> ( <span style="color: #0000BB">$name</span>, <span class="signature-type">\yii\base\Event</span> <span style="color: #0000BB">$event&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1301,7 +1327,7 @@ all attached handlers for the event including class-level handlers.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

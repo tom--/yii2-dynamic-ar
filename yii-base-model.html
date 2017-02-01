@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Model - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Model - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class yii\base\Model</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -55,7 +56,7 @@
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="http://www.php.net/class.arrayaccess">ArrayAccess</a>, <a href="http://www.php.net/class.iteratoraggregate">IteratorAggregate</a>, <a href="yii-base-arrayable.html">yii\base\Arrayable</a>, <a href="yii-base-configurable.html">yii\base\Configurable</a></td></tr>
                     <tr><th>Uses Traits</th><td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td></tr>
-                <tr><th>Subclasses</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, yii\base\DynamicModel, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td></tr>
+                <tr><th>Subclasses</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, tests\unit\data\BaseRecord, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier, yii\base\DynamicModel, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td></tr>
                         <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -63,7 +64,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>Model is the base class for data models.</strong></p>
     <p>Model implements the following commonly used features:</p>
 <ul>
@@ -101,7 +102,7 @@ a model attribute</li>
 </tr>
         <tr id="$activeValidators">
         <td><a href="yii-base-model.html#$activeValidators-detail">$activeValidators</a></td>
-        <td>\yii\validators\Validator</td>
+        <td>\yii\validators\Validator[]</td>
         <td>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -113,7 +114,7 @@ a model attribute</li>
     </tr>
             <tr class="inherited" id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -143,7 +144,7 @@ a model attribute</li>
     </tr>
             <tr id="$validators">
         <td><a href="yii-base-model.html#$validators-detail">$validators</a></td>
-        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator</td>
+        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</td>
         <td>All the validators declared in the model.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -584,7 +585,7 @@ a model attribute</li>
           <td id="SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</td>
           <td>'default'</td>
           <td>The name of the default scenario.
-</td>
+                        </td>
           <td><a href="yii-base-model.html">yii\base\Model</a></td>
         </tr>
         </table>
@@ -600,16 +601,19 @@ a model attribute</li>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $activeValidators        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $activeValidators        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature">\yii\validators\Validator <strong><a href="yii-base-model.html#getActiveValidators()-detail">getActiveValidators</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</p>
-
     
+    <div class="doc-description">
+        <p>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\validators\Validator[]</span> <strong><a href="yii-base-model.html#getActiveValidators()-detail">getActiveValidators</a></strong> ( <span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</div>
+
 
     <div class="detail-header h3" id="$attributes-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -617,16 +621,19 @@ a model attribute</li>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $attributes        <span class="detailHeaderTag small">
-            public                                    property
+        $attributes        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#getAttributes()-detail">getAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$except&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span><br />void <strong><a href="yii-base-model.html#setAttributes()-detail">setAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$values</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$safeOnly&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>Attribute values (name =&gt; value).</p>
-
     
+    <div class="doc-description">
+        <p>Attribute values (name =&gt; value).</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#getAttributes()-detail">getAttributes</a></strong> ( <span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span>, <span style="color: #0000BB">$except&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )<br /><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#setAttributes()-detail">setAttributes</a></strong> ( <span style="color: #0000BB">$values</span>, <span style="color: #0000BB">$safeOnly&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</div>
+
 
     <div class="detail-header h3" id="$errors-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -634,16 +641,16 @@ a model attribute</li>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $errors        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $errors        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#getErrors()-detail">getErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>Errors for all attributes or the specified attribute. Empty array is returned if no error.
+    
+    <div class="doc-description">
+        <p>Errors for all attributes or the specified attribute. Empty array is returned if no error.
 Note that when returning errors for all attributes, the result is a two-dimensional array, like the following:</p>
-<pre><code>[
+<pre><code class="hljs json">[
     'username' =&gt; [
         'Username is required.',
         'Username must contain only word characters.',
@@ -654,7 +661,10 @@ Note that when returning errors for all attributes, the result is a two-dimensio
 ]
 </code></pre>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#getErrors()-detail">getErrors</a></strong> ( <span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</div>
+
 
     <div class="detail-header h3" id="$firstErrors-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -662,17 +672,20 @@ Note that when returning errors for all attributes, the result is a two-dimensio
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $firstErrors        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $firstErrors        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></div>
-
-    <p>The first errors. The array keys are the attribute names, and the array
+    
+    <div class="doc-description">
+        <p>The first errors. The array keys are the attribute names, and the array
 values are the corresponding error messages. An empty array will be returned if there is no error.</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors</a></strong> ( )</div>
+
 
     <div class="detail-header h3" id="$iterator-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -680,16 +693,19 @@ values are the corresponding error messages. An empty array will be returned if 
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $iterator        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $iterator        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/class.arrayiterator">ArrayIterator</a> <strong><a href="yii-base-model.html#getIterator()-detail">getIterator</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></div>
-
-    <p>An iterator for traversing the items in the list.</p>
-
     
+    <div class="doc-description">
+        <p>An iterator for traversing the items in the list.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/class.arrayiterator">ArrayIterator</a></span> <strong><a href="yii-base-model.html#getIterator()-detail">getIterator</a></strong> ( )</div>
+
 
     <div class="detail-header h3" id="$scenario-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -697,16 +713,19 @@ values are the corresponding error messages. An empty array will be returned if 
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $scenario        <span class="detailHeaderTag small">
-            public                                    property
+        $scenario        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#getScenario()-detail">getScenario</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span><br />void <strong><a href="yii-base-model.html#setScenario()-detail">setScenario</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></div>
-
-    <p>The scenario that this model is in. Defaults to <a href="yii-base-model.html#SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</a>.</p>
-
     
+    <div class="doc-description">
+        <p>The scenario that this model is in. Defaults to <a href="yii-base-model.html#SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</a>.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#getScenario()-detail">getScenario</a></strong> ( )<br /><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#setScenario()-detail">setScenario</a></strong> ( <span style="color: #0000BB">$value</span> )</div>
+
 
     <div class="detail-header h3" id="$validators-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -714,16 +733,19 @@ values are the corresponding error messages. An empty array will be returned if 
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/base/Model.php" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/base/Model.php" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $validators        <span class="detailHeaderTag small">
-            public             <em>read-only</em>                         property
+        $validators        <span class="detail-header-tag small">
+            public                         <em>read-only</em>                         property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator <strong><a href="yii-base-model.html#getValidators()-detail">getValidators</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></div>
-
-    <p>All the validators declared in the model.</p>
-
     
+    <div class="doc-description">
+        <p>All the validators declared in the model.</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</span> <strong><a href="yii-base-model.html#getValidators()-detail">getValidators</a></strong> ( )</div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -737,10 +759,11 @@ values are the corresponding error messages. An empty array will be returned if 
         
         activeAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the attribute names that are subject to validation in the current scenario.</strong></p>
 
@@ -748,7 +771,7 @@ values are the corresponding error messages. An empty array will be returned if 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a>[] <strong><a href="yii-base-model.html#activeAttributes()-detail">activeAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>[]</span> <strong><a href="yii-base-model.html#activeAttributes()-detail">activeAttributes</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>[]</td>
@@ -767,10 +790,11 @@ values are the corresponding error messages. An empty array will be returned if 
         
         addError()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds a new error to the specified attribute.</strong></p>
 
@@ -778,7 +802,7 @@ values are the corresponding error messages. An empty array will be returned if 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#addError()-detail">addError</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$error&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#addError()-detail">addError</a></strong> ( <span style="color: #0000BB">$attribute</span>, <span style="color: #0000BB">$error&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -803,11 +827,12 @@ values are the corresponding error messages. An empty array will be returned if 
         
         addErrors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                             (available since version 2.0.2)
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds a list of errors.</strong></p>
 
@@ -815,7 +840,7 @@ values are the corresponding error messages. An empty array will be returned if 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#addErrors()-detail">addErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;array&nbsp;</span><span style="color: #0000BB">$items&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#addErrors()-detail">addErrors</a></strong> ( <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$items</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$items</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -837,10 +862,11 @@ You may use the result of <a href="yii-base-model.html#getErrors()-detail">getEr
         
         afterValidate()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is invoked after validation ends.</strong></p>
 
@@ -851,7 +877,7 @@ Make sure the parent implementation is invoked so that the event can be raised.<
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#afterValidate()-detail">afterValidate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#afterValidate()-detail">afterValidate</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -864,11 +890,12 @@ Make sure the parent implementation is invoked so that the event can be raised.<
         
         attributeHints()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                             (available since version 2.0.4)
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the attribute hints.</strong></p>
 
@@ -882,7 +909,7 @@ merge the parent hints with child hints using functions such as <code>array_merg
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#attributeHints()-detail">attributeHints</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#attributeHints()-detail">attributeHints</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -901,10 +928,11 @@ merge the parent hints with child hints using functions such as <code>array_merg
         
         attributeLabels()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the attribute labels.</strong></p>
 
@@ -919,7 +947,7 @@ merge the parent labels with child labels using functions such as <code>array_me
         <p>See also <a href="yii-base-model.html#generateAttributeLabel()-detail">generateAttributeLabel()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#attributeLabels()-detail">attributeLabels</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#attributeLabels()-detail">attributeLabels</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -938,10 +966,11 @@ merge the parent labels with child labels using functions such as <code>array_me
         
         attributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of attribute names.</strong></p>
 
@@ -951,7 +980,7 @@ You may override this method to change the default behavior.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#attributes()-detail">attributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#attributes()-detail">attributes</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -970,10 +999,11 @@ You may override this method to change the default behavior.</p>
         
         beforeValidate()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is invoked before validation starts.</strong></p>
 
@@ -984,7 +1014,7 @@ Make sure the parent implementation is invoked so that the event can be raised.<
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#beforeValidate()-detail">beforeValidate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#beforeValidate()-detail">beforeValidate</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1004,10 +1034,11 @@ If false is returned, the validation will stop and the model is considered inval
         
         clearErrors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Removes errors for all attributes or a single attribute.</strong></p>
 
@@ -1015,7 +1046,7 @@ If false is returned, the validation will stop and the model is considered inval
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#clearErrors()-detail">clearErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#clearErrors()-detail">clearErrors</a></strong> ( <span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1034,10 +1065,11 @@ If false is returned, the validation will stop and the model is considered inval
         
         createValidators()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates validator objects based on the validation rules specified in <a href="yii-base-model.html#rules()-detail">rules()</a>.</strong></p>
 
@@ -1046,7 +1078,7 @@ If false is returned, the validation will stop and the model is considered inval
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/class.arrayobject">ArrayObject</a> <strong><a href="yii-base-model.html#createValidators()-detail">createValidators</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/class.arrayobject">ArrayObject</a></span> <strong><a href="yii-base-model.html#createValidators()-detail">createValidators</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/class.arrayobject">ArrayObject</a></td>
@@ -1071,10 +1103,11 @@ If false is returned, the validation will stop and the model is considered inval
         
         fields()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of fields that should be returned by default by <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a> when no specific fields are specified.</strong></p>
 
@@ -1084,7 +1117,10 @@ If the former, the field name will be treated as an object property name whose v
 as the field value. If the latter, the array key should be the field name while the array value should be
 the corresponding field definition which can be either an object property name or a PHP callable
 returning the corresponding field value. The signature of the callable should be:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">function&nbsp;(</span><span style="color: #0000BB">$field</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;return&nbsp;field&nbsp;value<br /></span><span style="color: #007700">}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$field</span>, <span class="hljs-variable">$model</span>)</span> </span>{
+    <span class="hljs-comment">// return field value</span>
+}
+</code></pre>
 <p>For example, the following code declares four fields:</p>
 <ul>
 <li><code>email</code>: the field name is the same as the property name <code>email</code>;</li>
@@ -1093,7 +1129,15 @@ values are obtained from the <code>first_name</code> and <code>last_name</code> 
 <li><code>fullName</code>: the field name is <code>fullName</code>. Its value is obtained by concatenating <code>first_name</code>
 and <code>last_name</code>.</li>
 </ul>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">return&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'email'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'firstName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'first_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'lastName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'last_name'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'fullName'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;function&nbsp;(</span><span style="color: #0000BB">$model</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">first_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">last_name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;},<br />];</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'email'</span>,
+    <span class="hljs-string">'firstName'</span> =&gt; <span class="hljs-string">'first_name'</span>,
+    <span class="hljs-string">'lastName'</span> =&gt; <span class="hljs-string">'last_name'</span>,
+    <span class="hljs-string">'fullName'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$model</span>)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$model</span>-&gt;first_name . <span class="hljs-string">' '</span> . <span class="hljs-variable">$model</span>-&gt;last_name;
+    },
+];
+</code></pre>
 <p>In this method, you may also want to return different lists of fields based on some context
 information. For example, depending on <a href="yii-base-model.html#$scenario-detail">$scenario</a> or the privilege of the current application user,
 you may return different sets of visible fields or filter out some fields.</p>
@@ -1102,7 +1146,7 @@ you may return different sets of visible fields or filter out some fields.</p>
         <p>See also <a href="yii-base-arrayabletrait.html#toArray()-detail">toArray()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#fields()-detail">fields</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#fields()-detail">fields</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1121,10 +1165,11 @@ you may return different sets of visible fields or filter out some fields.</p>
         
         formName()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the form name that this model class should use.</strong></p>
 
@@ -1138,7 +1183,7 @@ as the form name. You may override it when the model is used in different forms.
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#formName()-detail">formName</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#formName()-detail">formName</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1157,10 +1202,11 @@ as the form name. You may override it when the model is used in different forms.
         
         generateAttributeLabel()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Generates a user friendly attribute label based on the give attribute name.</strong></p>
 
@@ -1171,7 +1217,7 @@ For example, 'department_name' or 'DepartmentName' will generate 'Department Nam
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#generateAttributeLabel()-detail">generateAttributeLabel</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#generateAttributeLabel()-detail">generateAttributeLabel</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1196,10 +1242,11 @@ For example, 'department_name' or 'DepartmentName' will generate 'Department Nam
         
         getActiveValidators()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</strong></p>
 
@@ -1207,7 +1254,7 @@ For example, 'department_name' or 'DepartmentName' will generate 'Department Nam
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\validators\Validator <strong><a href="yii-base-model.html#getActiveValidators()-detail">getActiveValidators</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\validators\Validator[]</span> <strong><a href="yii-base-model.html#getActiveValidators()-detail">getActiveValidators</a></strong> ( <span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1217,7 +1264,7 @@ If this is null, the validators for ALL attributes in the model will be returned
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">\yii\validators\Validator</td>
+                  <td class="param-type-col">\yii\validators\Validator[]</td>
                   <td class="param-desc-col"><p>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</p>
 </td>
                 </tr>
@@ -1233,11 +1280,12 @@ If this is null, the validators for ALL attributes in the model will be returned
         
         getAttributeHint()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                             (available since version 2.0.4)
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the text hint for the specified attribute.</strong></p>
 
@@ -1245,7 +1293,7 @@ If this is null, the validators for ALL attributes in the model will be returned
         <p>See also <a href="yii-base-model.html#attributeHints()-detail">attributeHints()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#getAttributeHint()-detail">getAttributeHint</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#getAttributeHint()-detail">getAttributeHint</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1270,10 +1318,11 @@ If this is null, the validators for ALL attributes in the model will be returned
         
         getAttributeLabel()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the text label for the specified attribute.</strong></p>
 
@@ -1281,7 +1330,7 @@ If this is null, the validators for ALL attributes in the model will be returned
         <p>See also:</p><ul><li><a href="yii-base-model.html#generateAttributeLabel()-detail">generateAttributeLabel()</a></li><li><a href="yii-base-model.html#attributeLabels()-detail">attributeLabels()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#getAttributeLabel()-detail">getAttributeLabel</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#getAttributeLabel()-detail">getAttributeLabel</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1306,10 +1355,11 @@ If this is null, the validators for ALL attributes in the model will be returned
         
         getAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns attribute values.</strong></p>
 
@@ -1317,7 +1367,7 @@ If this is null, the validators for ALL attributes in the model will be returned
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#getAttributes()-detail">getAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$except&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#getAttributes()-detail">getAttributes</a></strong> ( <span style="color: #0000BB">$names&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span>, <span style="color: #0000BB">$except&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$names</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1350,10 +1400,11 @@ If it is an array, only the attributes in the array will be returned.</p>
         
         getErrors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the errors for all attribute or a single attribute.</strong></p>
 
@@ -1361,7 +1412,7 @@ If it is an array, only the attributes in the array will be returned.</p>
         <p>See also:</p><ul><li><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors()</a></li><li><a href="yii-base-model.html#getFirstError()-detail">getFirstError()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#getErrors()-detail">getErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#getErrors()-detail">getErrors</a></strong> ( <span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1373,7 +1424,7 @@ If it is an array, only the attributes in the array will be returned.</p>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
                   <td class="param-desc-col"><p>Errors for all attributes or the specified attribute. Empty array is returned if no error.
 Note that when returning errors for all attributes, the result is a two-dimensional array, like the following:</p>
-<pre><code>[
+<pre><code class="hljs json">[
     'username' =&gt; [
         'Username is required.',
         'Username must contain only word characters.',
@@ -1397,10 +1448,11 @@ Note that when returning errors for all attributes, the result is a two-dimensio
         
         getFirstError()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the first error of the specified attribute.</strong></p>
 
@@ -1408,7 +1460,7 @@ Note that when returning errors for all attributes, the result is a two-dimensio
         <p>See also:</p><ul><li><a href="yii-base-model.html#getErrors()-detail">getErrors()</a></li><li><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#getFirstError()-detail">getFirstError</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#getFirstError()-detail">getFirstError</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1433,10 +1485,11 @@ Note that when returning errors for all attributes, the result is a two-dimensio
         
         getFirstErrors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the first error of every attribute in the model.</strong></p>
 
@@ -1444,7 +1497,7 @@ Note that when returning errors for all attributes, the result is a two-dimensio
         <p>See also:</p><ul><li><a href="yii-base-model.html#getErrors()-detail">getErrors()</a></li><li><a href="yii-base-model.html#getFirstError()-detail">getFirstError()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#getFirstErrors()-detail">getFirstErrors</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1464,10 +1517,11 @@ values are the corresponding error messages. An empty array will be returned if 
         
         getIterator()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns an iterator for traversing the attributes in the model.</strong></p>
 
@@ -1476,7 +1530,7 @@ values are the corresponding error messages. An empty array will be returned if 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/class.arrayiterator">ArrayIterator</a> <strong><a href="yii-base-model.html#getIterator()-detail">getIterator</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/class.arrayiterator">ArrayIterator</a></span> <strong><a href="yii-base-model.html#getIterator()-detail">getIterator</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/class.arrayiterator">ArrayIterator</a></td>
@@ -1495,10 +1549,11 @@ values are the corresponding error messages. An empty array will be returned if 
         
         getScenario()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the scenario that this model is used in.</strong></p>
 
@@ -1508,7 +1563,7 @@ be massively assigned.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-model.html#getScenario()-detail">getScenario</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-model.html#getScenario()-detail">getScenario</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1527,10 +1582,11 @@ be massively assigned.</p>
         
         getValidators()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns all the validators declared in <a href="yii-base-model.html#rules()-detail">rules()</a>.</strong></p>
 
@@ -1539,16 +1595,16 @@ only returns the validators applicable to the current <a href="yii-base-model.ht
 <p>Because this method returns an ArrayObject object, you may
 manipulate it by inserting or removing validators (useful in model behaviors).
 For example,</p>
-<pre><code>$model-&gt;validators[] = $newValidator;
+<pre><code class="hljs php"><span class="hljs-variable">$model</span>-&gt;validators[] = <span class="hljs-variable">$newValidator</span>;
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator <strong><a href="yii-base-model.html#getValidators()-detail">getValidators</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</span> <strong><a href="yii-base-model.html#getValidators()-detail">getValidators</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator</td>
+                  <td class="param-type-col"><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</td>
                   <td class="param-desc-col"><p>All the validators declared in the model.</p>
 </td>
                 </tr>
@@ -1564,10 +1620,11 @@ For example,</p>
         
         hasErrors()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether there is any validation error.</strong></p>
 
@@ -1575,7 +1632,7 @@ For example,</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#hasErrors()-detail">hasErrors</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#hasErrors()-detail">hasErrors</a></strong> ( <span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.null">null</a></td>
@@ -1600,10 +1657,11 @@ For example,</p>
         
         isAttributeActive()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the attribute is active in the current scenario.</strong></p>
 
@@ -1611,7 +1669,7 @@ For example,</p>
         <p>See also <a href="yii-base-model.html#activeAttributes()-detail">activeAttributes()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#isAttributeActive()-detail">isAttributeActive</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#isAttributeActive()-detail">isAttributeActive</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1636,10 +1694,11 @@ For example,</p>
         
         isAttributeRequired()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the attribute is required.</strong></p>
 
@@ -1654,7 +1713,7 @@ before the model is loaded with data.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#isAttributeRequired()-detail">isAttributeRequired</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#isAttributeRequired()-detail">isAttributeRequired</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1679,10 +1738,11 @@ before the model is loaded with data.</p>
         
         isAttributeSafe()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the attribute is safe for massive assignments.</strong></p>
 
@@ -1690,7 +1750,7 @@ before the model is loaded with data.</p>
         <p>See also <a href="yii-base-model.html#safeAttributes()-detail">safeAttributes()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#isAttributeSafe()-detail">isAttributeSafe</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#isAttributeSafe()-detail">isAttributeSafe</a></strong> ( <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attribute</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1715,10 +1775,11 @@ before the model is loaded with data.</p>
         
         load()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Populates the model with the data from end user.</strong></p>
 
@@ -1729,7 +1790,7 @@ The data being populated is subject to the safety check by <a href="yii-base-mod
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#load()-detail">load</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$formName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#load()-detail">load</a></strong> ( <span style="color: #0000BB">$data</span>, <span style="color: #0000BB">$formName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$data</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1762,10 +1823,11 @@ If not set, <a href="yii-base-model.html#formName()-detail">formName()</a> will 
         
         loadMultiple()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Populates a set of models with the data from end user.</strong></p>
 
@@ -1778,7 +1840,7 @@ The data being populated to each model is subject to the safety check by <a href
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#loadMultiple()-detail">loadMultiple</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$models</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$formName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#loadMultiple()-detail">loadMultiple</a></strong> ( <span style="color: #0000BB">$models</span>, <span style="color: #0000BB">$data</span>, <span style="color: #0000BB">$formName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$models</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1818,10 +1880,11 @@ This parameter is available since version 2.0.1.</p>
         
         offsetExists()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns whether there is an element at the specified offset.</strong></p>
 
@@ -1831,7 +1894,7 @@ It is implicitly called when you use something like <code>isset($model[$offset])
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#offsetExists()-detail">offsetExists</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#offsetExists()-detail">offsetExists</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1850,10 +1913,11 @@ It is implicitly called when you use something like <code>isset($model[$offset])
         
         offsetGet()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the element at the specified offset.</strong></p>
 
@@ -1863,7 +1927,7 @@ It is implicitly called when you use something like <code>$value = $model[$offse
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-model.html#offsetGet()-detail">offsetGet</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-base-model.html#offsetGet()-detail">offsetGet</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1888,10 +1952,11 @@ It is implicitly called when you use something like <code>$value = $model[$offse
         
         offsetSet()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the element at the specified offset.</strong></p>
 
@@ -1901,7 +1966,7 @@ It is implicitly called when you use something like <code>$model[$offset] = $ite
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#offsetSet()-detail">offsetSet</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$item&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#offsetSet()-detail">offsetSet</a></strong> ( <span style="color: #0000BB">$offset</span>, <span style="color: #0000BB">$item</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
@@ -1926,10 +1991,11 @@ It is implicitly called when you use something like <code>$model[$offset] = $ite
         
         offsetUnset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the element value at the specified offset to null.</strong></p>
 
@@ -1939,7 +2005,7 @@ It is implicitly called when you use something like <code>unset($model[$offset])
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#offsetUnset()-detail">offsetUnset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$offset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#offsetUnset()-detail">offsetUnset</a></strong> ( <span style="color: #0000BB">$offset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$offset</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1958,10 +2024,11 @@ It is implicitly called when you use something like <code>unset($model[$offset])
         
         onUnsafeAttribute()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>This method is invoked when an unsafe attribute is being massively assigned.</strong></p>
 
@@ -1971,7 +2038,7 @@ It does nothing otherwise.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#onUnsafeAttribute()-detail">onUnsafeAttribute</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#onUnsafeAttribute()-detail">onUnsafeAttribute</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1996,17 +2063,18 @@ It does nothing otherwise.</p>
         
         rules()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the validation rules for attributes.</strong></p>
 
         <p>Validation rules are used by <a href="yii-base-model.html#validate()-detail">validate()</a> to check if attribute values are valid.
 Child classes may override this method to declare different validation rules.</p>
 <p>Each rule is an array with the following structure:</p>
-<pre><code>[
+<pre><code class="hljs json">[
     ['attribute1', 'attribute2'],
     'validator type',
     'on' =&gt; ['scenario1', 'scenario2'],
@@ -2025,26 +2093,26 @@ Please refer to individual validator class API for possible properties.</li>
 </ul>
 <p>A validator can be either an object of a class extending <span class="broken-link">\yii\validators\Validator</span>, or a model class method
 (called <em>inline validator</em>) that has the following signature:</p>
-<pre><code>// $params refers to validation parameters given in the rule
-function validatorName($attribute, $params)
-</code></pre>
+<pre><code class="hljs php"><span class="hljs-comment">// $params refers to validation parameters given in the rule</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">validatorName</span><span class="hljs-params">(<span class="hljs-variable">$attribute</span>, <span class="hljs-variable">$params</span>)</span>
+</span></code></pre>
 <p>In the above <code>$attribute</code> refers to currently validated attribute name while <code>$params</code> contains an array of
 validator configuration options such as <code>max</code> in case of <code>string</code> validator. Currently validate attribute value
 can be accessed as <code>$this-&gt;[$attribute]</code>.</p>
 <p>Yii also provides a set of <span class="broken-link">\yii\validators\Validator::builtInValidators</span>.
 They each has an alias name which can be used when specifying a validation rule.</p>
 <p>Below are some examples:</p>
-<pre><code>[
-    // built-in "required" validator
-    [['username', 'password'], 'required'],
-    // built-in "string" validator customized with "min" and "max" properties
-    ['username', 'string', 'min' =&gt; 3, 'max' =&gt; 12],
-    // built-in "compare" validator that is used in "register" scenario only
-    ['password', 'compare', 'compareAttribute' =&gt; 'password2', 'on' =&gt; 'register'],
-    // an inline validator defined via the "authenticate()" method in the model class
-    ['password', 'authenticate', 'on' =&gt; 'login'],
-    // a validator of class "DateRangeValidator"
-    ['dateRange', 'DateRangeValidator'],
+<pre><code class="hljs php">[
+    <span class="hljs-comment">// built-in "required" validator</span>
+    [[<span class="hljs-string">'username'</span>, <span class="hljs-string">'password'</span>], <span class="hljs-string">'required'</span>],
+    <span class="hljs-comment">// built-in "string" validator customized with "min" and "max" properties</span>
+    [<span class="hljs-string">'username'</span>, <span class="hljs-string">'string'</span>, <span class="hljs-string">'min'</span> =&gt; <span class="hljs-number">3</span>, <span class="hljs-string">'max'</span> =&gt; <span class="hljs-number">12</span>],
+    <span class="hljs-comment">// built-in "compare" validator that is used in "register" scenario only</span>
+    [<span class="hljs-string">'password'</span>, <span class="hljs-string">'compare'</span>, <span class="hljs-string">'compareAttribute'</span> =&gt; <span class="hljs-string">'password2'</span>, <span class="hljs-string">'on'</span> =&gt; <span class="hljs-string">'register'</span>],
+    <span class="hljs-comment">// an inline validator defined via the "authenticate()" method in the model class</span>
+    [<span class="hljs-string">'password'</span>, <span class="hljs-string">'authenticate'</span>, <span class="hljs-string">'on'</span> =&gt; <span class="hljs-string">'login'</span>],
+    <span class="hljs-comment">// a validator of class "DateRangeValidator"</span>
+    [<span class="hljs-string">'dateRange'</span>, <span class="hljs-string">'DateRangeValidator'</span>],
 ];
 </code></pre>
 <p>Note, in order to inherit rules defined in the parent class, a child class needs to
@@ -2053,7 +2121,7 @@ merge the parent rules with child rules using functions such as <code>array_merg
         <p>See also <a href="yii-base-model.html#scenarios()-detail">scenarios()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#rules()-detail">rules</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#rules()-detail">rules</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2072,10 +2140,11 @@ merge the parent rules with child rules using functions such as <code>array_merg
         
         safeAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the attribute names that are safe to be massively assigned in the current scenario.</strong></p>
 
@@ -2083,7 +2152,7 @@ merge the parent rules with child rules using functions such as <code>array_merg
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a>[] <strong><a href="yii-base-model.html#safeAttributes()-detail">safeAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>[]</span> <strong><a href="yii-base-model.html#safeAttributes()-detail">safeAttributes</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>[]</td>
@@ -2102,16 +2171,22 @@ merge the parent rules with child rules using functions such as <code>array_merg
         
         scenarios()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a list of scenarios and the corresponding active attributes.</strong></p>
 
         <p>An active attribute is one that is subject to validation in the current scenario.
 The returned array should be in the following format:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'scenario1'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'attribute11'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'attribute12'</span><span style="color: #007700">,&nbsp;...],<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'scenario2'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'attribute21'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'attribute22'</span><span style="color: #007700">,&nbsp;...],<br />&nbsp;&nbsp;&nbsp;&nbsp;...<br />]</span></code></pre>
+<pre><code class="hljs php language-php">[
+    <span class="hljs-string">'scenario1'</span> =&gt; [<span class="hljs-string">'attribute11'</span>, <span class="hljs-string">'attribute12'</span>, ...],
+    <span class="hljs-string">'scenario2'</span> =&gt; [<span class="hljs-string">'attribute21'</span>, <span class="hljs-string">'attribute22'</span>, ...],
+    ...
+]
+</code></pre>
 <p>By default, an active attribute is considered safe and can be massively assigned.
 If an attribute should NOT be massively assigned (thus considered unsafe),
 please prefix the attribute with an exclamation character (e.g. <code>'!rank'</code>).</p>
@@ -2123,7 +2198,7 @@ are being validated by the validation rules that apply to the scenario.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-base-model.html#scenarios()-detail">scenarios</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-base-model.html#scenarios()-detail">scenarios</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2142,10 +2217,11 @@ are being validated by the validation rules that apply to the scenario.</p>
         
         setAttributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the attribute values in a massive way.</strong></p>
 
@@ -2153,7 +2229,7 @@ are being validated by the validation rules that apply to the scenario.</p>
         <p>See also:</p><ul><li><a href="yii-base-model.html#safeAttributes()-detail">safeAttributes()</a></li><li><a href="yii-base-model.html#attributes()-detail">attributes()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#setAttributes()-detail">setAttributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$values</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$safeOnly&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#setAttributes()-detail">setAttributes</a></strong> ( <span style="color: #0000BB">$values</span>, <span style="color: #0000BB">$safeOnly&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$values</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2179,10 +2255,11 @@ A safe attribute is one that is associated with a validation rule in the current
         
         setScenario()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the scenario for the model.</strong></p>
 
@@ -2192,7 +2269,7 @@ The method <a href="yii-base-model.html#validate()-detail">validate()</a> will p
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-model.html#setScenario()-detail">setScenario</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-model.html#setScenario()-detail">setScenario</a></strong> ( <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -2211,10 +2288,11 @@ The method <a href="yii-base-model.html#validate()-detail">validate()</a> will p
         
         validate()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Performs the data validation.</strong></p>
 
@@ -2233,7 +2311,7 @@ the validation will be cancelled and <a href="yii-base-model.html#afterValidate(
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#validate()-detail">validate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$clearErrors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#validate()-detail">validate</a></strong> ( <span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span>, <span style="color: #0000BB">$clearErrors&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attributeNames</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2272,10 +2350,11 @@ validation rules should be validated.</p>
         
         validateMultiple()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Validates multiple models.</strong></p>
 
@@ -2285,7 +2364,7 @@ be of the same or different types.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-model.html#validateMultiple()-detail">validateMultiple</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$models</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-model.html#validateMultiple()-detail">validateMultiple</a></strong> ( <span style="color: #0000BB">$models</span>, <span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$models</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -2322,9 +2401,10 @@ or multiple models have validation error.</p>
         
         EVENT_AFTER_VALIDATE        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\base\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event raised at the end of <a href="yii-base-model.html#validate()-detail">validate()</a></p>
 
@@ -2338,9 +2418,10 @@ or multiple models have validation error.</p>
         
         EVENT_BEFORE_VALIDATE        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\base\ModelEvent                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event raised at the beginning of <a href="yii-base-model.html#validate()-detail">validate()</a>. You may set
 <span class="broken-link">\yii\base\ModelEvent::isValid</span> to be false to stop the validation.</p>
@@ -2386,7 +2467,7 @@ or multiple models have validation error.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

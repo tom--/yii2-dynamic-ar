@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Object - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Object - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class yii\base\Object</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
                 | <a href="#methods">Methods</a>
             </div>
@@ -49,7 +50,7 @@
     </colgroup>
             <tr><th>Inheritance</th><td><a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a></td></tr>
-                        <tr><th>Subclasses</th><td>examples\shop\Product, examples\shop\ShopController, <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, yii\base\Action, yii\base\ActionEvent, yii\base\ActionFilter, yii\base\Behavior, <a href="yii-base-component.html">yii\base\Component</a>, yii\base\Controller, yii\base\DynamicModel, yii\base\ErrorHandler, yii\base\Event, yii\base\InlineAction, <a href="yii-base-model.html">yii\base\Model</a>, yii\base\ModelEvent, yii\base\Request, yii\base\Response, yii\base\Security, yii\base\Theme, yii\base\View, yii\base\ViewEvent, yii\base\ViewRenderer, yii\base\Widget, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, yii\db\AfterSaveEvent, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a>, yii\db\BatchQueryResult, yii\db\ColumnSchema, yii\db\Command, yii\db\Connection, yii\db\DataReader, yii\db\Expression, yii\db\Migration, <a href="yii-db-query.html">yii\db\Query</a>, yii\db\QueryBuilder, yii\db\Schema, yii\db\TableSchema, yii\db\Transaction, yii\db\cubrid\QueryBuilder, yii\db\cubrid\Schema, yii\db\mssql\QueryBuilder, yii\db\mssql\Schema, yii\db\mssql\TableSchema, yii\db\mysql\QueryBuilder, yii\db\mysql\Schema, yii\db\oci\QueryBuilder, yii\db\oci\Schema, yii\db\pgsql\QueryBuilder, yii\db\pgsql\Schema, yii\db\sqlite\QueryBuilder, yii\db\sqlite\Schema</td></tr>
+                        <tr><th>Subclasses</th><td>examples\shop\Product, examples\shop\ShopController, <a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, <a href="spinitron-dynamicar-valueexpression.html">spinitron\dynamicAr\ValueExpression</a>, tests\unit\data\BaseRecord, tests\unit\data\CustomerQuery, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier, yii\base\Action, yii\base\ActionEvent, yii\base\ActionFilter, yii\base\Behavior, <a href="yii-base-component.html">yii\base\Component</a>, yii\base\Controller, yii\base\DynamicModel, yii\base\ErrorHandler, yii\base\Event, yii\base\InlineAction, <a href="yii-base-model.html">yii\base\Model</a>, yii\base\ModelEvent, yii\base\Request, yii\base\Response, yii\base\Security, yii\base\Theme, yii\base\View, yii\base\ViewEvent, yii\base\ViewRenderer, yii\base\Widget, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a>, <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>, yii\db\AfterSaveEvent, <a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a>, yii\db\BatchQueryResult, yii\db\ColumnSchema, yii\db\Command, yii\db\Connection, yii\db\DataReader, yii\db\Expression, yii\db\Migration, <a href="yii-db-query.html">yii\db\Query</a>, yii\db\QueryBuilder, yii\db\Schema, yii\db\TableSchema, yii\db\Transaction, yii\db\cubrid\QueryBuilder, yii\db\cubrid\Schema, yii\db\mssql\QueryBuilder, yii\db\mssql\Schema, yii\db\mssql\TableSchema, yii\db\mysql\QueryBuilder, yii\db\mysql\Schema, yii\db\oci\QueryBuilder, yii\db\oci\Schema, yii\db\pgsql\QueryBuilder, yii\db\pgsql\Schema, yii\db\sqlite\QueryBuilder, yii\db\sqlite\Schema</td></tr>
                         <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -57,29 +58,29 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>Object is the base class that implements the <em>property</em> feature.</strong></p>
     <p>A property is defined by a getter method (e.g. <code>getLabel</code>), and/or a setter method (e.g. <code>setLabel</code>). For example,
 the following getter and setter methods define a property named <code>label</code>:</p>
-<pre><code>private $_label;
+<pre><code class="hljs php"><span class="hljs-keyword">private</span> <span class="hljs-variable">$_label</span>;
 
-public function getLabel()
-{
-    return $this-&gt;_label;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getLabel</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;_label;
 }
 
-public function setLabel($value)
-{
-    $this-&gt;_label = $value;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setLabel</span><span class="hljs-params">(<span class="hljs-variable">$value</span>)</span>
+</span>{
+    <span class="hljs-variable">$this</span>-&gt;_label = <span class="hljs-variable">$value</span>;
 }
 </code></pre>
 <p>Property names are <em>case-insensitive</em>.</p>
 <p>A property can be accessed like a member variable of an object. Reading or writing a property will cause the invocation
 of the corresponding getter or setter method. For example,</p>
-<pre><code>// equivalent to $label = $object-&gt;getLabel();
-$label = $object-&gt;label;
-// equivalent to $object-&gt;setLabel('abc');
-$object-&gt;label = 'abc';
+<pre><code class="hljs bash">// equivalent to <span class="hljs-variable">$label</span> = <span class="hljs-variable">$object</span>-&gt;getLabel();
+<span class="hljs-variable">$label</span> = <span class="hljs-variable">$object</span>-&gt;label;
+// equivalent to <span class="hljs-variable">$object</span>-&gt;<span class="hljs-built_in">set</span>Label(<span class="hljs-string">'abc'</span>);
+<span class="hljs-variable">$object</span>-&gt;label = <span class="hljs-string">'abc'</span>;
 </code></pre>
 <p>If a property has only a getter method and has no setter method, it is considered as <em>read-only</em>. In this case, trying
 to modify the property value will cause an exception.</p>
@@ -96,10 +97,10 @@ you perform object initialization in the <code>init()</code> method because at t
 is already applied.</p>
 <p>In order to ensure the above life cycles, if a child class of Object needs to override the constructor,
 it should be done like the following:</p>
-<pre><code>public function __construct($param1, $param2, ..., $config = [])
-{
+<pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$param1</span>, <span class="hljs-variable">$param2</span>, ..., <span class="hljs-variable">$config</span> = [])</span>
+</span>{
     ...
-    parent::__construct($config);
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$config</span>);
 }
 </code></pre>
 <p>That is, a <code>$config</code> parameter (defaults to <code>[]</code>) should be declared as the last parameter
@@ -204,10 +205,11 @@ of the constructor, and the parent implementation should be called at the end of
         
         __call()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Calls the named method which is not a class method.</strong></p>
 
@@ -217,7 +219,7 @@ will be implicitly called when an unknown method is being invoked.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-object.html#__call()-detail">__call</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-base-object.html#__call()-detail">__call</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$params</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -254,10 +256,11 @@ will be implicitly called when an unknown method is being invoked.</p>
         
         __construct()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Constructor.</strong></p>
 
@@ -275,7 +278,7 @@ will be implicitly called when an unknown method is being invoked.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#__construct()-detail">__construct</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-object.html#__construct()-detail">__construct</a></strong> ( <span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$config</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -294,10 +297,11 @@ will be implicitly called when an unknown method is being invoked.</p>
         
         __get()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the value of an object property.</strong></p>
 
@@ -307,7 +311,7 @@ will be implicitly called when executing <code>$value = $object-&gt;property;</c
         <p>See also <a href="yii-base-object.html#__set()-detail">__set()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-base-object.html#__get()-detail">__get</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">mixed</span> <strong><a href="yii-base-object.html#__get()-detail">__get</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -344,10 +348,11 @@ will be implicitly called when executing <code>$value = $object-&gt;property;</c
         
         __isset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Checks if a property is set, i.e. defined and not null.</strong></p>
 
@@ -358,7 +363,7 @@ will be implicitly called when executing <code>isset($object-&gt;property)</code
         <p>See also <a href="http://php.net/manual/en/function.isset.php">http://php.net/manual/en/function.isset.php</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#__isset()-detail">__isset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-object.html#__isset()-detail">__isset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -383,10 +388,11 @@ will be implicitly called when executing <code>isset($object-&gt;property)</code
         
         __set()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets value of an object property.</strong></p>
 
@@ -396,7 +402,7 @@ will be implicitly called when executing <code>$object-&gt;property = $value;</c
         <p>See also <a href="yii-base-object.html#__get()-detail">__get()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#__set()-detail">__set</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-object.html#__set()-detail">__set</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$value</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -433,10 +439,11 @@ will be implicitly called when executing <code>$object-&gt;property = $value;</c
         
         __unset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets an object property to null.</strong></p>
 
@@ -448,7 +455,7 @@ If the property is read-only, it will throw an exception.</p>
         <p>See also <a href="http://php.net/manual/en/function.unset.php">http://php.net/manual/en/function.unset.php</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#__unset()-detail">__unset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-object.html#__unset()-detail">__unset</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -473,10 +480,11 @@ If the property is read-only, it will throw an exception.</p>
         
         canGetProperty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a property can be read.</strong></p>
 
@@ -490,7 +498,7 @@ If the property is read-only, it will throw an exception.</p>
         <p>See also <a href="yii-base-object.html#canSetProperty()-detail">canSetProperty()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#canGetProperty()-detail">canGetProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-object.html#canGetProperty()-detail">canGetProperty</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -521,10 +529,11 @@ If the property is read-only, it will throw an exception.</p>
         
         canSetProperty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a property can be set.</strong></p>
 
@@ -538,7 +547,7 @@ If the property is read-only, it will throw an exception.</p>
         <p>See also <a href="yii-base-object.html#canGetProperty()-detail">canGetProperty()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#canSetProperty()-detail">canSetProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-object.html#canSetProperty()-detail">canSetProperty</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -569,10 +578,11 @@ If the property is read-only, it will throw an exception.</p>
         
         className()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the fully qualified name of this class.</strong></p>
 
@@ -580,7 +590,7 @@ If the property is read-only, it will throw an exception.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-base-object.html#className()-detail">className</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-base-object.html#className()-detail">className</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -599,10 +609,11 @@ If the property is read-only, it will throw an exception.</p>
         
         hasMethod()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a method is defined.</strong></p>
 
@@ -612,7 +623,7 @@ You may override this method when you implemented the php magic method <code>__c
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#hasMethod()-detail">hasMethod</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-object.html#hasMethod()-detail">hasMethod</a></strong> ( <span style="color: #0000BB">$name</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -637,10 +648,11 @@ You may override this method when you implemented the php magic method <code>__c
         
         hasProperty()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether a property is defined.</strong></p>
 
@@ -654,7 +666,7 @@ You may override this method when you implemented the php magic method <code>__c
         <p>See also:</p><ul><li><a href="yii-base-object.html#canGetProperty()-detail">canGetProperty()</a></li><li><a href="yii-base-object.html#canSetProperty()-detail">canSetProperty()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-base-object.html#hasProperty()-detail">hasProperty</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-base-object.html#hasProperty()-detail">hasProperty</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$checkVars&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -685,10 +697,11 @@ You may override this method when you implemented the php magic method <code>__c
         
         init()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Initializes the object.</strong></p>
 
@@ -698,7 +711,7 @@ given configuration.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-base-object.html#init()-detail">init</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-base-object.html#init()-detail">init</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -741,7 +754,7 @@ given configuration.</p>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

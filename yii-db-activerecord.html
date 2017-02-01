@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>ActiveRecord - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>ActiveRecord - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class yii\db\ActiveRecord</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -57,7 +58,7 @@
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="http://www.php.net/class.arrayaccess">ArrayAccess</a>, <a href="http://www.php.net/class.iteratoraggregate">IteratorAggregate</a>, <a href="yii-base-arrayable.html">yii\base\Arrayable</a>, <a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activerecordinterface.html">yii\db\ActiveRecordInterface</a></td></tr>
                     <tr><th>Uses Traits</th><td><a href="yii-base-arrayabletrait.html">yii\base\ArrayableTrait</a></td></tr>
-                <tr><th>Subclasses</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td></tr>
+                <tr><th>Subclasses</th><td>examples\shop\Product, <a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a>, tests\unit\data\BaseRecord, tests\unit\data\ar\Category, tests\unit\data\ar\Customer, tests\unit\data\ar\Item, tests\unit\data\ar\NullValues, tests\unit\data\ar\Order, tests\unit\data\ar\OrderItem, tests\unit\data\ar\OrderItemWithNullFK, tests\unit\data\ar\OrderWithNullFK, tests\unit\data\ar\Profile, tests\unit\data\ar\Type, tests\unit\data\dar\MissingDynColumn, tests\unit\data\dar\Person, tests\unit\data\dar\Product, tests\unit\data\dar\Supplier</td></tr>
                         <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -65,7 +66,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>ActiveRecord is the base class for classes representing relational data in terms of objects.</strong></p>
     <p>Active Record implements the <a href="http://en.wikipedia.org/wiki/Active_record">Active Record design pattern</a>.
 The premise behind Active Record is that an individual <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a> object is associated with a specific
@@ -79,9 +80,18 @@ In this example, Active Record is providing an object-oriented interface for acc
 But Active Record provides much more functionality than this.</p>
 <p>To declare an ActiveRecord class you need to extend <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a> and
 implement the <code>tableName</code> method:</p>
-<pre><code class="language-php"><span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;\</span><span style="color: #0000BB">yii</span><span style="color: #007700">\</span><span style="color: #0000BB">db</span><span style="color: #007700">\</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">tableName</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #DD0000">'customer'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Customer</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">yii</span>\<span class="hljs-title">db</span>\<span class="hljs-title">ActiveRecord</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tableName</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'customer'</span>;
+    }
+}
+</code></pre>
 <p>The <code>tableName</code> method only has to return the name of the database table associated with the class.</p>
-<blockquote><p>Tip: You may also use the <a href="/guide-start-gii.html">Gii code generator</a> to generate ActiveRecord classes from your
+<blockquote class="tip"><p><strong>Tip: </strong>You may also use the <a href="/guide-start-gii.html">Gii code generator</a> to generate ActiveRecord classes from your
 database tables.</p>
 </blockquote>
 <p>Class instances are obtained in one of two ways:</p>
@@ -90,7 +100,16 @@ database tables.</p>
 <li>Using a method to fetch an existing record (or records) from the database</li>
 </ul>
 <p>Below is an example showing some typical usage of ActiveRecord:</p>
-<pre><code class="language-php"><span style="color: #0000BB">$user&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">User</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$user</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Qiang'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$user</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">();&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;a&nbsp;new&nbsp;row&nbsp;is&nbsp;inserted&nbsp;into&nbsp;user&nbsp;table<br /><br />//&nbsp;the&nbsp;following&nbsp;will&nbsp;retrieve&nbsp;the&nbsp;user&nbsp;'CeBe'&nbsp;from&nbsp;the&nbsp;database<br /></span><span style="color: #0000BB">$user&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">User</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'name'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'CeBe'</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;this&nbsp;will&nbsp;get&nbsp;related&nbsp;records&nbsp;from&nbsp;orders&nbsp;table&nbsp;when&nbsp;relation&nbsp;is&nbsp;defined<br /></span><span style="color: #0000BB">$orders&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">orders</span><span style="color: #007700">;</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$user</span> = <span class="hljs-keyword">new</span> User();
+<span class="hljs-variable">$user</span>-&gt;name = <span class="hljs-string">'Qiang'</span>;
+<span class="hljs-variable">$user</span>-&gt;save();  <span class="hljs-comment">// a new row is inserted into user table</span>
+
+<span class="hljs-comment">// the following will retrieve the user 'CeBe' from the database</span>
+<span class="hljs-variable">$user</span> = User::find()-&gt;where([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'CeBe'</span>])-&gt;one();
+
+<span class="hljs-comment">// this will get related records from orders table when relation is defined</span>
+<span class="hljs-variable">$orders</span> = <span class="hljs-variable">$user</span>-&gt;orders;
+</code></pre>
 <p>For more details and usage information on ActiveRecord, see the <a href="/guide-db-active-record.html">guide article on ActiveRecord</a>.</p>
 
     </div>
@@ -114,7 +133,7 @@ database tables.</p>
 </tr>
         <tr class="inherited" id="$activeValidators">
         <td><a href="yii-base-model.html#$activeValidators-detail">$activeValidators</a></td>
-        <td>\yii\validators\Validator</td>
+        <td>\yii\validators\Validator[]</td>
         <td>The validators applicable to the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -126,7 +145,7 @@ database tables.</p>
     </tr>
             <tr class="inherited" id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -192,7 +211,7 @@ database tables.</p>
     </tr>
             <tr class="inherited" id="$validators">
         <td><a href="yii-base-model.html#$validators-detail">$validators</a></td>
-        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator</td>
+        <td><a href="http://www.php.net/class.arrayobject">ArrayObject</a>|\yii\validators\Validator[]</td>
         <td>All the validators declared in the model.</td>
         <td><a href="yii-base-model.html">yii\base\Model</a></td>
     </tr>
@@ -979,35 +998,35 @@ database tables.</p>
           <td id="OP_ALL-detail">OP_ALL</td>
           <td>7</td>
           <td>All three operations: insert, update, delete.
-This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
+This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr id="OP_DELETE">
           <td id="OP_DELETE-detail">OP_DELETE</td>
           <td>4</td>
           <td>The delete operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
-</td>
+                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr id="OP_INSERT">
           <td id="OP_INSERT-detail">OP_INSERT</td>
           <td>1</td>
           <td>The insert operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
-</td>
+                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr id="OP_UPDATE">
           <td id="OP_UPDATE-detail">OP_UPDATE</td>
           <td>2</td>
           <td>The update operation. This is mainly used when overriding <a href="yii-db-activerecord.html#transactions()-detail">transactions()</a> to specify which operations are transactional.
-</td>
+                        </td>
           <td><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
         </tr>
             <tr class="inherited" id="SCENARIO_DEFAULT">
           <td id="SCENARIO_DEFAULT-detail">SCENARIO_DEFAULT</td>
           <td>'default'</td>
           <td>The name of the default scenario.
-</td>
+                        </td>
           <td><a href="yii-base-model.html">yii\base\Model</a></td>
         </tr>
         </table>
@@ -1025,10 +1044,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         
         attributes()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the list of all attribute names of the model.</strong></p>
 
@@ -1037,7 +1057,7 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-activerecord.html#attributes()-detail">attributes</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-activerecord.html#attributes()-detail">attributes</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1056,10 +1076,11 @@ This is a shortcut of the expression: OP_INSERT | OP_UPDATE | OP_DELETE.</td>
         
         delete()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Deletes the table row corresponding to this active record.</strong></p>
 
@@ -1076,10 +1097,10 @@ will be raised by the corresponding methods.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a>|false <strong><a href="yii-db-activerecord.html#delete()-detail">delete</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">false</a></span> <strong><a href="yii-db-activerecord.html#delete()-detail">delete</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|false</td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">false</a></td>
                   <td class="param-desc-col"><p>The number of rows deleted, or false if the deletion is unsuccessful for some reason.
 Note that it is possible the number of rows deleted is 0, even though the deletion execution is successful.</p>
 </td>
@@ -1109,22 +1130,23 @@ being deleted is outdated.</p>
         
         deleteAll()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Deletes rows in the table using the provided conditions.</strong></p>
 
         <p>WARNING: If you do not specify any condition, this method will delete ALL rows in the table.</p>
 <p>For example, to delete all customers whose status is 3:</p>
-<pre><code>Customer::deleteAll('status = 3');
+<pre><code class="hljs less"><span class="hljs-attribute">Customer</span>::<span class="hljs-function">deleteAll</span>(<span class="hljs-string">'status = 3'</span>);
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-activerecord.html#deleteAll()-detail">deleteAll</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-activerecord.html#deleteAll()-detail">deleteAll</a></strong> ( <span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1156,10 +1178,11 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
         
         deleteInternal()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Deletes an ActiveRecord without considering transaction.</strong></p>
 
@@ -1167,10 +1190,10 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a>|false <strong><a href="yii-db-activerecord.html#deleteInternal()-detail">deleteInternal</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">false</a></span> <strong><a href="yii-db-activerecord.html#deleteInternal()-detail">deleteInternal</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|false</td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">false</a></td>
                   <td class="param-desc-col"><p>The number of rows deleted, or false if the deletion is unsuccessful for some reason.
 Note that it is possible the number of rows deleted is 0, even though the deletion execution is successful.</p>
 </td>
@@ -1192,10 +1215,11 @@ Note that it is possible the number of rows deleted is 0, even though the deleti
         
         equals()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the given active record is the same as the current one.</strong></p>
 
@@ -1205,7 +1229,7 @@ If one of the records <a href="yii-db-baseactiverecord.html#$isNewRecord-detail"
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-activerecord.html#equals()-detail">equals</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$record&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-activerecord.html#equals()-detail">equals</a></strong> ( <span style="color: #0000BB">$record</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$record</span></td>
                   <td class="param-type-col"><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a></td>
@@ -1230,28 +1254,62 @@ If one of the records <a href="yii-db-baseactiverecord.html#$isNewRecord-detail"
         
         find()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates an <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> instance for query purpose.</strong></p>
 
         <p>The returned <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> instance can be further customized by calling
 methods defined in <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> before <code>one()</code> or <code>all()</code> is called to return
 populated ActiveRecord instances. For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;find&nbsp;the&nbsp;customer&nbsp;whose&nbsp;ID&nbsp;is&nbsp;1<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;all&nbsp;active&nbsp;customers&nbsp;and&nbsp;order&nbsp;them&nbsp;by&nbsp;their&nbsp;age:<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'status'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">orderBy</span><span style="color: #007700">(</span><span style="color: #DD0000">'age'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-comment">// find the customer whose ID is 1</span>
+<span class="hljs-variable">$customer</span> = Customer::find()-&gt;where([<span class="hljs-string">'id'</span> =&gt; <span class="hljs-number">1</span>])-&gt;one();
+
+<span class="hljs-comment">// find all active customers and order them by their age:</span>
+<span class="hljs-variable">$customers</span> = Customer::find()
+    -&gt;where([<span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>])
+    -&gt;orderBy(<span class="hljs-string">'age'</span>)
+    -&gt;all();
+</code></pre>
 <p>This method is also called by <a href="yii-db-baseactiverecord.html#hasOne()-detail">yii\db\BaseActiveRecord::hasOne()</a> and <a href="yii-db-baseactiverecord.html#hasMany()-detail">yii\db\BaseActiveRecord::hasMany()</a> to
 create a relational query.</p>
 <p>You may override this method to return a customized query. For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;use&nbsp;CustomerQuery&nbsp;instead&nbsp;of&nbsp;the&nbsp;default&nbsp;ActiveQuery<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;new&nbsp;</span><span style="color: #0000BB">CustomerQuery</span><span style="color: #007700">(</span><span style="color: #0000BB">get_called_class</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Customer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ActiveRecord</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-comment">// use CustomerQuery instead of the default ActiveQuery</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CustomerQuery(get_called_class());
+    }
+}
+</code></pre>
 <p>The following code shows how to apply a default condition for all queries:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Customer&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">ActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'deleted'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;Use&nbsp;andWhere()/orWhere()&nbsp;to&nbsp;apply&nbsp;the&nbsp;default&nbsp;condition<br />//&nbsp;SELECT&nbsp;FROM&nbsp;customer&nbsp;WHERE&nbsp;`deleted`=:deleted&nbsp;AND&nbsp;age&gt;30<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">andWhere</span><span style="color: #007700">(</span><span style="color: #DD0000">'age&gt;30'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;Use&nbsp;where()&nbsp;to&nbsp;ignore&nbsp;the&nbsp;default&nbsp;condition<br />//&nbsp;SELECT&nbsp;FROM&nbsp;customer&nbsp;WHERE&nbsp;age&gt;30<br /></span><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">(</span><span style="color: #DD0000">'age&gt;30'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Customer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ActiveRecord</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">parent</span>::find()-&gt;where([<span class="hljs-string">'deleted'</span> =&gt; <span class="hljs-keyword">false</span>]);
+    }
+}
+
+<span class="hljs-comment">// Use andWhere()/orWhere() to apply the default condition</span>
+<span class="hljs-comment">// SELECT FROM customer WHERE `deleted`=:deleted AND age&gt;30</span>
+<span class="hljs-variable">$customers</span> = Customer::find()-&gt;andWhere(<span class="hljs-string">'age&gt;30'</span>)-&gt;all();
+
+<span class="hljs-comment">// Use where() to ignore the default condition</span>
+<span class="hljs-comment">// SELECT FROM customer WHERE age&gt;30</span>
+<span class="hljs-variable">$customers</span> = Customer::find()-&gt;where(<span class="hljs-string">'age&gt;30'</span>)-&gt;all();
+
+
+</code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a> <strong><a href="yii-db-activerecord.html#find()-detail">find</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></span> <strong><a href="yii-db-activerecord.html#find()-detail">find</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td>
@@ -1270,10 +1328,11 @@ create a relational query.</p>
         
         findByCondition()
         <span class="detail-header-tag small">
-            protected            method
+            protected                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Finds ActiveRecord instance(s) by the given condition.</strong></p>
 
@@ -1282,7 +1341,7 @@ create a relational query.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a> <strong><a href="yii-db-activerecord.html#findByCondition()-detail">findByCondition</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected static</span> <span class="signature-type"><a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a></span> <strong><a href="yii-db-activerecord.html#findByCondition()-detail">findByCondition</a></strong> ( <span style="color: #0000BB">$condition</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col">mixed</td>
@@ -1313,10 +1372,11 @@ create a relational query.</p>
         
         findBySql()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates an <a href="yii-db-activequery.html">yii\db\ActiveQuery</a> instance with a given SQL statement.</strong></p>
 
@@ -1325,13 +1385,13 @@ query modification methods (such as <code>where()</code>, <code>order()</code>) 
 instance will have no effect. However, calling <code>with()</code>, <code>asArray()</code> or <code>indexBy()</code> is
 still fine.</p>
 <p>Below is an example:</p>
-<pre><code>$customers = Customer::findBySql('SELECT * FROM customer')-&gt;all();
+<pre><code class="hljs php"><span class="hljs-variable">$customers</span> = Customer::findBySql(<span class="hljs-string">'SELECT * FROM customer'</span>)-&gt;all();
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a> <strong><a href="yii-db-activerecord.html#findBySql()-detail">findBySql</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="yii-db-activequery.html">yii\db\ActiveQuery</a></span> <strong><a href="yii-db-activerecord.html#findBySql()-detail">findBySql</a></strong> ( <span style="color: #0000BB">$sql</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$sql</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1362,10 +1422,11 @@ still fine.</p>
         
         getDb()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the database connection used by this AR class.</strong></p>
 
@@ -1375,7 +1436,7 @@ You may override this method if you want to use a different database connection.
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\db\Connection <strong><a href="yii-db-activerecord.html#getDb()-detail">getDb</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">\yii\db\Connection</span> <strong><a href="yii-db-activerecord.html#getDb()-detail">getDb</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -1394,10 +1455,11 @@ You may override this method if you want to use a different database connection.
         
         getTableSchema()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the schema information of the DB table associated with this AR class.</strong></p>
 
@@ -1405,7 +1467,7 @@ You may override this method if you want to use a different database connection.
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\db\TableSchema <strong><a href="yii-db-activerecord.html#getTableSchema()-detail">getTableSchema</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">\yii\db\TableSchema</span> <strong><a href="yii-db-activerecord.html#getTableSchema()-detail">getTableSchema</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col">\yii\db\TableSchema</td>
@@ -1430,10 +1492,11 @@ You may override this method if you want to use a different database connection.
         
         insert()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Inserts a row into the associated database table using the attribute values of this record.</strong></p>
 
@@ -1454,16 +1517,16 @@ will be raised by the corresponding methods.</p>
 <p>If the table's primary key is auto-incremental and is null during insertion,
 it will be populated with the actual value after insertion.</p>
 <p>For example, to insert a customer record:</p>
-<pre><code>$customer = new Customer;
-$customer-&gt;name = $name;
-$customer-&gt;email = $email;
-$customer-&gt;insert();
+<pre><code class="hljs php"><span class="hljs-variable">$customer</span> = <span class="hljs-keyword">new</span> Customer;
+<span class="hljs-variable">$customer</span>-&gt;name = <span class="hljs-variable">$name</span>;
+<span class="hljs-variable">$customer</span>-&gt;email = <span class="hljs-variable">$email</span>;
+<span class="hljs-variable">$customer</span>-&gt;insert();
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-activerecord.html#insert()-detail">insert</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-activerecord.html#insert()-detail">insert</a></strong> ( <span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$runValidation</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1502,10 +1565,11 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         insertInternal()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Inserts an ActiveRecord into DB without considering transaction.</strong></p>
 
@@ -1513,7 +1577,7 @@ meaning all attributes that are loaded from DB will be saved.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-activerecord.html#insertInternal()-detail">insertInternal</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-activerecord.html#insertInternal()-detail">insertInternal</a></strong> ( <span style="color: #0000BB">$attributes&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attributes</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1539,10 +1603,11 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         isTransactional()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns a value indicating whether the specified operation is transactional in the current <a href="yii-base-model.html#$scenario-detail">$scenario</a>.</strong></p>
 
@@ -1550,7 +1615,7 @@ meaning all attributes that are loaded from DB will be saved.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-activerecord.html#isTransactional()-detail">isTransactional</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$operation&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-activerecord.html#isTransactional()-detail">isTransactional</a></strong> ( <span style="color: #0000BB">$operation</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$operation</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.integer">integer</a></td>
@@ -1575,20 +1640,24 @@ meaning all attributes that are loaded from DB will be saved.</p>
         
         loadDefaultValues()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Loads default values from database table schema</strong></p>
 
         <p>You may call this method to load default values after creating a new instance:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;class&nbsp;Customer&nbsp;extends&nbsp;\yii\db\ActiveRecord<br /></span><span style="color: #0000BB">$customer&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$customer</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">loadDefaultValues</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-comment">// class Customer extends \yii\db\ActiveRecord</span>
+<span class="hljs-variable">$customer</span> = <span class="hljs-keyword">new</span> Customer();
+<span class="hljs-variable">$customer</span>-&gt;loadDefaultValues();
+</code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activerecord.html#loadDefaultValues()-detail">loadDefaultValues</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$skipIfSet&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activerecord.html#loadDefaultValues()-detail">loadDefaultValues</a></strong> ( <span style="color: #0000BB">$skipIfSet&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$skipIfSet</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1614,10 +1683,11 @@ This will only set defaults for attributes that are <code>null</code>.</p>
         
         populateRecord()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Populates an active record object using a row of data from the database/storage.</strong></p>
 
@@ -1630,7 +1700,7 @@ record to trigger the <a href="yii-db-baseactiverecord.html#EVENT_AFTER_FIND-det
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-activerecord.html#populateRecord()-detail">populateRecord</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$record</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type">void</span> <strong><a href="yii-db-activerecord.html#populateRecord()-detail">populateRecord</a></strong> ( <span style="color: #0000BB">$record</span>, <span style="color: #0000BB">$row</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$record</span></td>
                   <td class="param-type-col"><a href="yii-db-baseactiverecord.html">yii\db\BaseActiveRecord</a></td>
@@ -1656,10 +1726,11 @@ created by <a href="yii-db-baseactiverecord.html#instantiate()-detail">instantia
         
         primaryKey()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the primary key name(s) for this AR class.</strong></p>
 
@@ -1673,7 +1744,7 @@ for this AR class.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a>[] <strong><a href="yii-db-activerecord.html#primaryKey()-detail">primaryKey</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>[]</span> <strong><a href="yii-db-activerecord.html#primaryKey()-detail">primaryKey</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>[]</td>
@@ -1692,10 +1763,11 @@ for this AR class.</p>
         
         tableName()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Declares the name of the database table associated with this AR class.</strong></p>
 
@@ -1707,7 +1779,7 @@ if the table is not named after this convention.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="yii-db-activerecord.html#tableName()-detail">tableName</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="yii-db-activerecord.html#tableName()-detail">tableName</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1726,10 +1798,11 @@ if the table is not named after this convention.</p>
         
         transactions()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Declares which DB operations should be performed within a transaction in different scenarios.</strong></p>
 
@@ -1739,11 +1812,11 @@ By default, these methods are NOT enclosed in a DB transaction.</p>
 <p>In some scenarios, to ensure data consistency, you may want to enclose some or all of them
 in transactions. You can do so by overriding this method and returning the operations
 that need to be transactional. For example,</p>
-<pre><code>return [
-    'admin' =&gt; self::OP_INSERT,
-    'api' =&gt; self::OP_INSERT | self::OP_UPDATE | self::OP_DELETE,
-    // the above is equivalent to the following:
-    // 'api' =&gt; self::OP_ALL,
+<pre><code class="hljs php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'admin'</span> =&gt; <span class="hljs-keyword">self</span>::OP_INSERT,
+    <span class="hljs-string">'api'</span> =&gt; <span class="hljs-keyword">self</span>::OP_INSERT | <span class="hljs-keyword">self</span>::OP_UPDATE | <span class="hljs-keyword">self</span>::OP_DELETE,
+    <span class="hljs-comment">// the above is equivalent to the following:</span>
+    <span class="hljs-comment">// 'api' =&gt; self::OP_ALL,</span>
 
 ];
 </code></pre>
@@ -1754,7 +1827,7 @@ in a transaction.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-activerecord.html#transactions()-detail">transactions</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-activerecord.html#transactions()-detail">transactions</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1774,10 +1847,11 @@ and the array values are the corresponding transaction operations.</p>
         
         update()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Saves the changes to this active record into the associated database table.</strong></p>
 
@@ -1796,25 +1870,25 @@ rest of the steps;</li>
 will be raised by the corresponding methods.</p>
 <p>Only the <a href="yii-db-baseactiverecord.html#$dirtyAttributes-detail">changed attribute values</a> will be saved into database.</p>
 <p>For example, to update a customer record:</p>
-<pre><code>$customer = Customer::findOne($id);
-$customer-&gt;name = $name;
-$customer-&gt;email = $email;
-$customer-&gt;update();
+<pre><code class="hljs php"><span class="hljs-variable">$customer</span> = Customer::findOne(<span class="hljs-variable">$id</span>);
+<span class="hljs-variable">$customer</span>-&gt;name = <span class="hljs-variable">$name</span>;
+<span class="hljs-variable">$customer</span>-&gt;email = <span class="hljs-variable">$email</span>;
+<span class="hljs-variable">$customer</span>-&gt;update();
 </code></pre>
 <p>Note that it is possible the update does not affect any row in the table.
 In this case, this method will return 0. For this reason, you should use the following
 code to check if update() is successful or not:</p>
-<pre><code>if ($this-&gt;update() !== false) {
-    // update successful
-} else {
-    // update failed
+<pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;update() !== <span class="hljs-keyword">false</span>) {
+    <span class="hljs-comment">// update successful</span>
+} <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// update failed</span>
 }
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="yii-db-activerecord.html#update()-detail">update</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a>|<a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yii-db-activerecord.html#update()-detail">update</a></strong> ( <span style="color: #0000BB">$runValidation&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$attributeNames&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$runValidation</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1861,21 +1935,22 @@ being updated is outdated.</p>
         
         updateAll()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Updates the whole table using the provided attribute values and conditions.</strong></p>
 
         <p>For example, to change the status to be 1 for all customers whose status is 2:</p>
-<pre><code>Customer::updateAll(['status' =&gt; 1], 'status = 2');
+<pre><code class="hljs scss">Customer<span class="hljs-value">::<span class="hljs-function">updateAll</span>([<span class="hljs-string">'status'</span> =&gt; <span class="hljs-number">1</span>], <span class="hljs-string">'status = 2'</span>);</span>
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-activerecord.html#updateAll()-detail">updateAll</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$attributes</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-activerecord.html#updateAll()-detail">updateAll</a></strong> ( <span style="color: #0000BB">$attributes</span>, <span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$attributes</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1913,21 +1988,22 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
         
         updateAllCounters()
         <span class="detail-header-tag small">
-            public            method
+            public                        static            method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Updates the whole table using the provided counter changes and conditions.</strong></p>
 
         <p>For example, to increment all customers' age by 1,</p>
-<pre><code>Customer::updateAllCounters(['age' =&gt; 1]);
+<pre><code class="hljs scss">Customer<span class="hljs-value">::<span class="hljs-function">updateAllCounters</span>([<span class="hljs-string">'age'</span> =&gt; <span class="hljs-number">1</span>]);</span>
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.integer">integer</a> <strong><a href="yii-db-activerecord.html#updateAllCounters()-detail">updateAllCounters</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$counters</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public static</span> <span class="signature-type"><a href="http://www.php.net/language.types.integer">integer</a></span> <strong><a href="yii-db-activerecord.html#updateAllCounters()-detail">updateAllCounters</a></strong> ( <span style="color: #0000BB">$counters</span>, <span style="color: #0000BB">$condition&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$counters</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1997,7 +2073,7 @@ Do not name the parameters as <code>:bp0</code>, <code>:bp1</code>, etc., becaus
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

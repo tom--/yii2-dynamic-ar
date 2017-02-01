@@ -4,30 +4,32 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w82" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w82-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w85" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w85-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w82-collapse" class="collapse navbar-collapse"><ul id="w83" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w85-collapse" class="collapse navbar-collapse"><ul id="w86" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-79" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-79" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
-<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div>
-<a class="list-group-item" href="#navigation-80" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-80" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-82" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-82" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
+<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a>
+<a class="list-group-item" href="./spinitron-dynamicar-valueexpression.html">ValueExpression</a></div>
+<a class="list-group-item" href="#navigation-83" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-83" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item" href="#navigation-81" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-81" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="#navigation-84" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-84" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -38,12 +40,15 @@
 <a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
-        <h1>yii2-dynamic-ar extension <a href="#yii2-dynamic-ar-extension" id="yii2-dynamic-ar-extension" class="hashlink">&para;</a></h1><blockquote><p>NOTE: this was the original README for Dynamic AR when it was still in early design. It
+        <h1>yii2-dynamic-ar extension <span id="yii2-dynamic-ar-extension"></span><a href="#yii2-dynamic-ar-extension" class="hashlink">&para;</a></h1>
+<div class="toc"><ol><li><a href="#motivation">Motivation</a></li>
+<li><a href="#design-and-operation">Design and operation</a></li></ol></div>
+<blockquote class="note"><p><strong>Note: </strong>this was the original README for Dynamic AR when it was still in early design. It
 may still be of interest to some readers. But I'm not planning to make strenuous efforts to
 maintain.</p>
 </blockquote>
 <p><strong>Dynamic, structured attributes in <a href="http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html">Active Record</a> and <a href="http://www.yiiframework.com/doc-2.0/yii-db-activequery.html">Active Query</a> for SQL tables</strong></p>
-<h2>Motivation <a href="#motivation" id="motivation" class="hashlink">&para;</a></h2><p>NoSQL-like features have been appearing in some SQL relational databases,
+<h2>Motivation <span id="motivation"></span><a href="#motivation" class="hashlink">&para;</a></h2><p>NoSQL-like features have been appearing in some SQL relational databases,
 including <a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/">Dynamic Columns in Maria 10.0+</a>
 and
 <a href="http://www.postgresql.org/docs/9.4/static/datatype-json.html">jsonb column types</a>
@@ -68,15 +73,16 @@ require other properties. Imagine the set of properties for a general shopping w
 </ul>
 <p>However, Maria 10 and PostgreSQL 9.4 have the ability to serialize an arbitrary set of (structured) properties while allowing them to be used in queries. This suggests the possibility of having the best of both worlds (RDBMS and document store) in one place.</p>
 <p>The goal of yii2-dynamic-ar extension is to provide a comfortable API to these capabilities.</p>
-<h2>Design and operation <a href="#design-and-operation" id="design-and-operation" class="hashlink">&para;</a></h2><p>DynamicActiveRecord extends <a href="http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html">ActiveRecord</a> to represent structured dynamic attributes that are stored in serialized form in the database. If the particular DBMS has features to support this then they are used, otherwise JSON is used. In the case that the DBMS allows querying of the serialized properties DynamicActiveQuery extends  <a href="http://www.yiiframework.com/doc-2.0/yii-db-activequery.html">Active Query</a> to represent such queries.</p>
+<h2>Design and operation <span id="design-and-operation"></span><a href="#design-and-operation" class="hashlink">&para;</a></h2><p>DynamicActiveRecord extends <a href="http://www.yiiframework.com/doc-2.0/yii-db-activerecord.html">ActiveRecord</a> to represent structured dynamic attributes that are stored in serialized form in the database. If the particular DBMS has features to support this then they are used, otherwise JSON is used. In the case that the DBMS allows querying of the serialized properties DynamicActiveQuery extends  <a href="http://www.yiiframework.com/doc-2.0/yii-db-activequery.html">Active Query</a> to represent such queries.</p>
 <p>At present DynamicActiveRecord works only with Maria 10. Other DBMSs and plain JSON to come.</p>
-<h3>DynamicActiveRecord <a href="#dynamicactiverecord" id="dynamicactiverecord" class="hashlink">&para;</a></h3><p>In a DynamicActiveRecord object, any property you access is a dynamic attribute when:</p>
+<h3>DynamicActiveRecord <span id="dynamicactiverecord"></span><a href="#dynamicactiverecord" class="hashlink">&para;</a></h3><p>In a DynamicActiveRecord object, any property you access is a dynamic attribute when:</p>
 <ul>
 <li>it isn't a normal column attribute, and</li>
 <li>it does not have its own <a href="http://www.yiiframework.com/doc-2.0/guide-concept-properties.html#properties">magic getter or setter</a>.</li>
 </ul>
 <p>Thus, if <code>$product</code> is an instance of a <code>DynamicActiveRecord</code> class then</p>
-<pre><code class="language-php"><span style="color: #0000BB">$product</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">color&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'red'</span><span style="color: #007700">;</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$product</span>-&gt;color = <span class="hljs-string">'red'</span>;
+</code></pre>
 <p>will write to:</p>
 <ul>
 <li>the column attribute 'color', if the model's table has a column named 'color',</li>
@@ -84,25 +90,33 @@ require other properties. Imagine the set of properties for a general shopping w
 <li>otherwise it will write to (either creating or updating) a dynamic attribute named 'color'.</li>
 </ul>
 <p>Dynamic attributes can have array values, e.g.</p>
-<pre><code class="language-php"><span style="color: #0000BB">$product</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">price&nbsp;</span><span style="color: #007700">=&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'retail'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">12.99</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'wholesale'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">6&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">12.00</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">12&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">11.50</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">60&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">10.40</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;],<br />]</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$product</span>-&gt;price = [
+    <span class="hljs-string">'retail'</span> =&gt; <span class="hljs-number">12.99</span>,
+    <span class="hljs-string">'wholesale'</span> =&gt; [
+        <span class="hljs-number">6</span> =&gt; <span class="hljs-number">12.00</span>,
+        <span class="hljs-number">12</span> =&gt; <span class="hljs-number">11.50</span>,
+        <span class="hljs-number">60</span> =&gt; <span class="hljs-number">10.40</span>,
+    ],
+]
+</code></pre>
 <p>A dynamic attribute's name must be a <a href="http://php.net/manual/en/language.variables.basics.php">valid PHP label</a> but child labels can be any non-empty string.</p>
 <p>All dynamic attributes are populated into a model object from the DB when loading a model, regardless of the query's <code>select</code> property.</p>
 <p>When updating a model, the DB record's dynamic attributes are all overwritten. Another way to think about this is – after save, whether it is an insert or update, the DB record has the same set of dynamic attributes as the model. For example, let's say the record with PK of 7 in the <code>product</code> table has a dynamic field 'speed'. If we now save a <code>Product</code> model with <code>id</code> 7 but without a dynamic attribute 'speed' then the dynamic field 'speed' 'is deleted from row 7 in the table.</p>
-<h3>DynamicActiveQuery <a href="#dynamicactivequery" id="dynamicactivequery" class="hashlink">&para;</a></h3><p><strong>tl;dr</strong> When you use a dynamic attribute in a query, write it in bang-parens, e.g. <code>(!color!)</code> or <code>(!employee.id!)</code>
+<h3>DynamicActiveQuery <span id="dynamicactivequery"></span><a href="#dynamicactivequery" class="hashlink">&para;</a></h3><p><strong>tl;dr</strong> When you use a dynamic attribute in a query, write it in bang-parens, e.g. <code>(!color!)</code> or <code>(!employee.id!)</code>
 and if your query needs it, specify the attribute type after a pipe or vertical bar, e.g.
 <code>(!employee.id|INT!) = 10</code> or <code>(!price.unit.usd|DECIMAL(6,2)!) &lt;= 4.99</code>.</p>
 <p>DynamicActiveQuery only exists for those DMBSs that provide a way to query elements in data structures serialized to a field (for now, Maria 10+ and PostgreSQL 9.4+).</p>
 <p>We would like to be able to use dynamic attributes in database queries with the same flexibility as we have with schema column
 attributes. DynamicActiveQuery should allow, for example, creation of SQL such as the following, whether
 the columns involved are serialized dynamic properties or table columns in the schema:</p>
-<pre><code class="language-sql">SELECT
+<pre><code class="hljs sql language-sql"><span class="hljs-operator"><span class="hljs-keyword">SELECT</span>
 	t1.price,
-	CONCAT('Compare at $', t1.price) AS foo,
-	MIN(t1.price, t1.discount) AS sale
-FROM t1 JOIN t2 ON MIN(t1.price, t1.discount) &gt; t2.cost
-WHERE price * 1.33 &lt; 50.00
-ORDER BY MIN(0.66 * t1.price, t2.cost)
-</code></pre>
+	<span class="hljs-keyword">CONCAT</span>(<span class="hljs-string">'Compare at $'</span>, t1.price) <span class="hljs-keyword">AS</span> foo,
+	<span class="hljs-keyword">MIN</span>(t1.price, t1.discount) <span class="hljs-keyword">AS</span> sale
+<span class="hljs-keyword">FROM</span> t1 <span class="hljs-keyword">JOIN</span> t2 <span class="hljs-keyword">ON</span> <span class="hljs-keyword">MIN</span>(t1.price, t1.discount) &gt; t2.<span class="hljs-keyword">cost</span>
+<span class="hljs-keyword">WHERE</span> price * <span class="hljs-number">1.33</span> &lt; <span class="hljs-number">50.00</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-keyword">MIN</span>(<span class="hljs-number">0.66</span> * t1.price, t2.<span class="hljs-keyword">cost</span>)
+</span></code></pre>
 <p>There is a challenge. From the Maria manual:</p>
 <blockquote><p>SQL is a statically-typed language. The SQL interpreter needs to know the datatypes often
 all expressions before the query is run (for example, when one is using prepared statements
@@ -118,14 +132,14 @@ see what datatype the column actually has).</p>
 <p>The first cannot in general be automated by our extension without constraining the requirements or by radically changing ActiveQuery. Automating the second seems intractable to me. So I decided instead to require the user to distinguish dynamic attributes and
 declare their type. I feel this is reasonable since the user must always know both when accessing a dynamic attribute. (This is actually the
 basic nature of NoSQL – the schema is implicit in the application's business logic.) For this I needed a notation for dynamic attribute in DynamicActiveQuery.</p>
-<h3>Dynamic attribute notation in queries <a href="#dynamic-attribute-notation-in-queries" id="dynamic-attribute-notation-in-queries" class="hashlink">&para;</a></h3><p>A dynamic attribute reference is enclosed in bang-parens <code>(! … !)</code>. Whitespace in the
+<h3>Dynamic attribute notation in queries <span id="dynamic-attribute-notation-in-queries"></span><a href="#dynamic-attribute-notation-in-queries" class="hashlink">&para;</a></h3><p>A dynamic attribute reference is enclosed in bang-parens <code>(! … !)</code>. Whitespace in the
 bang-parens is allowed. Inside the bang-parens is the dynamic attribute name optionally
 followed by a pipe or vertical bar <code>|</code> character and a datatype.
 The dynamic attribute name uses dot notation to represent child elements in a structure
 e.g. <code>grandparent.parent.child</code>.
 <a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes">Allowed datatypes</a> are determined by the RBDMS.
 If datatype is not specified <code>CHAR</code> is assumed.</p>
-<table>
+<table class="table table-bordered table-striped">
 <thead>
 <tr><th>Description </th><th>Query notation</th></tr>
 </thead>
@@ -139,7 +153,15 @@ If datatype is not specified <code>CHAR</code> is assumed.</p>
 </table>
 <p>There is often no need to specify datatype in the dynamic attribute reference because
 both SQL and PHP can juggle type according to context.</p>
-<h4>Examples in queries <a href="#examples-in-queries" id="examples-in-queries" class="hashlink">&para;</a></h4><pre><code class="language-php"><span style="color: #0000BB">$blackShirts&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'category'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">SHIRT</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'(!color!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'black'</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$cheapShirts&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'category'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">SHIRT</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">andWhere</span><span style="color: #007700">(</span><span style="color: #DD0000">'(!price.wholesale.12|DECIMAL(6,2)!)&nbsp;&lt;&nbsp;20.00'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">select</span><span style="color: #007700">([</span><span style="color: #DD0000">'sale'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'CONCAT("On&nbsp;sale&nbsp;at&nbsp;$",&nbsp;(!price.discount!))'</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+<h4>Examples in queries <span id="examples-in-queries"></span><a href="#examples-in-queries" class="hashlink">&para;</a></h4><pre><code class="hljs php language-php"><span class="hljs-variable">$blackShirts</span> = Product::find()
+    -&gt;where([<span class="hljs-string">'category'</span> =&gt; Product::SHIRT, <span class="hljs-string">'(!color!)'</span> =&gt; <span class="hljs-string">'black'</span>])
+    -&gt;all();
+<span class="hljs-variable">$cheapShirts</span> = Product::find()
+    -&gt;where([<span class="hljs-string">'category'</span> =&gt; Product::SHIRT])
+    -&gt;andWhere(<span class="hljs-string">'(!price.wholesale.12|DECIMAL(6,2)!) &lt; 20.00'</span>)
+    -&gt;select([<span class="hljs-string">'sale'</span> =&gt; <span class="hljs-string">'CONCAT("On sale at $", (!price.discount!))'</span>])
+    -&gt;all();
+</code></pre>
 <hr />
 <p>Copyright (c) 2015 Spinitron LLC</p>
 <h1>Class Reference</h1>
@@ -162,6 +184,12 @@ both SQL and PHP can juggle type according to context.</p>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
         <td>DynamicActiveRecord represents relational data with structured dynamic attributes
 in addition to column attributes supported by ActiveRecord.</td>
+    </tr>
+    <tr>
+        <td><a href="spinitron-dynamicar-valueexpression.html">spinitron\dynamicAr\ValueExpression</a></td>
+        <td>A ValueExpression object represents the value of a dynamic attribute that DynamicActiveRecord
+uses directly (unescaped) in SQL instead of using
+<a href="http://php.net/manual/en/pdostatement.bindvalue.php">PDOStatement::bindValue</a>.</td>
     </tr>
     <tr>
         <td><a href="yii-base-arrayable.html">yii\base\Arrayable</a></td>
@@ -267,7 +295,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:11 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:19 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

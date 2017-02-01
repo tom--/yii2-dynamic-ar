@@ -4,30 +4,32 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w92" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w92-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w95" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w95-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w92-collapse" class="collapse navbar-collapse"><ul id="w93" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w95-collapse" class="collapse navbar-collapse"><ul id="w96" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-89" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-89" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
-<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div>
-<a class="list-group-item" href="#navigation-90" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-90" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-92" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-92" class="submenu panel-collapse collapse"><a class="list-group-item" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
+<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a>
+<a class="list-group-item" href="./spinitron-dynamicar-valueexpression.html">ValueExpression</a></div>
+<a class="list-group-item" href="#navigation-93" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-93" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item" href="#navigation-91" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-91" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item" href="#navigation-94" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-94" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -38,10 +40,15 @@
 <a class="list-group-item" href="./yii-db-queryinterface.html">QueryInterface</a>
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
-        <h1>Dynamic Active Record <a href="#dynamic-active-record" id="dynamic-active-record" class="hashlink">&para;</a></h1><p>The <a href="https://github.com/tom--/dynamic-ar">yii2-dynamic-ar</a> extension adds NoSQL-like documents to
+        <h1>Dynamic Active Record <span id="dynamic-active-record"></span><a href="#dynamic-active-record" class="hashlink">&para;</a></h1>
+<div class="toc"><ol><li><a href="#example">Example</a></li>
+<li><a href="#design-principle">Design principle</a></li>
+<li><a href="#further-reading">Further reading</a></li>
+<li><a href="#questions-comments-issues">Questions, comments, issues</a></li></ol></div>
+<p>The <a href="https://github.com/tom--/dynamic-ar">yii2-dynamic-ar</a> extension adds NoSQL-like documents to
 <a href="http://www.yiiframework.com/">Yii 2 Framework</a>'s
 <a href="http://www.yiiframework.com/doc-2.0/guide-db-active-record.html">Active Record ORM</a>.</p>
-<h3>Maria Dynamic Columns and PostgreSQL jsonb <a href="#maria-dynamic-columns-and-postgresql-jsonb" id="maria-dynamic-columns-and-postgresql-jsonb" class="hashlink">&para;</a></h3><p><a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/">Dynamic Columns</a>
+<h3>Maria Dynamic Columns and PostgreSQL jsonb <span id="maria-dynamic-columns-and-postgresql-jsonb"></span><a href="#maria-dynamic-columns-and-postgresql-jsonb" class="hashlink">&para;</a></h3><p><a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/">Dynamic Columns</a>
 in <a href="https://mariadb.com/kb/en/mariadb/what-is-mariadb-100/">Maria 10.0</a>+
 and <a href="http://www.postgresql.org/docs/9.4/static/datatype-json.html">jsonb column types</a>
 and <a href="http://www.postgresql.org/docs/9.4/static/functions-json.html">functions</a> in
@@ -59,25 +66,52 @@ to your schema, can suddenly be easy when</p>
 <li>dynamic attributes can be structured like an associative array.</li>
 </ul>
 <p>Dynamic AR works for Maria now and will come to PostgreSQL in the future.</p>
-<h2>Example <a href="#example" id="example" class="hashlink">&para;</a></h2><p>An online shopping site has a table that stores info about each product.</p>
-<pre><code class="language-sql">CREATE TABLE product (
-    id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    sku VARCHAR(32),
-    upc VARCHAR(32),
-    title VARCHAR(255),
-    price DECIMAL(9, 2),
-    stock INT(11),
-    details LONGBLOB NOT NULL
-);
+<h2>Example <span id="example"></span><a href="#example" class="hashlink">&para;</a></h2><p>An online shopping site has a table that stores info about each product.</p>
+<pre><code class="hljs sql language-sql"><span class="hljs-operator"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> product (
+    <span class="hljs-keyword">id</span> <span class="hljs-built_in">INT</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span> AUTO_INCREMENT PRIMARY <span class="hljs-keyword">KEY</span>,
+    sku <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">32</span>),
+    upc <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">32</span>),
+    title <span class="hljs-built_in">VARCHAR</span>(<span class="hljs-number">255</span>),
+    price <span class="hljs-built_in">DECIMAL</span>(<span class="hljs-number">9</span>, <span class="hljs-number">2</span>),
+    stock <span class="hljs-built_in">INT</span>(<span class="hljs-number">11</span>),
+    details LONGBLOB <span class="hljs-keyword">NOT</span> <span class="hljs-literal">NULL</span>
+);</span>
 </code></pre>
 <p>In this (simplistic) example, <code>details</code> will hold the Maria
 <a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/">Dynamic Column blob</a> and is
 declared in the model class by the <code>dynamicColumn()</code> method. Everything else in a Dynamic AR
 class declaration is familiar AR stuff.</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Product&nbsp;</span><span style="color: #007700">extends&nbsp;\</span><span style="color: #0000BB">spinitron</span><span style="color: #007700">\</span><span style="color: #0000BB">dynamicAr</span><span style="color: #007700">\</span><span style="color: #0000BB">DynamicActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">tableName</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #DD0000">'product'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">dynamicColumn</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #DD0000">'details'</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Product</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">spinitron</span>\<span class="hljs-title">dynamicAr</span>\<span class="hljs-title">DynamicActiveRecord</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tableName</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'product'</span>;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dynamicColumn</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'details'</span>;
+    }
+}
+</code></pre>
 <p>Now we can do all the normal AR things with <code>Product</code> but in addition we can read, write and
 update attributes not mentioned in the schema.</p>
-<pre><code class="language-php"><span style="color: #0000BB">$product&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">([<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'sku'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">5463</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'upc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'234569'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'price'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">4.99</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'title'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Clue-by-four'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'description'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Used&nbsp;for&nbsp;larting&nbsp;lusers&nbsp;or&nbsp;constructing&nbsp;things'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'dimensions'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'unit'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'inch'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'width'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'height'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'length'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'material'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'wood'</span><span style="color: #007700">,<br />]);<br /></span><span style="color: #0000BB">$product</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$product</span> = <span class="hljs-keyword">new</span> Product([
+    <span class="hljs-string">'sku'</span> =&gt; <span class="hljs-number">5463</span>,
+    <span class="hljs-string">'upc'</span> =&gt; <span class="hljs-string">'234569'</span>,
+    <span class="hljs-string">'price'</span> =&gt; <span class="hljs-number">4.99</span>,
+    <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'Clue-by-four'</span>,
+    <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'Used for larting lusers or constructing things'</span>,
+    <span class="hljs-string">'dimensions'</span> =&gt; [
+        <span class="hljs-string">'unit'</span> =&gt; <span class="hljs-string">'inch'</span>,
+        <span class="hljs-string">'width'</span> =&gt; <span class="hljs-number">4</span>,
+        <span class="hljs-string">'height'</span> =&gt; <span class="hljs-number">2</span>,
+        <span class="hljs-string">'length'</span> =&gt; <span class="hljs-number">20</span>,
+    ],
+    <span class="hljs-string">'material'</span> =&gt; <span class="hljs-string">'wood'</span>,
+]);
+<span class="hljs-variable">$product</span>-&gt;save();
+</code></pre>
 <p>Think of the <code>details</code> table column as holding a serialized associative array. But unlike
 saving a JSON document in a text field, you can use dynamic attributes anywhere in your code,
 including in queries,
@@ -91,41 +125,75 @@ e.g. <code>(! dimensions.length !)</code>. (Space between attribute name and its
 optional so <code>(!material!)</code> is fine.)</li>
 </ul>
 <p>For example</p>
-<pre><code class="language-php"><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">([<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'title'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Car'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'specs.fuel.tank.capacity'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'specs.fuel.tank.capacity.unit'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'liter'</span><span style="color: #007700">,<br />]);<br /></span><span style="color: #0000BB">$model</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #DD0000">'specs.wheels.count'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'(!dimensions.length!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">]);<br /></span><span style="color: #0000BB">$section&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #DD0000">'CONCAT((!&nbsp;dimensions.width&nbsp;!),&nbsp;"&nbsp;x&nbsp;",&nbsp;(!&nbsp;dimensions.height&nbsp;!))'</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">11</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">one</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> Product([
+    <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'Car'</span>,
+    <span class="hljs-string">'specs.fuel.tank.capacity'</span> =&gt; <span class="hljs-number">50</span>,
+    <span class="hljs-string">'specs.fuel.tank.capacity.unit'</span> =&gt; <span class="hljs-string">'liter'</span>,
+]);
+<span class="hljs-variable">$model</span>-&gt;setAttribute(<span class="hljs-string">'specs.wheels.count'</span>, <span class="hljs-number">4</span>);
+<span class="hljs-variable">$model</span> = Product::find()-&gt;where([<span class="hljs-string">'(!dimensions.length!)'</span> =&gt; <span class="hljs-number">10</span>]);
+<span class="hljs-variable">$section</span> = Product::find()
+    -&gt;select(<span class="hljs-string">'CONCAT((! dimensions.width !), " x ", (! dimensions.height !))'</span>)
+    -&gt;where([<span class="hljs-string">'id'</span> =&gt; <span class="hljs-number">11</span>])
+    -&gt;one();
+</code></pre>
 <p>The dot notation works anywhere Yii accepts an attribute name string, for example</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Product&nbsp;</span><span style="color: #007700">extends&nbsp;\</span><span style="color: #0000BB">spinitron</span><span style="color: #007700">\</span><span style="color: #0000BB">dynamicAr</span><span style="color: #007700">\</span><span style="color: #0000BB">DynamicActiveRecord<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">rules</span><span style="color: #007700">()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;[[</span><span style="color: #DD0000">'dimensions.length'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'double'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'min'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">0.0</span><span style="color: #007700">]];<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">search</span><span style="color: #007700">(</span><span style="color: #0000BB">$params</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dataProvider&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">yii</span><span style="color: #007700">\</span><span style="color: #0000BB">data</span><span style="color: #007700">\</span><span style="color: #0000BB">ActiveDataProvider</span><span style="color: #007700">([<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'sort'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'attributes'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'dimensions.length'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'asc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'(!&nbsp;dimensions.length&nbsp;!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">SORT_DESC</span><span style="color: #007700">],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'desc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;[</span><span style="color: #DD0000">'(!&nbsp;dimensions.length&nbsp;!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">SORT_ASC</span><span style="color: #007700">],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;...<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}</span></code></pre>
-<h2>Design principle <a href="#design-principle" id="design-principle" class="hashlink">&para;</a></h2><p>DynamicActiveRecord adds a fourth to the three things that reading and writing 
+<pre><code class="hljs php language-php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Product</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">spinitron</span>\<span class="hljs-title">dynamicAr</span>\<span class="hljs-title">DynamicActiveRecord</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rules</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> [[<span class="hljs-string">'dimensions.length'</span>, <span class="hljs-string">'double'</span>, <span class="hljs-string">'min'</span> =&gt; <span class="hljs-number">0.0</span>]];
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-variable">$params</span>)</span>
+    </span>{
+        <span class="hljs-variable">$dataProvider</span> = <span class="hljs-keyword">new</span> \yii\data\ActiveDataProvider([
+            <span class="hljs-string">'sort'</span> =&gt; [
+                <span class="hljs-string">'attributes'</span> =&gt; [
+                    <span class="hljs-string">'dimensions.length'</span> =&gt; [
+                        <span class="hljs-string">'asc'</span> =&gt; [<span class="hljs-string">'(! dimensions.length !)'</span> =&gt; SORT_DESC],
+                        <span class="hljs-string">'desc'</span> =&gt; [<span class="hljs-string">'(! dimensions.length !)'</span> =&gt; SORT_ASC],
+                    ],
+                ],
+            ],
+            <span class="hljs-comment">// ...</span>
+        ]);
+    }
+}
+</code></pre>
+<h2>Design principle <span id="design-principle"></span><a href="#design-principle" class="hashlink">&para;</a></h2><p>DynamicActiveRecord adds a fourth to the three things that reading and writing
 AR model properties can do:</p>
 <ol>
 <li>$model-&gt;foo accesses, if it exists, the instance variable <code>$foo</code>,</li>
 <li>otherwise it accesses the column attribute foo, if the model's table has a column 'foo',</li>
-<li>otherwise it accesses the virtual attribute 'foo', if the model's class has 
-magic <code>getFoo()</code> / <code>setFoo()</code> methods, </li>
+<li>otherwise it accesses the virtual attribute 'foo', if the model's class has
+magic <code>getFoo()</code> / <code>setFoo()</code> methods,</li>
 <li>else $model-&gt;foo accesses a dynamic attribute named 'foo'.</li>
 </ol>
-<p>So any attribute name that doesn't refer to one of the normal 3 kinds of 
-AR model property (instance variable, column attribute, virtual 
-attribute) is automatically a dynamic property as soon 
+<p>So any attribute name that doesn't refer to one of the normal 3 kinds of
+AR model property (instance variable, column attribute, virtual
+attribute) is automatically a dynamic property as soon
 as you use it. There is no way to declare a dynamic property and you can
 only define one by writing to it.</p>
 <p>And reading an attribute that doesn't exist returns null.</p>
-<h4>PHP null, SQL NULL and Maria <a href="#php-null-sql-null-and-maria" id="php-null-sql-null-and-maria" class="hashlink">&para;</a></h4><p>Maria does not encode a dynamic column set to SQL NULL: </p>
-<pre><code class="language-sql">SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1) 
-&gt;&gt; 1
-</code></pre>
-<p>Thus if a table record currently has a dynamic column 'b' and Maria executes an 
-update setting it to NULL then Maria removes 'b' from the record. (This 
-makes sense if NULL has its conventional database meaning of 'data value 
+<h4>PHP null, SQL NULL and Maria <span id="php-null-sql-null-and-maria"></span><a href="#php-null-sql-null-and-maria" class="hashlink">&para;</a></h4><p>Maria does not encode a dynamic column set to SQL NULL:</p>
+<pre><code class="hljs sql language-sql"><span class="hljs-operator"><span class="hljs-keyword">SELECT</span> COLUMN_CREATE(<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>, <span class="hljs-literal">null</span>) = COLUMN_CREATE(<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>)
+&gt;&gt; <span class="hljs-number">1</span>
+</span></code></pre>
+<p>Thus if a table record currently has a dynamic column 'b' and Maria executes an
+update setting it to NULL then Maria removes 'b' from the record. (This
+makes sense if NULL has its conventional database meaning of 'data value
 does not exist.') So DynamicActiveRecord cannot possibly distinguish a NULL
 value from a dynamic column that doesn't exist after reading back from the DB.</p>
-<p>In order to be consistent, DynamicActiveRecord always returns null when you 
+<p>In order to be consistent, DynamicActiveRecord always returns null when you
 read a dynamic attribute that hasn't been set, in contrast to
 ActiveRecord which throws an exception. But it also makes sense if
 null means 'does not exist' and given the design principle (above).</p>
-<h2>Further reading <a href="#further-reading" id="further-reading" class="hashlink">&para;</a></h2><p>Class reference</p>
+<h2>Further reading <span id="further-reading"></span><a href="#further-reading" class="hashlink">&para;</a></h2><p>Class reference</p>
 <ul>
 <li><a href="spinitron-dynamicar-dynamicactiverecord.html">DynamciActiveRecord</a></li>
 <li><a href="spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a></li>
+<li><a href="spinitron-dynamicar-valueexpression.html">ValueExpression</a></li>
 </ul>
 <p>More documentation</p>
 <ul>
@@ -141,7 +209,10 @@ null means 'does not exist' and given the design principle (above).</p>
 <li><a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/">Maria Dynamic Columns</a></li>
 <li><a href="https://github.com/tom--/sequel-pro-maria-dynamic-column">Sequel Pro Dynamic Columns bundle</a></li>
 </ul>
-<h2>Questions, comments, issues <a href="#questions-comments-issues" id="questions-comments-issues" class="hashlink">&para;</a></h2><p>Use the <a href="dynamic-ar/dynamic-ar/issues">issue tracker</a>. Or you can easily find my email if you prefer.</p>
+<p>Regenerate docs in gh-pages branch</p>
+<pre><code class="hljs apache"><span class="hljs-keyword">vendor</span>/bin/apidoc api . . --template=<span class="hljs-string">"spinitron\dynamicAr\doc\template\ApiRenderer"</span>
+</code></pre>
+<h2>Questions, comments, issues <span id="questions-comments-issues"></span><a href="#questions-comments-issues" class="hashlink">&para;</a></h2><p>Use the <a href="dynamic-ar/dynamic-ar/issues">issue tracker</a>. Or you can easily find my email if you prefer.</p>
 <hr />
 <p>Copyright (c) 2015 Spinitron LLC</p>
 <h1>Class Reference</h1>
@@ -164,6 +235,12 @@ null means 'does not exist' and given the design principle (above).</p>
         <td><a href="spinitron-dynamicar-dynamicactiverecord.html">spinitron\dynamicAr\DynamicActiveRecord</a></td>
         <td>DynamicActiveRecord represents relational data with structured dynamic attributes
 in addition to column attributes supported by ActiveRecord.</td>
+    </tr>
+    <tr>
+        <td><a href="spinitron-dynamicar-valueexpression.html">spinitron\dynamicAr\ValueExpression</a></td>
+        <td>A ValueExpression object represents the value of a dynamic attribute that DynamicActiveRecord
+uses directly (unescaped) in SQL instead of using
+<a href="http://php.net/manual/en/pdostatement.bindvalue.php">PDOStatement::bindValue</a>.</td>
     </tr>
     <tr>
         <td><a href="yii-base-arrayable.html">yii\base\Arrayable</a></td>
@@ -269,7 +346,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:11 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:19 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

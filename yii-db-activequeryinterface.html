@@ -4,28 +4,29 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>ActiveQueryInterface - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>ActiveQueryInterface - Dynamic Active Record</title>
 </head>
 <body>
 
 <div class="wrap">
-    <nav id="w44" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w44-collapse"><span class="sr-only">Toggle navigation</span>
+    <nav id="w47" class="navbar-inverse navbar-fixed-top navbar" role="navigation"><div class="navbar-header"><button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w47-collapse"><span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w44-collapse" class="collapse navbar-collapse"><ul id="w45" class="navbar-nav nav"></ul></div></nav>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Dynamic Active Record</a></div><div id="w47-collapse" class="collapse navbar-collapse"><ul id="w48" class="navbar-nav nav"></ul></div></nav>
     
 <div class="row">
     <div class="col-md-3">
-                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-42" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-42" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
+                <div id="navigation" class="list-group"><a class="list-group-item" href="#navigation-45" data-toggle="collapse" data-parent="#navigation">yii\base <b class="caret"></b></a><div id="navigation-45" class="submenu panel-collapse collapse"><a class="list-group-item" href="./yii-base-arrayable.html">Arrayable</a>
 <a class="list-group-item" href="./yii-base-arrayabletrait.html">ArrayableTrait</a>
 <a class="list-group-item" href="./yii-base-component.html">Component</a>
 <a class="list-group-item" href="./yii-base-configurable.html">Configurable</a>
 <a class="list-group-item" href="./yii-base-model.html">Model</a>
 <a class="list-group-item" href="./yii-base-object.html">Object</a></div>
-<a class="list-group-item active" href="#navigation-43" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-43" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
+<a class="list-group-item active" href="#navigation-46" data-toggle="collapse" data-parent="#navigation">yii\db <b class="caret"></b></a><div id="navigation-46" class="submenu panel-collapse collapse in"><a class="list-group-item" href="./yii-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item active" href="./yii-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yii-db-activequerytrait.html">ActiveQueryTrait</a>
 <a class="list-group-item" href="./yii-db-activerecord.html">ActiveRecord</a>
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Interface yii\db\ActiveQueryInterface</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
                 | <a href="#methods">Methods</a>
             </div>
@@ -47,8 +48,8 @@
         <col class="col-name" />
         <col class="col-value" />
     </colgroup>
-                    <tr><th>Implements</th><td><a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td></tr>
-                        <tr><th>Implemented by</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td></tr>
+                    <tr><th>Extends</th><td><a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td></tr>
+                        <tr><th>Implemented by</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, tests\unit\data\CustomerQuery, <a href="yii-db-activequery.html">yii\db\ActiveQuery</a></td></tr>
                     <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -56,7 +57,7 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>ActiveQueryInterface defines the common interface to be implemented by active record query classes.</strong></p>
     <p>That are methods for either normal queries that return active records but also relational queries
 in which the query represents a relation between two active record classes and will return related
@@ -197,10 +198,11 @@ records only.</p>
         
         asArray()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the <a href="yii-db-activequeryinterface.html#asArray()-detail">asArray()</a> property.</strong></p>
 
@@ -208,7 +210,7 @@ records only.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequeryinterface.html#asArray()-detail">asArray</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequeryinterface.html#asArray()-detail">asArray</a></strong> ( <span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$value</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -233,10 +235,11 @@ records only.</p>
         
         findFor()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Finds the related records for the specified primary record.</strong></p>
 
@@ -245,7 +248,7 @@ records only.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed <strong><a href="yii-db-activequeryinterface.html#findFor()-detail">findFor</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">mixed</span> <strong><a href="yii-db-activequeryinterface.html#findFor()-detail">findFor</a></strong> ( <span style="color: #0000BB">$name</span>, <span style="color: #0000BB">$model</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$name</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -276,10 +279,11 @@ records only.</p>
         
         indexBy()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the <a href="yii-db-activequeryinterface.html#indexBy()-detail">indexBy()</a> property.</strong></p>
 
@@ -287,18 +291,18 @@ records only.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequeryinterface.html#indexBy()-detail">indexBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequeryinterface.html#indexBy()-detail">indexBy</a></strong> ( <span style="color: #0000BB">$column</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$column</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.callable">callable</a></td>
                   <td class="param-desc-col"><p>The name of the column by which the query results should be indexed by.
 This can also be a callable (e.g. anonymous function) that returns the index value based on the given
 row or model data. The signature of the callable should be:</p>
-<pre><code>// $model is an AR instance when `asArray` is false,
-// or an array of column values when `asArray` is true.
-function ($model)
-{
-    // return the index value corresponding to $model
+<pre><code class="hljs php"><span class="hljs-comment">// $model is an AR instance when `asArray` is false,</span>
+<span class="hljs-comment">// or an array of column values when `asArray` is true.</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$model</span>)</span>
+</span>{
+    <span class="hljs-comment">// return the index value corresponding to $model</span>
 }
 </code></pre>
 </td>
@@ -321,10 +325,11 @@ function ($model)
         
         via()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Specifies the relation associated with the junction table for use in relational query.</strong></p>
 
@@ -332,7 +337,7 @@ function ($model)
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequeryinterface.html#via()-detail">via</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$relationName</span><span style="color: #007700">,&nbsp;callable&nbsp;</span><span style="color: #0000BB">$callable&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequeryinterface.html#via()-detail">via</a></strong> ( <span style="color: #0000BB">$relationName</span>, <span class="signature-type"><a href="http://www.php.net/language.types.callable">callable</a></span> <span style="color: #0000BB">$callable&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$relationName</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -364,10 +369,11 @@ Its signature should be <code>function($query)</code>, where <code>$query</code>
         
         with()
         <span class="detail-header-tag small">
-            public            method
+            public            abstract                        method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Specifies the relations with which this query should be performed.</strong></p>
 
@@ -378,23 +384,23 @@ or a sub-relation that stands for a relation of a related record.
 For example, <code>orders.address</code> means the <code>address</code> relation defined
 in the model class corresponding to the <code>orders</code> relation.</p>
 <p>The following are some usage examples:</p>
-<pre><code>// find customers together with their orders and country
-Customer::find()-&gt;with('orders', 'country')-&gt;all();
-// find customers together with their orders and the orders' shipping address
-Customer::find()-&gt;with('orders.address')-&gt;all();
-// find customers together with their country and orders of status 1
+<pre><code class="hljs php"><span class="hljs-comment">// find customers together with their orders and country</span>
+Customer::find()-&gt;with(<span class="hljs-string">'orders'</span>, <span class="hljs-string">'country'</span>)-&gt;all();
+<span class="hljs-comment">// find customers together with their orders and the orders' shipping address</span>
+Customer::find()-&gt;with(<span class="hljs-string">'orders.address'</span>)-&gt;all();
+<span class="hljs-comment">// find customers together with their country and orders of status 1</span>
 Customer::find()-&gt;with([
-    'orders' =&gt; function ($query) {
-        $query-&gt;andWhere('status = 1');
+    <span class="hljs-string">'orders'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$query</span>)</span> </span>{
+        <span class="hljs-variable">$query</span>-&gt;andWhere(<span class="hljs-string">'status = 1'</span>);
     },
-    'country',
+    <span class="hljs-string">'country'</span>,
 ])-&gt;all();
 </code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequeryinterface.html#with()-detail">with</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public abstract</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequeryinterface.html#with()-detail">with</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col">static</td>
@@ -443,7 +449,7 @@ Customer::find()-&gt;with([
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

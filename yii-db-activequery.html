@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>ActiveQuery - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>ActiveQuery - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -37,7 +38,7 @@
 <a class="list-group-item" href="./yii-db-querytrait.html">QueryTrait</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class yii\db\ActiveQuery</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -55,7 +56,7 @@
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>, <a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td></tr>
                     <tr><th>Uses Traits</th><td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a>, <a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a>, <a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td></tr>
-                <tr><th>Subclasses</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a></td></tr>
+                <tr><th>Subclasses</th><td><a href="spinitron-dynamicar-dynamicactivequery.html">spinitron\dynamicAr\DynamicActiveQuery</a>, tests\unit\data\CustomerQuery</td></tr>
                         <tr><th>Available since version</th><td>2.0</td></tr>
                     <tr>
           <th>Source Code</th>
@@ -63,12 +64,14 @@
         </tr>
     </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>ActiveQuery represents a DB query associated with an Active Record class.</strong></p>
-    <p>An ActiveQuery can be a normal query or be used in a relational context.</p>
+    <div class="toc"><ol><li><a href="#normal-query">Normal Query</a></li>
+<li><a href="#relational-query">Relational query</a></li></ol></div>
+<p>An ActiveQuery can be a normal query or be used in a relational context.</p>
 <p>ActiveQuery instances are usually created by <a href="yii-db-activerecord.html#find()-detail">yii\db\ActiveRecord::find()</a> and <a href="yii-db-activerecord.html#findBySql()-detail">yii\db\ActiveRecord::findBySql()</a>.
 Relational queries are created by <a href="yii-db-baseactiverecord.html#hasOne()-detail">yii\db\ActiveRecord::hasOne()</a> and <a href="yii-db-baseactiverecord.html#hasMany()-detail">yii\db\ActiveRecord::hasMany()</a>.</p>
-<h2>Normal Query <a href="#normal-query" id="normal-query" class="hashlink">&para;</a></h2><p>ActiveQuery mainly provides the following methods to retrieve the query results:</p>
+<h2>Normal Query <span id="normal-query"></span><a href="#normal-query" class="hashlink">&para;</a></h2><p>ActiveQuery mainly provides the following methods to retrieve the query results:</p>
 <ul>
 <li><a href="yii-db-activequery.html#one()-detail">one()</a>: returns a single record populated with the first row of data.</li>
 <li><a href="yii-db-activequery.html#all()-detail">all()</a>: returns all records based on the query results.</li>
@@ -90,8 +93,9 @@ Relational queries are created by <a href="yii-db-baseactiverecord.html#hasOne()
 <li><a href="yii-db-activequerytrait.html#asArray()-detail">asArray()</a>: whether to return each record as an array.</li>
 </ul>
 <p>These options can be configured using methods of the same name. For example:</p>
-<pre><code class="language-php"><span style="color: #0000BB">$customers&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Customer</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">with</span><span style="color: #007700">(</span><span style="color: #DD0000">'orders'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">asArray</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
-<h2>Relational query <a href="#relational-query" id="relational-query" class="hashlink">&para;</a></h2><p>In relational context ActiveQuery represents a relation between two Active Record classes.</p>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$customers</span> = Customer::find()-&gt;with(<span class="hljs-string">'orders'</span>)-&gt;asArray()-&gt;all();
+</code></pre>
+<h2>Relational query <span id="relational-query"></span><a href="#relational-query" class="hashlink">&para;</a></h2><p>In relational context ActiveQuery represents a relation between two Active Record classes.</p>
 <p>Relational ActiveQuery instances are usually created by calling <a href="yii-db-baseactiverecord.html#hasOne()-detail">yii\db\ActiveRecord::hasOne()</a> and
 <a href="yii-db-baseactiverecord.html#hasMany()-detail">yii\db\ActiveRecord::hasMany()</a>. An Active Record class declares a relation by defining
 a getter method which calls one of the above methods and returns the created ActiveQuery object.</p>
@@ -129,7 +133,7 @@ is to be added to relational query join condition.</p>
     </tr>
             <tr class="inherited" id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -779,16 +783,19 @@ is to be added to relational query join condition.</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/ActiveQuery.php#L96" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/ActiveQuery.php#L96" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $joinWith        <span class="detailHeaderTag small">
-            public                                    property
+        $joinWith        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-activequery.html#$joinWith-detail">$joinWith</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>A list of relations that this query should be joined with</p>
-
     
+    <div class="doc-description">
+        <p>A list of relations that this query should be joined with</p>
+
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <a href="yii-db-activequery.html#$joinWith-detail">$joinWith</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$on-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -796,19 +803,22 @@ is to be added to relational query join condition.</p>
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/ActiveQuery.php#L92" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/ActiveQuery.php#L92" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $on        <span class="detailHeaderTag small">
-            public                                    property
+        $on        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a> <a href="yii-db-activequery.html#$on-detail">$on</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>The join condition to be used when this query is used in a relational context.
+    
+    <div class="doc-description">
+        <p>The join condition to be used when this query is used in a relational context.
 The condition will be used in the ON part when <a href="yii-db-activequery.html#joinWith()-detail">yii\db\ActiveQuery::joinWith()</a> is called.
 Otherwise, the condition will be used in the WHERE part of a query.
 Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()</a> on how to specify this parameter.</p>
 
-    <p>See also <a href="yii-db-activequery.html#onCondition()-detail">onCondition()</a>.</p>
+        <p>See also <a href="yii-db-activequery.html#onCondition()-detail">onCondition()</a>.</p>    </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></span> <a href="yii-db-activequery.html#$on-detail">$on</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$sql-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
@@ -816,17 +826,20 @@ Please refer to <a href="yii-db-query.html#where()-detail">yii\db\Query::where()
                     <a href="https://github.com/yiisoft/yii2/edit/master/framework/db/ActiveQuery.php#L84" class="tool-link" title="edit on github"><span class="glyphicon glyphicon-pencil"></span></a>
             <a href="https://github.com/yiisoft/yii2/blob/master/framework/db/ActiveQuery.php#L84" class="tool-link" title="view source on github"><span class="glyphicon glyphicon-eye-open"></span></a>
         
-        $sql        <span class="detailHeaderTag small">
-            public                                    property
+        $sql        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a> <a href="yii-db-activequery.html#$sql-detail">$sql</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
-
-    <p>The SQL statement to be executed for retrieving AR records.
+    
+    <div class="doc-description">
+        <p>The SQL statement to be executed for retrieving AR records.
 This is set by <a href="yii-db-activerecord.html#findBySql()-detail">yii\db\ActiveRecord::findBySql()</a>.</p>
 
-    
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <a href="yii-db-activequery.html#$sql-detail">$sql</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -840,10 +853,11 @@ This is set by <a href="yii-db-activerecord.html#findBySql()-detail">yii\db\Acti
         
         __construct()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Constructor.</strong></p>
 
@@ -851,7 +865,7 @@ This is set by <a href="yii-db-activerecord.html#findBySql()-detail">yii\db\Acti
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-activequery.html#__construct()-detail">__construct</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$modelClass</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-activequery.html#__construct()-detail">__construct</a></strong> ( <span style="color: #0000BB">$modelClass</span>, <span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$modelClass</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -876,10 +890,11 @@ This is set by <a href="yii-db-activerecord.html#findBySql()-detail">yii\db\Acti
         
         all()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Executes query and returns all results as an array.</strong></p>
 
@@ -887,7 +902,7 @@ This is set by <a href="yii-db-activerecord.html#findBySql()-detail">yii\db\Acti
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a>|<a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>[] <strong><a href="yii-db-activequery.html#all()-detail">all</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a>|<a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>[]</span> <strong><a href="yii-db-activequery.html#all()-detail">all</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -913,10 +928,11 @@ If null, the DB connection returned by <a href="yii-db-activequerytrait.html#$mo
         
         andOnCondition()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional ON condition to the existing one.</strong></p>
 
@@ -925,7 +941,7 @@ If null, the DB connection returned by <a href="yii-db-activequerytrait.html#$mo
         <p>See also:</p><ul><li><a href="yii-db-activequery.html#onCondition()-detail">onCondition()</a></li><li><a href="yii-db-activequery.html#orOnCondition()-detail">orOnCondition()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequery.html#andOnCondition()-detail">andOnCondition</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequery.html#andOnCondition()-detail">andOnCondition</a></strong> ( <span style="color: #0000BB">$condition</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -957,10 +973,11 @@ on how to specify this parameter.</p>
         
         createCommand()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Creates a DB command that can be used to execute this query.</strong></p>
 
@@ -968,7 +985,7 @@ on how to specify this parameter.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\db\Command <strong><a href="yii-db-activequery.html#createCommand()-detail">createCommand</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\db\Command</span> <strong><a href="yii-db-activequery.html#createCommand()-detail">createCommand</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -994,10 +1011,11 @@ If null, the DB connection returned by <a href="yii-db-activequerytrait.html#$mo
         
         init()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Initializes the object.</strong></p>
 
@@ -1008,7 +1026,7 @@ to ensure triggering of the event.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="yii-db-activequery.html#init()-detail">init</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="yii-db-activequery.html#init()-detail">init</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -1021,10 +1039,11 @@ to ensure triggering of the event.</p>
         
         innerJoinWith()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Inner joins with the specified relations.</strong></p>
 
@@ -1034,7 +1053,7 @@ Please refer to <a href="yii-db-activequery.html#joinWith()-detail">joinWith()</
         <p>See also <a href="yii-db-activequery.html#joinWith()-detail">joinWith()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequery.html#innerJoinWith()-detail">innerJoinWith</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$with</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$eagerLoading&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequery.html#innerJoinWith()-detail">innerJoinWith</a></strong> ( <span style="color: #0000BB">$with</span>, <span style="color: #0000BB">$eagerLoading&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$with</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1065,10 +1084,11 @@ Please refer to <a href="yii-db-activequery.html#joinWith()-detail">joinWith()</
         
         joinWith()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Joins with the specified relations.</strong></p>
 
@@ -1084,7 +1104,7 @@ for the primary table. And when <code>$eagerLoading</code> is true, it will call
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequery.html#joinWith()-detail">joinWith</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$with</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$eagerLoading&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$joinType&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'LEFT&nbsp;JOIN'&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequery.html#joinWith()-detail">joinWith</a></strong> ( <span style="color: #0000BB">$with</span>, <span style="color: #0000BB">$eagerLoading&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span>, <span style="color: #0000BB">$joinType&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'LEFT&nbsp;JOIN'</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$with</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1093,7 +1113,15 @@ The array keys are relation names, and the array values are the corresponding an
 can be used to modify the relation queries on-the-fly. If a relation query does not need modification,
 you may use the relation name as the array value. Sub-relations can also be specified (see <a href="yii-db-activequerytrait.html#with()-detail">with()</a>).
 For example,</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #FF8000">//&nbsp;find&nbsp;all&nbsp;orders&nbsp;that&nbsp;contain&nbsp;books,&nbsp;and&nbsp;eager&nbsp;loading&nbsp;"books"<br /></span><span style="color: #0000BB">Order</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">joinWith</span><span style="color: #007700">(</span><span style="color: #DD0000">'books'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'INNER&nbsp;JOIN'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;find&nbsp;all&nbsp;orders,&nbsp;eager&nbsp;loading&nbsp;"books",&nbsp;and&nbsp;sort&nbsp;the&nbsp;orders&nbsp;and&nbsp;books&nbsp;by&nbsp;the&nbsp;book&nbsp;names.<br /></span><span style="color: #0000BB">Order</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">joinWith</span><span style="color: #007700">([<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'books'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;function&nbsp;(</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">orderBy</span><span style="color: #007700">(</span><span style="color: #DD0000">'item.name'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />])-&gt;</span><span style="color: #0000BB">all</span><span style="color: #007700">();</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-comment">// find all orders that contain books, and eager loading "books"</span>
+Order::find()-&gt;joinWith(<span class="hljs-string">'books'</span>, <span class="hljs-keyword">true</span>, <span class="hljs-string">'INNER JOIN'</span>)-&gt;all();
+<span class="hljs-comment">// find all orders, eager loading "books", and sort the orders and books by the book names.</span>
+Order::find()-&gt;joinWith([
+    <span class="hljs-string">'books'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$query</span>)</span> </span>{
+        <span class="hljs-variable">$query</span>-&gt;orderBy(<span class="hljs-string">'item.name'</span>);
+    }
+])-&gt;all();
+</code></pre>
 </td>
                 </tr>
                             <tr>
@@ -1130,22 +1158,27 @@ in the format of <code>relationName =&gt; joinType</code> to specify different j
         
         onCondition()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Sets the ON condition for a relational query.</strong></p>
 
         <p>The condition will be used in the ON part when <a href="yii-db-activequery.html#joinWith()-detail">yii\db\ActiveQuery::joinWith()</a> is called.
 Otherwise, the condition will be used in the WHERE part of a query.</p>
 <p>Use this method to specify additional conditions when declaring a relation in the <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a> class:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">getActiveUsers</span><span style="color: #007700">()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">hasMany</span><span style="color: #007700">(</span><span style="color: #0000BB">User</span><span style="color: #007700">::</span><span style="color: #0000BB">className</span><span style="color: #007700">(),&nbsp;[</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'user_id'</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">onCondition</span><span style="color: #007700">([</span><span style="color: #DD0000">'active'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">]);<br />}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getActiveUsers</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;hasMany(User::className(), [<span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'user_id'</span>])-&gt;onCondition([<span class="hljs-string">'active'</span> =&gt; <span class="hljs-keyword">true</span>]);
+}
+</code></pre>
 
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequery.html#onCondition()-detail">onCondition</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequery.html#onCondition()-detail">onCondition</a></strong> ( <span style="color: #0000BB">$condition</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1176,10 +1209,11 @@ Otherwise, the condition will be used in the WHERE part of a query.</p>
         
         one()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Executes query and returns a single row of result.</strong></p>
 
@@ -1187,7 +1221,7 @@ Otherwise, the condition will be used in the WHERE part of a query.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>|<a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.null">null</a> <strong><a href="yii-db-activequery.html#one()-detail">one</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-activerecord.html">yii\db\ActiveRecord</a>|<a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.null">null</a></span> <strong><a href="yii-db-activequery.html#one()-detail">one</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col">\yii\db\Connection</td>
@@ -1215,10 +1249,11 @@ if the query results in nothing.</p>
         
         orOnCondition()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Adds an additional ON condition to the existing one.</strong></p>
 
@@ -1227,7 +1262,7 @@ if the query results in nothing.</p>
         <p>See also:</p><ul><li><a href="yii-db-activequery.html#onCondition()-detail">onCondition()</a></li><li><a href="yii-db-activequery.html#andOnCondition()-detail">andOnCondition()</a></li></ul>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequery.html#orOnCondition()-detail">orOnCondition</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$condition</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequery.html#orOnCondition()-detail">orOnCondition</a></strong> ( <span style="color: #0000BB">$condition</span>, <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$condition</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1259,10 +1294,11 @@ on how to specify this parameter.</p>
         
         populate()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Converts the raw query results into the format as specified by this query.</strong></p>
 
@@ -1272,7 +1308,7 @@ into the format as required by this query.</p>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="yii-db-activequery.html#populate()-detail">populate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$rows&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="yii-db-activequery.html#populate()-detail">populate</a></strong> ( <span style="color: #0000BB">$rows</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$rows</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1297,10 +1333,11 @@ into the format as required by this query.</p>
         
         prepare()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Prepares for building SQL.</strong></p>
 
@@ -1310,7 +1347,7 @@ You may override this method to do some final preparation work when converting a
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="yii-db-activequery.html#prepare()-detail">prepare</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$builder&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-query.html">yii\db\Query</a></span> <strong><a href="yii-db-activequery.html#prepare()-detail">prepare</a></strong> ( <span style="color: #0000BB">$builder</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$builder</span></td>
                   <td class="param-type-col">\yii\db\QueryBuilder</td>
@@ -1334,20 +1371,26 @@ You may override this method to do some final preparation work when converting a
         
         viaTable()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Specifies the junction table for a relational query.</strong></p>
 
         <p>Use this method to specify a junction table when declaring a relation in the <a href="yii-db-activerecord.html">yii\db\ActiveRecord</a> class:</p>
-<pre><code class="language-php"><span style="color: #0000BB"></span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">getItems</span><span style="color: #007700">()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">hasMany</span><span style="color: #007700">(</span><span style="color: #0000BB">Item</span><span style="color: #007700">::</span><span style="color: #0000BB">className</span><span style="color: #007700">(),&nbsp;[</span><span style="color: #DD0000">'id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'item_id'</span><span style="color: #007700">])<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;</span><span style="color: #0000BB">viaTable</span><span style="color: #007700">(</span><span style="color: #DD0000">'order_item'</span><span style="color: #007700">,&nbsp;[</span><span style="color: #DD0000">'order_id'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'id'</span><span style="color: #007700">]);<br />}</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getItems</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;hasMany(Item::className(), [<span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'item_id'</span>])
+                -&gt;viaTable(<span class="hljs-string">'order_item'</span>, [<span class="hljs-string">'order_id'</span> =&gt; <span class="hljs-string">'id'</span>]);
+}
+</code></pre>
 
         <p>See also <a href="yii-db-activerelationtrait.html#via()-detail">via()</a>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">static <strong><a href="yii-db-activequery.html#viaTable()-detail">viaTable</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$tableName</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link</span><span style="color: #007700">,&nbsp;callable&nbsp;</span><span style="color: #0000BB">$callable&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">static</span> <strong><a href="yii-db-activequery.html#viaTable()-detail">viaTable</a></strong> ( <span style="color: #0000BB">$tableName</span>, <span style="color: #0000BB">$link</span>, <span class="signature-type"><a href="http://www.php.net/language.types.callable">callable</a></span> <span style="color: #0000BB">$callable&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$tableName</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1384,9 +1427,10 @@ Its signature should be <code>function($query)</code>, where <code>$query</code>
         
         EVENT_INIT        <span class="detail-header-tag small">
         event
-                </span>
+        of type \yii\db\Event                </span>
     </div>
 
+    
     <div class="doc-description">
         <p>An event that is triggered when the query is initialized via <a href="yii-db-activequery.html#init()-detail">init()</a>.</p>
 
@@ -1431,7 +1475,7 @@ Its signature should be <code>function($query)</code>, where <code>$query</code>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {

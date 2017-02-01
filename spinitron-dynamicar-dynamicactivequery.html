@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/704a59f5/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/406708e9/style.css" rel="stylesheet">
-<script src="./assets/b0215f92/jquery.js"></script>
-<script src="./assets/704a59f5/js/bootstrap.js"></script>    <title>DynamicActiveQuery - Dynamic Active Record</title>
+        <link href="./assets/d2662e35/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/554be0b5/solarized_light.css" rel="stylesheet">
+<link href="./assets/d6669f61/style.css" rel="stylesheet">
+<script src="./assets/264bf9c7/jquery.js"></script>
+<script src="./assets/d2662e35/js/bootstrap.js"></script>    <title>DynamicActiveQuery - Dynamic Active Record</title>
 </head>
 <body>
 
@@ -20,10 +21,11 @@
 <div class="row">
     <div class="col-md-3">
                 <div id="navigation" class="list-group"><a class="list-group-item active" href="#navigation-0" data-toggle="collapse" data-parent="#navigation">spinitron\dynamicAr <b class="caret"></b></a><div id="navigation-0" class="submenu panel-collapse collapse in"><a class="list-group-item active" href="./spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a>
-<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a></div></div>    </div>
+<a class="list-group-item" href="./spinitron-dynamicar-dynamicactiverecord.html">DynamicActiveRecord</a>
+<a class="list-group-item" href="./spinitron-dynamicar-valueexpression.html">ValueExpression</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class spinitron\dynamicAr\DynamicActiveQuery</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -42,23 +44,26 @@
 <a href="yii-base-object.html">yii\base\Object</a></td></tr>
                 <tr><th>Implements</th><td><a href="yii-base-configurable.html">yii\base\Configurable</a>, <a href="yii-db-activequeryinterface.html">yii\db\ActiveQueryInterface</a>, <a href="yii-db-queryinterface.html">yii\db\QueryInterface</a></td></tr>
                     <tr><th>Uses Traits</th><td><a href="yii-db-activequerytrait.html">yii\db\ActiveQueryTrait</a>, <a href="yii-db-activerelationtrait.html">yii\db\ActiveRelationTrait</a>, <a href="yii-db-querytrait.html">yii\db\QueryTrait</a></td></tr>
-                            </table>
+                <tr><th>Subclasses</th><td>tests\unit\data\CustomerQuery</td></tr>
+                        </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>DynamicActiveQuery represents queries on relational data with structured dynamic attributes.</strong></p>
     <p>DynamicActiveQuery adds to <a href="yii-db-activequery.html">yii\db\ActiveQuery</a> a way to write queries that involve
 the dynamic attributes of DynamicAccessRecord models. This is only possible on
 a DBMS that supports querying elements in serialized data structures.</p>
-<blockquote><p>NOTE: In this version of Dynamic AR only Maria 10.0+ is supported in this version.</p>
+<blockquote class="note"><p><strong>Note: </strong>In this version of Dynamic AR only Maria 10.0+ is supported in this version.</p>
 </blockquote>
 <p>Dynamic attribtes names must be enclosed in <code>(! … !)</code> (bang-parens) and child attributes in
 structured dynamic attributes are accessed using dotted notation, for example</p>
-<pre><code class="language-php"><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'(!specs.color!)'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'blue'</span><span style="color: #007700">]);</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$model</span> = Product::find()-&gt;where([<span class="hljs-string">'(!specs.color!)'</span> =&gt; <span class="hljs-string">'blue'</span>]);
+</code></pre>
 <p>If there is any need to specify the SQL data type of the dynamic attribute in the query,
 for example if it appears in an SQL expression that needs this, then the type and dimension
 can be given in the bang-parents after a <code>|</code> (vertical bar or pipe character)
 following the attribute name, e.g.</p>
-<pre><code class="language-php"><span style="color: #0000BB">$model&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Product</span><span style="color: #007700">::</span><span style="color: #0000BB">find</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">where</span><span style="color: #007700">([</span><span style="color: #DD0000">'(!&nbsp;price.unit|DECIMAL(9,2)&nbsp;!)&nbsp;=&nbsp;14.49'</span><span style="color: #007700">]);</span></code></pre>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$model</span> = Product::find()-&gt;where([<span class="hljs-string">'(! price.unit|DECIMAL(9,2) !) = 14.49'</span>]);
+</code></pre>
 <p>Allowed datatypes are specified in
 <a href="https://mariadb.com/kb/en/mariadb/dynamic-columns/#datatypes">Maria documentation</a></p>
 <p>Whitespace inside the bang-parens is allowed but not around the vertical bar.</p>
@@ -90,7 +95,7 @@ following the attribute name, e.g.</p>
     </tr>
             <tr class="inherited" id="$behaviors">
         <td><a href="yii-base-component.html#$behaviors-detail">$behaviors</a></td>
-        <td>\yii\base\Behavior</td>
+        <td>\yii\base\Behavior[]</td>
         <td>List of behaviors attached to this component</td>
         <td><a href="yii-base-component.html">yii\base\Component</a></td>
     </tr>
@@ -746,21 +751,22 @@ result array indexed an attribute name that may be in dotted notation.</td>
         
         createCommand()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Generate DB command from ActiveQuery with Maria-specific SQL for dynamic columns.</strong></p>
 
         <p>User of DynamicActiveQuery should not normally need to use this method.</p>
-<h4>History <a href="#history" id="history" class="hashlink">&para;</a></h4><p>This implementation is the best I could manage. A dynamic attribute name
+<h4>History <span id="history"></span><a href="#history" class="hashlink">&para;</a></h4><p>This implementation is the best I could manage. A dynamic attribute name
 can appear anywhere that a schema attribute name could appear (select, join, where, ...).
 It needs to be converted to the Maria SQL using COLUMN_CREATE('name', value, …)
 for accessing dynamic columns.
 Because SQL is statically-typed and there is no schema to refer to for dynamic
 attributes, the accessor SQL must specify the the dyn-col's type, e.g.</p>
-<pre><code class="language-sql">WHERE COLUMN_GET(details, 'color' AS CHAR) = 'black'
+<pre><code class="hljs sql language-sql">WHERE COLUMN_GET(details, 'color' AS CHAR) = 'black'
 </code></pre>
 <p>In which details is the blob column containing all the dynamic columns, 'color' is the
 name of a dynamic column that may or may not appear in any given table record, and
@@ -786,21 +792,21 @@ stuck. Also stuck if it is compared with another dynamic attribute. This seems
 fundamentally intractible.</p>
 <p>So I decided that the user needs to help DynamicActiveQuery by distinguishing the names
 of dynamic attributes and by explicitly specifying the type. The format for this:</p>
-<pre><code>    (!name|type!)
+<pre><code class="hljs bash">    (!name|<span class="hljs-built_in">type</span>!)
 </code></pre>
 <p>Omitting type implies the default type: CHAR. Children of dynamic attributes, i.e.
 array elements, are separated from parents with <code>.</code> (period), e.g.
 <code>(!address.country|CHAR!)</code>. (Spaces are not alowed around the <code>|</code>.) So a user can do:</p>
-<pre><code>$blueShirts = Product::find()
-    -&gt;where(['category' =&gt; Product::SHIRT, '(!color!)' =&gt; 'blue'])
+<pre><code class="hljs php"><span class="hljs-variable">$blueShirts</span> = Product::find()
+    -&gt;where([<span class="hljs-string">'category'</span> =&gt; Product::SHIRT, <span class="hljs-string">'(!color!)'</span> =&gt; <span class="hljs-string">'blue'</span>])
     -&gt;all();
 
-$cheapShirts = Product::find()
+<span class="hljs-variable">$cheapShirts</span> = Product::find()
     -&gt;select(
-        ['sale' =&gt; 'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))']
+        [<span class="hljs-string">'sale'</span> =&gt; <span class="hljs-string">'MAX((!cost|decimal(6,2)!), 0.75 * (!price.wholesale.12|decimal(6,2)!))'</span>]
     )
-    -&gt;where(['category' =&gt; Product::SHIRT])
-    -&gt;andWhere('(!price.retail.unit|decimal(6,2)!) &lt; 20.00')
+    -&gt;where([<span class="hljs-string">'category'</span> =&gt; Product::SHIRT])
+    -&gt;andWhere(<span class="hljs-string">'(!price.retail.unit|decimal(6,2)!) &lt; 20.00'</span>)
     -&gt;all();
 </code></pre>
 <p>The implementation is like db\Connection's quoting of <a href="http://www.php.net/language.types.string">string</a> and {{string}}. Once
@@ -811,7 +817,7 @@ and the replacement callback isn't pretty either. Is there a better way to add t
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\yii\db\Command <strong><a href="spinitron-dynamicar-dynamicactivequery.html#createCommand()-detail">createCommand</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\yii\db\Command</span> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#createCommand()-detail">createCommand</a></strong> ( <span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$db</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.null">null</a>|\yii\db\Connection</td>
@@ -834,10 +840,11 @@ and the replacement callback isn't pretty either. Is there a better way to add t
         
         getDotNotatedValue()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Returns the value of the element in an array refereced by a dot-notated attribute name.</strong></p>
 
@@ -845,7 +852,7 @@ and the replacement callback isn't pretty either. Is there a better way to add t
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">mixed|<a href="http://www.php.net/language.types.null">null</a> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#getDotNotatedValue()-detail">getDotNotatedValue</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$attribute&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type">mixed|<a href="http://www.php.net/language.types.null">null</a></span> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#getDotNotatedValue()-detail">getDotNotatedValue</a></strong> ( <span style="color: #0000BB">$array</span>, <span style="color: #0000BB">$attribute</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$array</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -875,10 +882,11 @@ element exists</p>
         
         indexBy()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Converts the indexBy column name an anonymous function that writes rows to the
 result array indexed an attribute name that may be in dotted notation.</strong></p>
@@ -887,7 +895,7 @@ result array indexed an attribute name that may be in dotted notation.</strong><
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="spinitron-dynamicar-dynamicactivequery.html#indexBy()-detail">indexBy</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$column&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="spinitron-dynamicar-dynamicactivequery.html">$this</a></span> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#indexBy()-detail">indexBy</a></strong> ( <span style="color: #0000BB">$column</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$column</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.callable">callable</a>|<a href="http://www.php.net/language.types.string">string</a></td>
@@ -904,10 +912,11 @@ result array indexed an attribute name that may be in dotted notation.</strong><
         
         prepare()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
+    
     <div class="doc-description">
         <p><strong>Maria-specific preparation for building a query that includes a dynamic column.</strong></p>
 
@@ -915,7 +924,7 @@ result array indexed an attribute name that may be in dotted notation.</strong><
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="yii-db-query.html">yii\db\Query</a> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#prepare()-detail">prepare</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$builder&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="yii-db-query.html">yii\db\Query</a></span> <strong><a href="spinitron-dynamicar-dynamicactivequery.html#prepare()-detail">prepare</a></strong> ( <span style="color: #0000BB">$builder</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$builder</span></td>
                   <td class="param-type-col">\yii\db\QueryBuilder</td>
@@ -973,7 +982,7 @@ result array indexed an attribute name that may be in dotted notation.</strong><
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sat, 27 Jun 2015 14:25:07 -0400</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:18 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
