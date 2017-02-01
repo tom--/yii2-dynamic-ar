@@ -38,7 +38,8 @@
     },
     "require-dev": {
         "yiisoft/yii2-dev": "~2.0",
-        "phpunit/phpunit": "~4.4"
+        "phpunit/phpunit": "~4.4",
+        "yiisoft/yii2-coding-standards": "~2.0.2"
     },
     "autoload": {
    		"psr-4": {
