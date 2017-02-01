@@ -142,18 +142,18 @@ class Product extends \spinitron\dynamicAr\DynamicActiveRecord
 
 ## Design principle
 
-DynamicActiveRecord adds a fourth to the three things that reading and writing 
+DynamicActiveRecord adds a fourth to the three things that reading and writing
 AR model properties can do:
 
 1. $model->foo accesses, if it exists, the instance variable `$foo`,
 2. otherwise it accesses the column attribute foo, if the model's table has a column 'foo',
-3. otherwise it accesses the virtual attribute 'foo', if the model's class has 
-magic `getFoo()` / `setFoo()` methods, 
+3. otherwise it accesses the virtual attribute 'foo', if the model's class has
+magic `getFoo()` / `setFoo()` methods,
 4. else $model->foo accesses a dynamic attribute named 'foo'.
 
-So any attribute name that doesn't refer to one of the normal 3 kinds of 
-AR model property (instance variable, column attribute, virtual 
-attribute) is automatically a dynamic property as soon 
+So any attribute name that doesn't refer to one of the normal 3 kinds of
+AR model property (instance variable, column attribute, virtual
+attribute) is automatically a dynamic property as soon
 as you use it. There is no way to declare a dynamic property and you can
 only define one by writing to it.
 
@@ -162,20 +162,20 @@ And reading an attribute that doesn't exist returns null.
 
 #### PHP null, SQL NULL and Maria
 
-Maria does not encode a dynamic column set to SQL NULL: 
+Maria does not encode a dynamic column set to SQL NULL:
 
 ```sql
-SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1) 
+SELECT COLUMN_CREATE('a', 1, 'b', null) = COLUMN_CREATE('a', 1)
 >> 1
 ```
 
-Thus if a table record currently has a dynamic column 'b' and Maria executes an 
-update setting it to NULL then Maria removes 'b' from the record. (This 
-makes sense if NULL has its conventional database meaning of 'data value 
+Thus if a table record currently has a dynamic column 'b' and Maria executes an
+update setting it to NULL then Maria removes 'b' from the record. (This
+makes sense if NULL has its conventional database meaning of 'data value
 does not exist.') So DynamicActiveRecord cannot possibly distinguish a NULL
 value from a dynamic column that doesn't exist after reading back from the DB.
 
-In order to be consistent, DynamicActiveRecord always returns null when you 
+In order to be consistent, DynamicActiveRecord always returns null when you
 read a dynamic attribute that hasn't been set, in contrast to
 ActiveRecord which throws an exception. But it also makes sense if
 null means 'does not exist' and given the design principle (above).
@@ -187,6 +187,7 @@ Class reference
 
 - [DynamciActiveRecord](spinitron-dynamicar-dynamicactiverecord.html)
 - [DynamicActiveQuery](spinitron-dynamicar-dynamicactivequery.html)
+- [DynamicActiveQuery](spinitron-dynamicar-valueexpression.html)
 
 More documentation
 
