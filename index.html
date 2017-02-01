@@ -164,11 +164,11 @@ optional so <code>(!material!)</code> is fine.)</li>
 <h2>Design principle <span id="design-principle"></span><a href="#design-principle" class="hashlink">&para;</a></h2><p>DynamicActiveRecord adds a fourth to the three things that reading and writing
 AR model properties can do:</p>
 <ol>
-<li>$model-&gt;foo accesses, if it exists, the instance variable <code>$foo</code>,</li>
-<li>otherwise it accesses the column attribute foo, if the model's table has a column 'foo',</li>
-<li>otherwise it accesses the virtual attribute 'foo', if the model's class has
+<li><code>$model-&gt;foo</code> accesses, if it exists, the instance variable <code>$foo</code>,</li>
+<li>otherwise it accesses the column attribute <code>foo</code>, if the model's table has a column "foo",</li>
+<li>otherwise it accesses the virtual attribute <code>foo</code>, if the model's class has
 magic <code>getFoo()</code> / <code>setFoo()</code> methods,</li>
-<li>else $model-&gt;foo accesses a dynamic attribute named 'foo'.</li>
+<li>else <code>$model-&gt;foo</code> accesses a dynamic attribute named "foo".</li>
 </ol>
 <p>So any attribute name that doesn't refer to one of the normal 3 kinds of
 AR model property (instance variable, column attribute, virtual
@@ -191,14 +191,15 @@ ActiveRecord which throws an exception. But it also makes sense if
 null means 'does not exist' and given the design principle (above).</p>
 <h2>Further reading <span id="further-reading"></span><a href="#further-reading" class="hashlink">&para;</a></h2><p>Class reference</p>
 <ul>
-<li><a href="spinitron-dynamicar-dynamicactiverecord.html">DynamciActiveRecord</a></li>
-<li><a href="spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a></li>
-<li><a href="spinitron-dynamicar-valueexpression.html">ValueExpression</a></li>
+<li><a href="http://tom--.github.io/yii2-dynamic-ar/">Docs landing page</a></li>
+<li><a href="http://tom--.github.io/yii2-dynamic-ar/spinitron-dynamicar-dynamicactiverecord.html">DynamciActiveRecord</a></li>
+<li><a href="http://tom--.github.io/yii2-dynamic-ar/spinitron-dynamicar-dynamicactivequery.html">DynamicActiveQuery</a></li>
+<li><a href="http://tom--.github.io/yii2-dynamic-ar/spinitron-dynamicar-valueexpression.html">ValueExpression</a></li>
 </ul>
 <p>More documentation</p>
 <ul>
-<li><a href="doc-datatypes.html">Datatypes</a> in PHP, SQL and JSON are not identical.</li>
-<li><a href="doc-design.html">Design history</a> – The projects original README.</li>
+<li><a href="http://tom--.github.io/yii2-dynamic-ar/doc-datatypes.html">Datatypes</a> in PHP, SQL and JSON are not identical.</li>
+<li><a href="http://tom--.github.io/yii2-dynamic-ar/doc-design.html">Design history</a> – The projects original README.</li>
 </ul>
 <p>Useful links</p>
 <ul>
@@ -346,7 +347,7 @@ its properties through the last parameter to its constructor.</td>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 16:41:19 +0000</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 01 Feb 2017 19:59:15 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
