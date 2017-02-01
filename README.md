@@ -185,14 +185,15 @@ null means 'does not exist' and given the design principle (above).
 
 Class reference
 
-- [DynamciActiveRecord](spinitron-dynamicar-dynamicactiverecord.html)
-- [DynamicActiveQuery](spinitron-dynamicar-dynamicactivequery.html)
-- [ValueExpression](spinitron-dynamicar-valueexpression.html)
+- [Docs landing page](http://tom--.github.io/yii2-dynamic-ar/)
+- [DynamciActiveRecord](http://tom--.github.io/yii2-dynamic-ar/spinitron-dynamicar-dynamicactiverecord.html)
+- [DynamicActiveQuery](http://tom--.github.io/yii2-dynamic-ar/spinitron-dynamicar-dynamicactivequery.html)
+- [ValueExpression](http://tom--.github.io/yii2-dynamic-ar/spinitron-dynamicar-valueexpression.html)
 
 More documentation
 
-- [Datatypes](doc-datatypes.html) in PHP, SQL and JSON are not identical.
-- [Design history](doc-design.html) – The projects original README.
+- [Datatypes](http://tom--.github.io/yii2-dynamic-ar/doc-datatypes.html) in PHP, SQL and JSON are not identical.
+- [Design history](http://tom--.github.io/yii2-dynamic-ar/doc-design.html) – The projects original README.
 
 Useful links
 
