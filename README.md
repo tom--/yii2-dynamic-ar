@@ -187,7 +187,7 @@ Class reference
 
 - [DynamciActiveRecord](spinitron-dynamicar-dynamicactiverecord.html)
 - [DynamicActiveQuery](spinitron-dynamicar-dynamicactivequery.html)
-- [DynamicActiveQuery](spinitron-dynamicar-valueexpression.html)
+- [ValueExpression](spinitron-dynamicar-valueexpression.html)
 
 More documentation
 
@@ -202,6 +202,10 @@ Useful links
 - [Query Builder guide](http://www.yiiframework.com/doc-2.0/guide-db-query-builder.html)
 - [Maria Dynamic Columns](https://mariadb.com/kb/en/mariadb/dynamic-columns/)
 - [Sequel Pro Dynamic Columns bundle](https://github.com/tom--/sequel-pro-maria-dynamic-column)
+
+Regenerate docs in gh-pages branch
+
+    vendor/bin/apidoc api . . --template="spinitron\dynamicAr\doc\template\ApiRenderer"
 
 ## Questions, comments, issues
 
