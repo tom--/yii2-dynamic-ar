@@ -145,11 +145,11 @@ class Product extends \spinitron\dynamicAr\DynamicActiveRecord
 DynamicActiveRecord adds a fourth to the three things that reading and writing
 AR model properties can do:
 
-1. $model->foo accesses, if it exists, the instance variable `$foo`,
-2. otherwise it accesses the column attribute foo, if the model's table has a column 'foo',
-3. otherwise it accesses the virtual attribute 'foo', if the model's class has
+1. `$model->foo` accesses, if it exists, the instance variable `$foo`,
+2. otherwise it accesses the column attribute `foo`, if the model's table has a column "foo",
+3. otherwise it accesses the virtual attribute `foo`, if the model's class has
 magic `getFoo()` / `setFoo()` methods,
-4. else $model->foo accesses a dynamic attribute named 'foo'.
+4. else `$model->foo` accesses a dynamic attribute named "foo".
 
 So any attribute name that doesn't refer to one of the normal 3 kinds of
 AR model property (instance variable, column attribute, virtual
