@@ -22,7 +22,7 @@ $config = [
 //            'fixture' => __DIR__ . '/cubrid.sql',
 //        ],
         'mysql' => [
-            'dsn' => 'mysql:host=localhost;dbname=test',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=test',
             'username' => 'travis',
             'password' => '',
             'fixture' => __DIR__ . '/mysql.sql',

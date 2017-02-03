@@ -16,6 +16,7 @@ class DynamicActiveRecordAccessTest extends DatabaseTestCase
     protected function setUp()
     {
         static::$params = require(__DIR__ . '/data/config.php');
+        $this->driverName = array_keys(static::$params['databases'])[0];
         parent::setUp();
         self::$db = BaseRecord::$db = $this->getConnection(self::$db === null, self::$db === null);
     }

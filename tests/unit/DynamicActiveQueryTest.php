@@ -24,6 +24,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
     protected function setUp()
     {
         static::$params = require(__DIR__ . '/data/config.php');
+        $this->driverName = array_keys(static::$params['databases'])[0];
         parent::setUp();
         BaseRecord::$db = $this->getConnection();
     }
@@ -52,7 +53,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
         $query = new DynamicActiveQuery(Product::className());
         $query->select(['(!cost|decimal(6,2)!), (!price.wholesale.12|decimal(6,2)!), id']);
         $command = $query->createCommand();
-        $this->assertEquals("SELECT COLUMN_GET(dynamic_columns, 'cost' AS decimal(6,2)), COLUMN_GET(COLUMN_GET(COLUMN_GET(dynamic_columns, 'price' BINARY), 'wholesale' BINARY), '12' AS decimal(6,2)), id FROM `product`", $command->getRawSql());
+        $this->assertEquals("SELECT COLUMN_GET(dynamic_columns, 'cost' AS decimal(6,2)), COLUMN_GET(COLUMN_GET(COLUMN_GET(dynamic_columns, 'price' AS BINARY), 'wholesale' AS BINARY), '12' AS decimal(6,2)), id FROM `product`", $command->getRawSql());
     }
 
     public function testWhere()
@@ -66,7 +67,7 @@ class DynamicActiveQueryTest extends DatabaseTestCase
 
         $query->andWhere('(!one.three|int!) = 5');
         $command = $query->createCommand();
-        $this->assertEquals("SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'two' AS char) = t) AND (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS int), 'three' AS int) = 5)",
+        $this->assertEquals("SELECT *, COLUMN_JSON(`dynamic_columns`) AS `dynamic_columns` FROM `product` WHERE (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'two' AS char) = t) AND (COLUMN_GET(COLUMN_GET(dynamic_columns, 'one' AS BINARY), 'three' AS int) = 5)",
             $command->getRawSql());
     }
 

@@ -39,6 +39,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
     protected function setUp()
     {
         static::$params = require(__DIR__ . '/data/config.php');
+        $this->driverName = array_keys(static::$params['databases'])[0];
         parent::setUp();
 
         $this->db = BaseRecord::$db = $this->getConnection(self::$resetFixture);
@@ -318,7 +319,7 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             'unsignedInt' => 321,
             'float' => 12.99,
             // https://mariadb.atlassian.net/browse/MDEV-8521
-            'double' => '1.3e31',
+            'double' => '1.299e31',
             'decimal' => 12.99,
             'decimalN' => 12.99,
             'decimalND' => 12.99,
@@ -340,20 +341,19 @@ class DynamicActiveRecordTest extends ActiveRecordTest
             'decimal' => new ValueExpression(12.99, 'DECIMAL'),
             'decimalN' => new ValueExpression(12.99, 'DECIMAL(6)'),
             'decimalND' => new ValueExpression(12.99, 'DECIMAL(6,3)'),
-// https://mariadb.atlassian.net/browse/MDEV-8526
-//            'charN' => new ValueExpression("'charN'", 'CHAR(10)'),
-//            'bin' => new ValueExpression('unhex("cafebabebada55")', 'BINARY'),
-//            'binN' => new ValueExpression('unhex("cafebabebada55")', 'BINARY(10)'),
-//            'doubleN' => new ValueExpression(12.99E+30, 'DOUBLE(6)'),
-//            'doubleND' => new ValueExpression(12.99E+30, 'DOUBLE(6,3)'),
-//            'signed' => new ValueExpression(-432, 'SIGNED'),
-//            'signedInt' => new ValueExpression(-432, 'SIGNED INTEGER'),
-//            'unsigned' => new ValueExpression(321, 'UNSIGNED'),
+            // https://mariadb.atlassian.net/browse/MDEV-8526
+            //'charN' => new ValueExpression("'charN'", 'CHAR(10)'),
+            //'bin' => new ValueExpression('unhex("cafebabebada55")', 'BINARY'),
+            //'binN' => new ValueExpression('unhex("cafebabebada55")', 'BINARY(10)'),
+            //'doubleN' => new ValueExpression(12.99E+30, 'DOUBLE(6)'),
+            //'doubleND' => new ValueExpression(12.99E+30, 'DOUBLE(6,3)'),
+            //'signed' => new ValueExpression(-432, 'SIGNED'),
+            //'signedInt' => new ValueExpression(-432, 'SIGNED INTEGER'),
+            //'unsigned' => new ValueExpression(321, 'UNSIGNED'),
         ]);
         $p->save(false);
 
         $actual = Product::findOne($p->id)->toArray();
-
         $this->assertArraySubset($expected, $actual);
     }
 
