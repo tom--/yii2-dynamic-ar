@@ -212,11 +212,16 @@ class DynamicActiveQuery extends ActiveQuery
         $callback = function ($matches) use (&$params, $dynamicColumn) {
             $type = !empty($matches[3]) ? $matches[3] : 'CHAR';
             $sql = $dynamicColumn;
-            foreach (explode('.', $matches[2]) as $column) {
+            $parts = explode('.', $matches[2]);
+            $lastPart = array_pop($parts);
+            foreach ($parts as $column) {
                 $placeholder = DynamicActiveRecord::placeholder();
                 $params[$placeholder] = $column;
-                $sql = "COLUMN_GET($sql, $placeholder AS $type)";
+                $sql = "COLUMN_GET($sql, $placeholder AS BINARY)";
             }
+            $placeholder = DynamicActiveRecord::placeholder();
+            $params[$placeholder] = $lastPart;
+            $sql = "COLUMN_GET($sql, $placeholder AS $type)";
 
             return $sql;
         };

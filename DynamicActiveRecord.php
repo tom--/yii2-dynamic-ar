@@ -304,9 +304,12 @@ class DynamicActiveRecord extends ActiveRecord
     public static function columnExpression($name, $type = 'char')
     {
         $sql = '[[' . static::dynamicColumn() . ']]';
-        foreach (explode('.', $name) as $column) {
-            $sql = "COLUMN_GET($sql, '$column' AS $type)";
+        $parts = explode('.', $name);
+        $lastPart = array_pop($parts);
+        foreach ($parts as $column) {
+            $sql = "COLUMN_GET($sql, '$column' AS BINARY)";
         }
+        $sql = "COLUMN_GET($sql, '$lastPart' AS $type)";
 
         return $sql;
     }
