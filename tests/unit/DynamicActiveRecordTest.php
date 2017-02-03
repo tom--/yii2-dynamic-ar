@@ -8,20 +8,12 @@
 namespace tests\unit;
 
 use spinitron\dynamicAr\ValueExpression;
-use tests\unit\data\ar\NullValues;
 use tests\unit\data\BaseRecord;
-use tests\unit\data\dar\Person;
-use tests\unit\data\dar\Supplier;
-use Yii;
 use spinitron\dynamicAr\DynamicActiveRecord;
 use spinitron\dynamicAr\DynamicActiveQuery;
 use yiiunit\framework\db\ActiveRecordTest;
-use yiiunit\framework\db\DatabaseTestCase;
-use yiiunit\TestCase;
 use tests\unit\data\dar\Product;
 use yii\db\Connection;
-use yii\db\Query;
-use yii\db\ActiveQuery;
 
 /**
  * @author Tom Worster <fsb@thefsb.org>

@@ -11,7 +11,7 @@ use yiiunit\framework\db\DatabaseTestCase;
 class DynamicActiveRecordAccessTest extends DatabaseTestCase
 {
     /** @var Connection */
-    static $db;
+    protected static $db;
 
     protected function setUp()
     {

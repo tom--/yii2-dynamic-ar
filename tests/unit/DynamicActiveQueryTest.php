@@ -11,7 +11,6 @@ use spinitron\dynamicAr\DynamicActiveQuery;
 use tests\unit\data\ar\UsualModel;
 use tests\unit\data\BaseRecord;
 use tests\unit\data\dar\MissingDynColumn;
-use yii\db\Query;
 use yiiunit\framework\db\DatabaseTestCase;
 use tests\unit\data\dar\Product;
 
